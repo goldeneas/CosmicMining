@@ -1,0 +1,4 @@
+name: MiningRestrictions
+version: '1.0.0'
+main: io.github.goldeneas.miningrestrictions.MiningRestrictions
+api-version: '1.20'

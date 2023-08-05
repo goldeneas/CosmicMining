@@ -1,0 +1,7 @@
+io\github\goldeneas\miningrestrictions\Database.class
+io\github\goldeneas\miningrestrictions\helpers\ItemHelper.class
+io\github\goldeneas\miningrestrictions\events\PlayerBreakBlock.class
+io\github\goldeneas\miningrestrictions\utils\ConfigUtil.class
+io\github\goldeneas\miningrestrictions\events\PlayerLeftClick.class
+io\github\goldeneas\miningrestrictions\MiningRestrictions.class
+io\github\goldeneas\miningrestrictions\helpers\BlockHelper.class

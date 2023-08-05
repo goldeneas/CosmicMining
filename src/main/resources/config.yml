@@ -1,0 +1,16 @@
+items:
+  levels_required:
+    wooden_pickaxe: 0
+    stone_pickaxe: 10
+    golden_pickaxe: 15
+    iron_pickaxe: 25
+    diamond_pickaxe: 35
+    netherite_pickaxe: 50
+
+blocks:
+  exp_given:
+    stone: 1
+    coal_ore: 2
+    gold_ore: 3
+    iron_ore: 4
+    diamond_ore: 5
