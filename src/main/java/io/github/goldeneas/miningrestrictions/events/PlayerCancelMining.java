@@ -2,6 +2,7 @@ package io.github.goldeneas.miningrestrictions.events;
 
 import io.github.goldeneas.miningrestrictions.Database;
 import io.github.goldeneas.miningrestrictions.helpers.ItemHelper;
+import io.github.goldeneas.miningrestrictions.utils.ConfigUtil;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,11 +13,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.OptionalInt;
 
-public class PlayerLeftClick implements Listener {
+public class PlayerCancelMining implements Listener {
     private final Database database;
     private final ItemHelper itemHelper;
 
-    public PlayerLeftClick(Database database, ItemHelper itemHelper) {
+    public PlayerCancelMining(Database database, ItemHelper itemHelper) {
         this.database = database;
         this.itemHelper = itemHelper;
     }
@@ -29,7 +30,10 @@ public class PlayerLeftClick implements Listener {
         Player player = e.getPlayer();
         ItemStack item = e.getItem();
 
-        if(item == null || (player.getGameMode() == GameMode.CREATIVE))
+        if(item == null)
+            return;
+
+        if((player.getGameMode() == GameMode.CREATIVE) || player.hasPermission(ConfigUtil.BYPASS_PERMISSION))
             return;
 
         int requiredLevel = itemHelper.getRequiredLevel(item);

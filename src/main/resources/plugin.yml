@@ -2,3 +2,7 @@ name: MiningRestrictions
 version: '${project.version}'
 main: io.github.goldeneas.miningrestrictions.MiningRestrictions
 api-version: '1.20'
+permissions:
+  miningrestrictions.bypass:
+    default: op
+    description: bypass mining restrictions
