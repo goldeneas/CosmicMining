@@ -1,8 +1,7 @@
 package io.github.goldeneas.miningrestrictions.events;
 
 import io.github.goldeneas.miningrestrictions.Database;
-import io.github.goldeneas.miningrestrictions.helpers.BlockHelper;
-import io.github.goldeneas.miningrestrictions.utils.ConfigUtil;
+import io.github.goldeneas.miningrestrictions.helpers.ExperienceHelper;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,11 +10,11 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 public class PlayerGainExperience implements Listener {
     private final Database database;
-    private final BlockHelper blockHelper;
+    private final ExperienceHelper experienceHelper;
 
-    public PlayerGainExperience(Database database, BlockHelper blockHelper) {
+    public PlayerGainExperience(Database database, ExperienceHelper experienceHelper) {
         this.database = database;
-        this.blockHelper = blockHelper;
+        this.experienceHelper = experienceHelper;
     }
 
     @EventHandler
@@ -23,14 +22,12 @@ public class PlayerGainExperience implements Listener {
         if(e.isCancelled())
             return;
 
-        Player player = e.getPlayer();
-        if(player.hasPermission(ConfigUtil.BYPASS_PERMISSION))
-            return;
-
         Block block = e.getBlock();
-        int exp = blockHelper.getGivenExperience(block);
+        Player player = e.getPlayer();
 
-        database.addLevels(e.getPlayer(), exp);
+        int exp = experienceHelper.getExperienceToGiveForBlock(block);
+
+        database.addExperience(player, exp);
     }
 
 }

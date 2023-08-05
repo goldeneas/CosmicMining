@@ -1,8 +1,7 @@
 package io.github.goldeneas.miningrestrictions.events;
 
 import io.github.goldeneas.miningrestrictions.Database;
-import io.github.goldeneas.miningrestrictions.helpers.ItemHelper;
-import io.github.goldeneas.miningrestrictions.utils.ConfigUtil;
+import io.github.goldeneas.miningrestrictions.helpers.ExperienceHelper;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,11 +14,11 @@ import java.util.OptionalInt;
 
 public class PlayerCancelMining implements Listener {
     private final Database database;
-    private final ItemHelper itemHelper;
+    private final ExperienceHelper experienceHelper;
 
-    public PlayerCancelMining(Database database, ItemHelper itemHelper) {
+    public PlayerCancelMining(Database database, ExperienceHelper experienceHelper) {
         this.database = database;
-        this.itemHelper = itemHelper;
+        this.experienceHelper = experienceHelper;
     }
 
     @EventHandler
@@ -33,10 +32,10 @@ public class PlayerCancelMining implements Listener {
         if(item == null)
             return;
 
-        if((player.getGameMode() == GameMode.CREATIVE) || player.hasPermission(ConfigUtil.BYPASS_PERMISSION))
+        if((player.getGameMode() == GameMode.CREATIVE))
             return;
 
-        int requiredLevel = itemHelper.getRequiredLevel(item);
+        int requiredLevel = experienceHelper.getRequiredLevelForItem(item);
         OptionalInt playerLevel = database.getLevels(player);
 
         if(playerLevel.isEmpty())

@@ -20,6 +20,10 @@ public class Database {
         testDatabaseConnection();
     }
 
+    public boolean addExperience(Player player, int expPoints) {
+        return add("player_levels", "experience", player, expPoints);
+    }
+
     public boolean addLevels(Player player, int levels) {
         return add("player_levels", "levels", player, levels);
     }
@@ -29,17 +33,27 @@ public class Database {
     }
 
     public OptionalInt getLevels(Player player) {
+        return getInt("player_levels", "levels", player);
+    }
+
+    public OptionalInt getExperience(Player player) {
+        return getInt("player_levels", "experience", player);
+    }
+
+    private OptionalInt getInt(String table, String column, Player player) {
+        String query = String.format("SELECT %s FROM %s WHERE uuid = ?;", column, table);
+
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + databaseName); PreparedStatement stmt = conn.prepareStatement(
-                "SELECT levels FROM player_levels WHERE uuid = ?;"
+                query
         )) {
             stmt.setString(1, player.getUniqueId().toString());
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()) {
-                return OptionalInt.of(resultSet.getInt("levels"));
+                return OptionalInt.of(resultSet.getInt(column));
             }
             return OptionalInt.empty();
         } catch (SQLException e) {
-            plugin.getLogger().log(Level.SEVERE, "Could not retrieve player levels!", e);
+            plugin.getLogger().log(Level.SEVERE, "Could not retrieve player's " + column + "!", e);
             return OptionalInt.empty();
         }
     }
@@ -92,18 +106,16 @@ public class Database {
             stmt.execute();
         } catch (SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Could not process a database setup statement!", e);
-            return;
         }
     }
 
     private void testDatabaseConnection() {
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + databaseName);) {
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + databaseName)) {
             if (!conn.isValid(1)) {
                 Bukkit.getLogger().severe("Could not connect to database.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return;
         }
     }
 }

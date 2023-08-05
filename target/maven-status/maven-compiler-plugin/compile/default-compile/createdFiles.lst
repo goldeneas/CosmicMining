@@ -1,7 +1,7 @@
 io\github\goldeneas\miningrestrictions\Database.class
+io\github\goldeneas\miningrestrictions\helpers\ConfigHelper.class
 io\github\goldeneas\miningrestrictions\events\PlayerCancelMining.class
 io\github\goldeneas\miningrestrictions\events\PlayerGainExperience.class
 io\github\goldeneas\miningrestrictions\helpers\ItemHelper.class
-io\github\goldeneas\miningrestrictions\utils\ConfigUtil.class
 io\github\goldeneas\miningrestrictions\MiningRestrictions.class
 io\github\goldeneas\miningrestrictions\helpers\BlockHelper.class
