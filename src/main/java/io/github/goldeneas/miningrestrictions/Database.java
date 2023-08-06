@@ -24,15 +24,24 @@ public class Database {
         return add("player_levels", "experience", player, expPoints);
     }
 
+    public boolean removeExperience(Player player, int expPoints) {
+        return addExperience(player, -expPoints);
+    }
+
+
     public boolean addLevels(Player player, int levels) {
         return add("player_levels", "levels", player, levels);
+    }
+
+    public boolean removeLevels(Player player, int levels) {
+        return addLevels(player, -levels);
     }
 
     public boolean setLevel(Player player, int level) {
         return set("player_levels", "levels", player, level);
     }
 
-    public OptionalInt getLevels(Player player) {
+    public OptionalInt getLevel(Player player) {
         return getInt("player_levels", "levels", player);
     }
 

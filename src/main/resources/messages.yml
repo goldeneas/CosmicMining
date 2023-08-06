@@ -1,2 +1,6 @@
-level_up: "You have level-ed up!"
-level_too_low: "You cannot use this pickaxe because your mining level is too low!"
+# PLACEHOLDERS
+# %player_level% -> player's current level
+# %player_experience% -> player's current experience points
+
+level_up: "&2You have level-ed up!"
+level_too_low: "&cYou cannot use this pickaxe because your mining level is too low!"

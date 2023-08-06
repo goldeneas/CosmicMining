@@ -5,20 +5,19 @@ import io.github.goldeneas.miningrestrictions.Database;
 import io.github.goldeneas.miningrestrictions.MiningRestrictions;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.OptionalInt;
 
 public class ExperienceHelper {
     private static Database database;
     private static MiningRestrictions plugin;
 
-    private static HashMap<String, Integer> requiredLevelForItem;
-    private static HashMap<String, Integer> experienceGivenForBlock;
-    private static HashMap<String, Integer> requiredExperienceForLevel;
+    private static LinkedHashMap<String, Integer> requiredLevelForItem;
+    private static LinkedHashMap<String, Integer> experienceGivenForBlock;
+    private static LinkedHashMap<String, Integer> requiredExperienceForLevel;
 
     public ExperienceHelper(MiningRestrictions _plugin, Database _database, ConfigHelper configHelper) {
         plugin = _plugin;
@@ -29,13 +28,32 @@ public class ExperienceHelper {
         requiredExperienceForLevel = configHelper.loadSectionsInt(ConfigPaths.REQUIRED_EXPERIENCE_FOR_LEVEL_PATH);
     }
 
-    public int getNextLevelForPlayer(Player player) {
-        return database.getLevels(player).orElse(0) + 1;
+    public int getCurrentLevelForPlayer(Player player) {
+        return database.getLevel(player).orElse(0);
     }
 
-    public int getRequiredExperienceForLevel(int level) {
-        String l = String.valueOf(level);
-        return requiredExperienceForLevel.get(l);
+    public int getNextLevelForPlayer(Player player) {
+        return getCurrentLevelForPlayer(player) + 1;
+    }
+
+    public int getCurrentExperienceForPlayer(Player player) {
+        int currentLevel = getCurrentLevelForPlayer(player);
+        int expToNextLevel = getExperienceToNextLevel(player);
+        int requiredExp = getRequiredExperienceForLevel(currentLevel);
+
+        return requiredExp - expToNextLevel;
+    }
+
+    public int getRequiredExperienceForLevel(int playerLevel) {
+        for(String key : requiredExperienceForLevel.keySet()) {
+            int currentLevel = Integer.parseInt(key);
+
+            if(playerLevel <= currentLevel)
+                return requiredExperienceForLevel.get(key);
+        }
+
+        // TODO: log that no upper milestone was found (player is at max level)
+        return Integer.MAX_VALUE;
     }
 
     public int getExperienceToNextLevel(Player player) {

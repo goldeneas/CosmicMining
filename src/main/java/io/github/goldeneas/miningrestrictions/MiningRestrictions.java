@@ -16,18 +16,16 @@ public final class MiningRestrictions extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        saveDefaultConfig();
         configs = new HashMap<>();
+        createConfig("config.yml");
+        createConfig("messages.yml");
 
         Database database = new Database(this);
         ConfigHelper configHelper = new ConfigHelper(this);
         ExperienceHelper experienceHelper = new ExperienceHelper(this, database, configHelper);
 
-        createConfig("config.yml");
-        createConfig("messages.yml");
-
-        getServer().getPluginManager().registerEvents(new PlayerCancelMining(database, experienceHelper), this);
-        getServer().getPluginManager().registerEvents(new PlayerGainExperience(database, experienceHelper), this);
+        getServer().getPluginManager().registerEvents(new PlayerCancelMining(this, database, experienceHelper), this);
+        getServer().getPluginManager().registerEvents(new PlayerGainExperience(this, database, experienceHelper), this);
     }
 
     public YamlDocument getConfig(String name) {
@@ -36,8 +34,8 @@ public final class MiningRestrictions extends JavaPlugin {
 
     private void createConfig(String name) {
         try {
-            YamlDocument config = YamlDocument.create(new File(getDataFolder(), name), getResource(name));
-            configs.put(name, config);
+            YamlDocument document = YamlDocument.create(new File(getDataFolder(), name), getResource(name));
+            configs.put(name, document);
         } catch (IOException e) {
             e.printStackTrace();
         }

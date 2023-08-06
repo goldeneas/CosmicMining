@@ -1,6 +1,9 @@
 package io.github.goldeneas.miningrestrictions.events;
 
+import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.goldeneas.miningrestrictions.Database;
+import io.github.goldeneas.miningrestrictions.FeedbackString;
+import io.github.goldeneas.miningrestrictions.MiningRestrictions;
 import io.github.goldeneas.miningrestrictions.helpers.ExperienceHelper;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -13,10 +16,14 @@ import org.bukkit.inventory.ItemStack;
 import java.util.OptionalInt;
 
 public class PlayerCancelMining implements Listener {
+    private static MiningRestrictions plugin;
+
     private final Database database;
     private final ExperienceHelper experienceHelper;
 
-    public PlayerCancelMining(Database database, ExperienceHelper experienceHelper) {
+    public PlayerCancelMining(MiningRestrictions _plugin, Database database, ExperienceHelper experienceHelper) {
+        plugin = _plugin;
+
         this.database = database;
         this.experienceHelper = experienceHelper;
     }
@@ -36,15 +43,19 @@ public class PlayerCancelMining implements Listener {
             return;
 
         int requiredLevel = experienceHelper.getRequiredLevelForItem(item);
-        OptionalInt playerLevel = database.getLevels(player);
+        OptionalInt playerLevel = database.getLevel(player);
 
         if(playerLevel.isEmpty())
             database.setLevel(player, 0);
 
         boolean shouldCancel = requiredLevel > playerLevel.orElse(0);
-        if(shouldCancel)
-            player.sendMessage("Your level is too low!");
+        if(!shouldCancel)
+            return;
 
-        e.setCancelled(shouldCancel);
+        FeedbackString levelTooLow = new FeedbackString(plugin);
+        levelTooLow.append("level_too_low").formatDefault(experienceHelper, player);
+        player.sendMessage(levelTooLow.get());
+
+        e.setCancelled(true);
     }
 }

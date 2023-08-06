@@ -1,11 +1,11 @@
 package io.github.goldeneas.miningrestrictions.helpers;
 
+import dev.dejvokep.boostedyaml.YamlDocument;
+import dev.dejvokep.boostedyaml.block.implementation.Section;
 import io.github.goldeneas.miningrestrictions.MiningRestrictions;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class ConfigHelper {
     private static MiningRestrictions plugin;
@@ -14,22 +14,23 @@ public class ConfigHelper {
         plugin = _plugin;
     }
 
-    protected HashMap<String, Integer> loadSectionsInt(String sectionPath) {
-        FileConfiguration config = plugin.getConfig();
-        HashMap<String, Integer> temp = new HashMap<>();
+    protected LinkedHashMap<String, Integer> loadSectionsInt(String sectionPath) {
+        YamlDocument config = plugin.getConfig("config.yml");
+        LinkedHashMap<String, Integer> temp = new LinkedHashMap<>();
 
-        ConfigurationSection s =
-                config.getConfigurationSection(sectionPath);
+        Section sections =
+                config.getSection(sectionPath);
 
-        if(s == null) {
+        if(sections == null) {
             Bukkit.getLogger().severe("Could not load config sections in " + getClass().getName() + " !");
             return null;
         }
 
-        for(String key : s.getKeys(false)) {
-            int value = config.getInt(sectionPath + key);
+        for(Object s : sections.getKeys()) {
+            String key = s.toString();
 
-            temp.put(key, value);
+            int value = config.getInt(sectionPath + "." + key);
+            temp.put(key.toUpperCase(), value);
         }
 
         return temp;
