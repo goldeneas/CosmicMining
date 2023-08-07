@@ -1,6 +1,7 @@
 package io.github.goldeneas.miningrestrictions.events;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import io.github.goldeneas.miningrestrictions.ConfigPaths;
 import io.github.goldeneas.miningrestrictions.Database;
 import io.github.goldeneas.miningrestrictions.FeedbackString;
 import io.github.goldeneas.miningrestrictions.MiningRestrictions;
@@ -19,10 +20,12 @@ public class PlayerCancelMining implements Listener {
     private static MiningRestrictions plugin;
 
     private final Database database;
+    private final YamlDocument config;
     private final ExperienceHelper experienceHelper;
 
     public PlayerCancelMining(MiningRestrictions _plugin, Database database, ExperienceHelper experienceHelper) {
         plugin = _plugin;
+        config = plugin.getConfig("config.yml");
 
         this.database = database;
         this.experienceHelper = experienceHelper;
@@ -39,7 +42,8 @@ public class PlayerCancelMining implements Listener {
         if(item == null)
             return;
 
-        if((player.getGameMode() == GameMode.CREATIVE))
+        String bypassPermission = config.getString(ConfigPaths.BYPASS_PERMISSION_PATH);
+        if((player.getGameMode() == GameMode.CREATIVE) || player.hasPermission(bypassPermission))
             return;
 
         int requiredLevel = experienceHelper.getRequiredLevelForItem(item);

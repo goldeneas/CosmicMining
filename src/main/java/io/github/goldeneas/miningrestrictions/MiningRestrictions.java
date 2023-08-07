@@ -1,7 +1,7 @@
 package io.github.goldeneas.miningrestrictions;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
-import io.github.goldeneas.miningrestrictions.events.PlayerGainExperience;
+import io.github.goldeneas.miningrestrictions.events.PlayerBreakBlock;
 import io.github.goldeneas.miningrestrictions.events.PlayerCancelMining;
 import io.github.goldeneas.miningrestrictions.helpers.ConfigHelper;
 import io.github.goldeneas.miningrestrictions.helpers.ExperienceHelper;
@@ -22,10 +22,10 @@ public final class MiningRestrictions extends JavaPlugin {
 
         Database database = new Database(this);
         ConfigHelper configHelper = new ConfigHelper(this);
-        ExperienceHelper experienceHelper = new ExperienceHelper(this, database, configHelper);
+        ExperienceHelper experienceHelper = new ExperienceHelper(database, configHelper);
 
         getServer().getPluginManager().registerEvents(new PlayerCancelMining(this, database, experienceHelper), this);
-        getServer().getPluginManager().registerEvents(new PlayerGainExperience(this, database, experienceHelper), this);
+        getServer().getPluginManager().registerEvents(new PlayerBreakBlock(this, database, experienceHelper), this);
     }
 
     public YamlDocument getConfig(String name) {

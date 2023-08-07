@@ -2,7 +2,6 @@ package io.github.goldeneas.miningrestrictions.helpers;
 
 import io.github.goldeneas.miningrestrictions.ConfigPaths;
 import io.github.goldeneas.miningrestrictions.Database;
-import io.github.goldeneas.miningrestrictions.MiningRestrictions;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -13,14 +12,12 @@ import java.util.OptionalInt;
 
 public class ExperienceHelper {
     private static Database database;
-    private static MiningRestrictions plugin;
 
     private static LinkedHashMap<String, Integer> requiredLevelForItem;
     private static LinkedHashMap<String, Integer> experienceGivenForBlock;
     private static LinkedHashMap<String, Integer> requiredExperienceForLevel;
 
-    public ExperienceHelper(MiningRestrictions _plugin, Database _database, ConfigHelper configHelper) {
-        plugin = _plugin;
+    public ExperienceHelper(Database _database, ConfigHelper configHelper) {
         database = _database;
 
         requiredLevelForItem = configHelper.loadSectionsInt(ConfigPaths.REQUIRED_PICKAXE_LEVEL_PATH);
