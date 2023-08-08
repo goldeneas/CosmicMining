@@ -17,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Collection;
 
@@ -40,22 +41,30 @@ public class PlayerBreakBlock implements Listener {
         if(e.isCancelled())
             return;
 
-        Block block = e.getBlock();
-        if(shouldIgnoreBlock(block))
-            return;
-
         Player player = e.getPlayer();
         String bypassPermission = config.getString(ConfigPaths.BYPASS_PERMISSION_PATH);
         if((player.getGameMode() == GameMode.CREATIVE) || player.hasPermission(bypassPermission))
             return;
 
+        if(!canUseHeldItem(player)) {
+            FeedbackString levelTooLow = new FeedbackString(plugin);
+            levelTooLow.append("pickaxe-level-too-low").formatDefault(experienceHelper, player);
+            player.sendMessage(levelTooLow.get());
+
+            e.setCancelled(true);
+            return;
+        }
+
+        Block block = e.getBlock();
+        if(shouldIgnoreBlock(block))
+            return;
+
+        e.setCancelled(true);
         giveExperience(player, block);
         regenerateBlock(block);
 
         if(shouldLevelUp(player))
             levelUp(player);
-
-        e.setCancelled(true);
     }
 
     private void regenerateBlock(Block block) {
@@ -87,7 +96,7 @@ public class PlayerBreakBlock implements Listener {
         database.removeExperience(player, expToLevelUp);
 
         FeedbackString levelUp = new FeedbackString(plugin);
-        levelUp.append("level_up").formatDefault(experienceHelper, player);
+        levelUp.append("level-up").formatDefault(experienceHelper, player);
         player.sendMessage(levelUp.get());
     }
 
@@ -97,6 +106,12 @@ public class PlayerBreakBlock implements Listener {
 
     private boolean shouldLevelUp(Player player) {
         return experienceHelper.getExperienceToNextLevel(player) <= 0;
+    }
+
+    private boolean canUseHeldItem(Player player) {
+        PlayerInventory inventory = player.getInventory();
+        ItemStack heldItem = inventory.getItemInMainHand();
+        return experienceHelper.canUsePickaxe(player, heldItem);
     }
 
 }

@@ -1,24 +1,51 @@
 bypass_permission: "miningrestrictions.bypass"
 
 items:
-  levels_required:
+  required-levels:
     wooden_pickaxe: 0
-    stone_pickaxe: 10
-    golden_pickaxe: 15
-    iron_pickaxe: 25
-    diamond_pickaxe: 35
-    netherite_pickaxe: 50
+    stone_pickaxe: 15
+    golden_pickaxe: 40
+    iron_pickaxe: 50
+    diamond_pickaxe: 70
+    netherite_pickaxe: 90
+
+armors:
+  required-levels:
+    netherite_helmet: 90
+    netherite_chestplate: 90
+    netherite_leggings: 90
+    netherite_boots: 90
+    diamond_helmet: 70
+    diamond_chestplate: 70
+    diamond_leggings: 70
+    diamond_boots: 70
+    iron_helmet: 50
+    iron_chestplate: 50
+    iron_leggings: 50
+    iron_boots: 50
+    golden_helmet: 40
+    golden_chestplate: 40
+    golden_leggings: 40
+    golden_boots: 40
+    chainmail_helmet: 25
+    chainmail_chestplate: 25
+    chainmail_leggings: 25
+    chainmail_boots: 25
+    leather_helmet: 10
+    leather_chestplate: 10
+    leather_leggings: 10
+    leather_boots: 10
 
 blocks:
-  exp_given:
+  given-experience:
     stone: 1
     coal_ore: 2
     gold_ore: 3
     iron_ore: 4
     diamond_ore: 5
 
-required_experience:
-  till_level:
+level-ups:
+  to-level:
     5: 100
     10: 150
     20: 225

@@ -1,8 +1,9 @@
 package io.github.goldeneas.miningrestrictions;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import io.github.goldeneas.miningrestrictions.events.PlayerArmorEquip;
 import io.github.goldeneas.miningrestrictions.events.PlayerBreakBlock;
-import io.github.goldeneas.miningrestrictions.events.PlayerCancelMining;
+import io.github.goldeneas.miningrestrictions.events.PlayerAddToDatabase;
 import io.github.goldeneas.miningrestrictions.helpers.ConfigHelper;
 import io.github.goldeneas.miningrestrictions.helpers.ExperienceHelper;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,7 +25,8 @@ public final class MiningRestrictions extends JavaPlugin {
         ConfigHelper configHelper = new ConfigHelper(this);
         ExperienceHelper experienceHelper = new ExperienceHelper(database, configHelper);
 
-        getServer().getPluginManager().registerEvents(new PlayerCancelMining(this, database, experienceHelper), this);
+        getServer().getPluginManager().registerEvents(new PlayerAddToDatabase(database), this);
+        getServer().getPluginManager().registerEvents(new PlayerArmorEquip(this, experienceHelper), this);
         getServer().getPluginManager().registerEvents(new PlayerBreakBlock(this, database, experienceHelper), this);
     }
 

@@ -13,14 +13,16 @@ import java.util.OptionalInt;
 public class ExperienceHelper {
     private static Database database;
 
-    private static LinkedHashMap<String, Integer> requiredLevelForItem;
+    private static LinkedHashMap<String, Integer> requiredLevelForArmor;
+    private static LinkedHashMap<String, Integer> requiredLevelForPickaxe;
     private static LinkedHashMap<String, Integer> experienceGivenForBlock;
     private static LinkedHashMap<String, Integer> requiredExperienceForLevel;
 
     public ExperienceHelper(Database _database, ConfigHelper configHelper) {
         database = _database;
 
-        requiredLevelForItem = configHelper.loadSectionsInt(ConfigPaths.REQUIRED_PICKAXE_LEVEL_PATH);
+        requiredLevelForArmor = configHelper.loadSectionsInt(ConfigPaths.REQUIRED_ARMOR_LEVEL_PATH);
+        requiredLevelForPickaxe = configHelper.loadSectionsInt(ConfigPaths.REQUIRED_PICKAXE_LEVEL_PATH);
         experienceGivenForBlock = configHelper.loadSectionsInt(ConfigPaths.BLOCKS_GIVEN_EXPERIENCE_PATH);
         requiredExperienceForLevel = configHelper.loadSectionsInt(ConfigPaths.REQUIRED_EXPERIENCE_FOR_LEVEL_PATH);
     }
@@ -61,11 +63,12 @@ public class ExperienceHelper {
         return requiredExp - (currentExp.orElse(0));
     }
 
-    public Integer getRequiredLevelForItem(ItemStack item) {
-        Material m = item.getType();
-        String id = m.toString();
+    public int getRequiredLevelForPickaxe(ItemStack item) {
+        return getRequiredLevel(item, requiredLevelForPickaxe);
+    }
 
-        return requiredLevelForItem.getOrDefault(id, 0);
+    public int getRequiredLevelForArmor(ItemStack item) {
+        return getRequiredLevel(item, requiredLevelForArmor);
     }
 
     public int getExperienceToGiveForBlock(Block block) {
@@ -73,6 +76,29 @@ public class ExperienceHelper {
         String id = m.toString();
 
         return experienceGivenForBlock.getOrDefault(id, 0);
+    }
+
+    public boolean canUsePickaxe(Player player, ItemStack item) {
+        int requiredLevel = getRequiredLevelForPickaxe(item);
+        return canUseItem(player, requiredLevel);
+    }
+
+    public boolean canUseArmor(Player player, ItemStack item) {
+        int requiredLevel = getRequiredLevelForArmor(item);
+        return canUseItem(player, requiredLevel);
+    }
+
+    private boolean canUseItem(Player player, int requiredLevel) {
+        OptionalInt playerLevel = database.getLevel(player);
+
+        return requiredLevel <= playerLevel.orElse(0);
+    }
+
+    private int getRequiredLevel(ItemStack item, LinkedHashMap<String, Integer> map) {
+        Material m = item.getType();
+        String id = m.toString();
+
+        return map.getOrDefault(id, 0);
     }
 
 }
