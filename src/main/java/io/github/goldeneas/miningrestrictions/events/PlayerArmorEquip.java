@@ -6,8 +6,10 @@ import io.github.goldeneas.miningrestrictions.FeedbackString;
 import io.github.goldeneas.miningrestrictions.MiningRestrictions;
 import io.github.goldeneas.miningrestrictions.helpers.ExperienceHelper;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -49,11 +51,7 @@ public class PlayerArmorEquip implements Listener {
         if(experienceHelper.canUseArmor(player, item))
             return;
 
-        FeedbackString levelTooLow = new FeedbackString(plugin);
-        levelTooLow.append("armor-level-too-low").formatDefault(experienceHelper, player);
-        player.sendMessage(levelTooLow.get());
-
-        e.setCancelled(true);
+        denyArmorUsage(player, e);
     }
 
     @EventHandler
@@ -76,11 +74,7 @@ public class PlayerArmorEquip implements Listener {
         if(experienceHelper.canUseArmor(player, cursorItem))
             return;
 
-        FeedbackString levelTooLow = new FeedbackString(plugin);
-        levelTooLow.append("armor-level-too-low").formatDefault(experienceHelper, player);
-        player.sendMessage(levelTooLow.get());
-
-        e.setCancelled(true);
+        denyArmorUsage(player, e);
     }
 
     @EventHandler
@@ -107,10 +101,17 @@ public class PlayerArmorEquip implements Listener {
         if(experienceHelper.canUseArmor(player, item))
             return;
 
-        FeedbackString levelTooLow = new FeedbackString(plugin);
-        levelTooLow.append("armor-level-too-low").formatDefault(experienceHelper, player);
-        player.sendMessage(levelTooLow.get());
+        denyArmorUsage(player, e);
+    }
 
+    private void denyArmorUsage(Player player, Cancellable e) {
+        FeedbackString levelTooLow = new FeedbackString(plugin);
+
+        levelTooLow.append("armor-level-too-low")
+                .formatDefault(experienceHelper, player)
+                .playSound(Sound.BLOCK_DEEPSLATE_BREAK);
+
+        levelTooLow.sendTo(player);
         e.setCancelled(true);
     }
 

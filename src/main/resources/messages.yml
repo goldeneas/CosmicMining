@@ -3,5 +3,6 @@
 # %player_experience% -> player's current experience points
 
 level-up: "&2You have level-ed up!"
+inventory-full: "Your inventory is full!"
 armor-level-too-low: "&cYou cannot equip this armor because your mining level is too low!"
 pickaxe-level-too-low: "&cYou cannot use this pickaxe because your mining level is too low!"

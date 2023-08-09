@@ -1,6 +1,10 @@
 name: MiningRestrictions
 version: '${project.version}'
+aliases: mr
 main: io.github.goldeneas.miningrestrictions.MiningRestrictions
+author: Goldeneas
+library:
+  - org.xerial:sqlite-jdbc:3.42.0.0
 api-version: '1.20'
 permissions:
   miningrestrictions.bypass:

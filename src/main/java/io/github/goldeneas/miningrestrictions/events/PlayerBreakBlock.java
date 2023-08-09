@@ -6,13 +6,11 @@ import io.github.goldeneas.miningrestrictions.Database;
 import io.github.goldeneas.miningrestrictions.FeedbackString;
 import io.github.goldeneas.miningrestrictions.MiningRestrictions;
 import io.github.goldeneas.miningrestrictions.helpers.ExperienceHelper;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -47,11 +45,7 @@ public class PlayerBreakBlock implements Listener {
             return;
 
         if(!canUseHeldItem(player)) {
-            FeedbackString levelTooLow = new FeedbackString(plugin);
-            levelTooLow.append("pickaxe-level-too-low").formatDefault(experienceHelper, player);
-            player.sendMessage(levelTooLow.get());
-
-            e.setCancelled(true);
+            denyPickaxeUsage(player, e);
             return;
         }
 
@@ -61,22 +55,35 @@ public class PlayerBreakBlock implements Listener {
 
         e.setCancelled(true);
         giveExperience(player, block);
+        giveBlockDrops(player, block);
         regenerateBlock(block);
 
         if(shouldLevelUp(player))
             levelUp(player);
     }
 
+    private void giveBlockDrops(Player player, Block block) {
+        PlayerInventory inventory = player.getInventory();
+        if(inventory.firstEmpty() == -1) {
+            FeedbackString inventoryFull = new FeedbackString(plugin);
+
+            inventoryFull.append("inventory-full")
+                    .formatDefault(experienceHelper, player)
+                    .playSound(Sound.BLOCK_DEEPSLATE_BREAK);
+
+            inventoryFull.sendTo(player);
+            return;
+        }
+
+        Collection<ItemStack> oldDrops = block.getDrops();
+        for(ItemStack item : oldDrops)
+            inventory.addItem(item);
+    }
+
     private void regenerateBlock(Block block) {
         BlockState state = block.getState();
-        Collection<ItemStack> oldDrops = block.getDrops();
 
         block.setType(Material.COBBLESTONE);
-        Location l = block.getLocation();
-        Location blockCenter = l.add(0.5, 0.5, 0.5);
-
-        for(ItemStack item : oldDrops)
-            block.getWorld().dropItemNaturally(blockCenter, item);
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             state.update(true, false);
@@ -96,8 +103,23 @@ public class PlayerBreakBlock implements Listener {
         database.removeExperience(player, expToLevelUp);
 
         FeedbackString levelUp = new FeedbackString(plugin);
-        levelUp.append("level-up").formatDefault(experienceHelper, player);
-        player.sendMessage(levelUp.get());
+
+        levelUp.append("level-up")
+                .formatDefault(experienceHelper, player)
+                .playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
+
+        levelUp.sendTo(player);
+    }
+
+    private void denyPickaxeUsage(Player player, Cancellable e) {
+        FeedbackString levelTooLow = new FeedbackString(plugin);
+
+        levelTooLow.append("pickaxe-level-too-low")
+                .formatDefault(experienceHelper, player)
+                .playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+
+        levelTooLow.sendTo(player);
+        e.setCancelled(true);
     }
 
     private boolean shouldIgnoreBlock(Block block) {
