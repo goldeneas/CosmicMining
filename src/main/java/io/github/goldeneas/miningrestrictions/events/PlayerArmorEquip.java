@@ -6,6 +6,7 @@ import io.github.goldeneas.miningrestrictions.FeedbackString;
 import io.github.goldeneas.miningrestrictions.MiningRestrictions;
 import io.github.goldeneas.miningrestrictions.helpers.ExperienceHelper;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -13,9 +14,12 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Set;
@@ -43,8 +47,7 @@ public class PlayerArmorEquip implements Listener {
             return;
 
         Player player = e.getPlayer();
-        String bypassPermission = config.getString(ConfigPaths.BYPASS_PERMISSION_PATH);
-        if((player.getGameMode() == GameMode.CREATIVE) || player.hasPermission(bypassPermission))
+        if(hasBypassPermission(player))
             return;
 
         ItemStack item = e.getItem();
@@ -66,8 +69,12 @@ public class PlayerArmorEquip implements Listener {
             return;
 
         Player player = (Player) entity;
-        String bypassPermission = config.getString(ConfigPaths.BYPASS_PERMISSION_PATH);
-        if((player.getGameMode() == GameMode.CREATIVE) || player.hasPermission(bypassPermission))
+        if(hasBypassPermission(player))
+            return;
+
+        InventoryView inventoryView = player.getOpenInventory();
+        InventoryType inventoryType = inventoryView.getType();
+        if(inventoryType != InventoryType.CRAFTING)
             return;
 
         ItemStack cursorItem = isShiftClicked ? e.getCurrentItem() : e.getCursor();
@@ -87,8 +94,7 @@ public class PlayerArmorEquip implements Listener {
             return;
 
         Player player = (Player) entity;
-        String bypassPermission = config.getString(ConfigPaths.BYPASS_PERMISSION_PATH);
-        if((player.getGameMode() == GameMode.CREATIVE) || player.hasPermission(bypassPermission))
+        if(hasBypassPermission(player))
             return;
 
         for(int slot : slots) {
@@ -104,14 +110,25 @@ public class PlayerArmorEquip implements Listener {
         denyArmorUsage(player, e);
     }
 
+    @EventHandler
+    public void onItemDispense(BlockDispenseEvent e) {
+        if(e.isCancelled())
+            return;
+
+        ItemStack item = e.getItem();
+        if(!isArmor(item))
+            return;
+
+        e.setCancelled(true);
+    }
+
     private void denyArmorUsage(Player player, Cancellable e) {
-        FeedbackString levelTooLow = new FeedbackString(plugin);
-
-        levelTooLow.append("armor-level-too-low")
+        new FeedbackString(plugin)
+                .append("armor-level-too-low")
                 .formatDefault(experienceHelper, player)
-                .playSound(Sound.BLOCK_DEEPSLATE_BREAK);
+                .playSound(Sound.BLOCK_DEEPSLATE_BREAK)
+                .sendTo(player);
 
-        levelTooLow.sendTo(player);
         e.setCancelled(true);
     }
 
@@ -119,4 +136,18 @@ public class PlayerArmorEquip implements Listener {
         return slot == 39 || slot == 38 || slot == 37 || slot == 36;
     }
 
+    private boolean hasBypassPermission(Player player) {
+        String bypassPermission = config.getString(ConfigPaths.BYPASS_PERMISSION_PATH);
+        return (player.getGameMode() == GameMode.CREATIVE) || player.hasPermission(bypassPermission);
+    }
+
+    private boolean isArmor(ItemStack item) {
+        Material m = item.getType();
+        String name = m.toString();
+
+        return name.endsWith("_HELMET")
+                || name.endsWith("_CHESTPLATE")
+                || name.endsWith("_LEGGINGS")
+                || name.endsWith("_BOOTS");
+    }
 }

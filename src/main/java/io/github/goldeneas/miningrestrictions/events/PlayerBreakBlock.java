@@ -64,20 +64,19 @@ public class PlayerBreakBlock implements Listener {
 
     private void giveBlockDrops(Player player, Block block) {
         PlayerInventory inventory = player.getInventory();
-        if(inventory.firstEmpty() == -1) {
-            FeedbackString inventoryFull = new FeedbackString(plugin);
-
-            inventoryFull.append("inventory-full")
-                    .formatDefault(experienceHelper, player)
-                    .playSound(Sound.BLOCK_DEEPSLATE_BREAK);
-
-            inventoryFull.sendTo(player);
-            return;
-        }
-
         Collection<ItemStack> oldDrops = block.getDrops();
-        for(ItemStack item : oldDrops)
-            inventory.addItem(item);
+
+        for(ItemStack item : oldDrops) {
+            var itemsNotStored = inventory.addItem(item);
+            if(itemsNotStored.isEmpty())
+                continue;
+
+            new FeedbackString(plugin)
+                    .append("inventory-full")
+                    .formatDefault(experienceHelper, player)
+                    .playSound(Sound.BLOCK_DEEPSLATE_BREAK)
+                    .sendTo(player);
+        }
     }
 
     private void regenerateBlock(Block block) {
@@ -102,23 +101,20 @@ public class PlayerBreakBlock implements Listener {
         database.addLevels(player, 1);
         database.removeExperience(player, expToLevelUp);
 
-        FeedbackString levelUp = new FeedbackString(plugin);
-
-        levelUp.append("level-up")
+        new FeedbackString(plugin)
+                .append("level-up")
                 .formatDefault(experienceHelper, player)
-                .playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
-
-        levelUp.sendTo(player);
+                .playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST)
+                .sendTo(player);
     }
 
     private void denyPickaxeUsage(Player player, Cancellable e) {
-        FeedbackString levelTooLow = new FeedbackString(plugin);
-
-        levelTooLow.append("pickaxe-level-too-low")
+        new FeedbackString(plugin)
+                .append("pickaxe-level-too-low")
                 .formatDefault(experienceHelper, player)
-                .playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+                .playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
+                .sendTo(player);
 
-        levelTooLow.sendTo(player);
         e.setCancelled(true);
     }
 
