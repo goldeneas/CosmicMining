@@ -1,2 +1,2 @@
-# MiningRestrictions
-Restrict mining for your players!
+# CosmicMining
+Custom block mining mechanics
