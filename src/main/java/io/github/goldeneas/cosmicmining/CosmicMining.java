@@ -1,18 +1,18 @@
-package io.github.goldeneas.miningrestrictions;
+package io.github.goldeneas.cosmicmining;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
-import io.github.goldeneas.miningrestrictions.events.PlayerArmorEquip;
-import io.github.goldeneas.miningrestrictions.events.PlayerBreakBlock;
-import io.github.goldeneas.miningrestrictions.events.PlayerAddToDatabase;
-import io.github.goldeneas.miningrestrictions.helpers.ConfigHelper;
-import io.github.goldeneas.miningrestrictions.helpers.ExperienceHelper;
+import io.github.goldeneas.cosmicmining.events.PlayerArmorEquip;
+import io.github.goldeneas.cosmicmining.events.PlayerBreakBlock;
+import io.github.goldeneas.cosmicmining.events.PlayerAddToDatabase;
+import io.github.goldeneas.cosmicmining.helpers.ConfigHelper;
+import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-public final class MiningRestrictions extends JavaPlugin {
+public final class CosmicMining extends JavaPlugin {
     private HashMap<String, YamlDocument> configs;
 
     @Override

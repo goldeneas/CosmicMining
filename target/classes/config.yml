@@ -1,4 +1,4 @@
-bypass_permission: "miningrestrictions.bypass"
+bypass_permission: "cosmicmining.bypass"
 
 items:
   required-levels:

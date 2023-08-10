@@ -1,4 +1,4 @@
-package io.github.goldeneas.miningrestrictions;
+package io.github.goldeneas.cosmicmining;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -10,9 +10,9 @@ import java.util.logging.Level;
 
 public class Database {
     private static String databaseName;
-    private static MiningRestrictions plugin;
+    private static CosmicMining plugin;
 
-    public Database(MiningRestrictions _plugin) {
+    public Database(CosmicMining _plugin) {
         plugin = _plugin;
         databaseName = plugin.getDataFolder() + "/database.db";
 

@@ -1,6 +1,6 @@
-package io.github.goldeneas.miningrestrictions.events;
+package io.github.goldeneas.cosmicmining.events;
 
-import io.github.goldeneas.miningrestrictions.Database;
+import io.github.goldeneas.cosmicmining.Database;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -1,4 +1,4 @@
-package io.github.goldeneas.miningrestrictions;
+package io.github.goldeneas.cosmicmining;
 
 public class ConfigPaths {
     public static String BYPASS_PERMISSION_PATH = "bypass_permission";

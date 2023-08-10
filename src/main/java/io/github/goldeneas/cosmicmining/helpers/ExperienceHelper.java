@@ -1,7 +1,7 @@
-package io.github.goldeneas.miningrestrictions.helpers;
+package io.github.goldeneas.cosmicmining.helpers;
 
-import io.github.goldeneas.miningrestrictions.ConfigPaths;
-import io.github.goldeneas.miningrestrictions.Database;
+import io.github.goldeneas.cosmicmining.ConfigPaths;
+import io.github.goldeneas.cosmicmining.Database;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

@@ -1,7 +1,7 @@
-package io.github.goldeneas.miningrestrictions;
+package io.github.goldeneas.cosmicmining;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
-import io.github.goldeneas.miningrestrictions.helpers.ExperienceHelper;
+import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
@@ -19,7 +19,7 @@ public class FeedbackString {
 
     private Sound soundToPlay;
 
-    public FeedbackString(MiningRestrictions plugin) {
+    public FeedbackString(CosmicMining plugin) {
         cachedStrings = new HashMap<>();
         this.stringBuilder = new StringBuilder();
         this.messages = plugin.getConfig("messages.yml");

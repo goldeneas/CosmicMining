@@ -1,10 +1,10 @@
-package io.github.goldeneas.miningrestrictions.events;
+package io.github.goldeneas.cosmicmining.events;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
-import io.github.goldeneas.miningrestrictions.ConfigPaths;
-import io.github.goldeneas.miningrestrictions.FeedbackString;
-import io.github.goldeneas.miningrestrictions.MiningRestrictions;
-import io.github.goldeneas.miningrestrictions.helpers.ExperienceHelper;
+import io.github.goldeneas.cosmicmining.ConfigPaths;
+import io.github.goldeneas.cosmicmining.FeedbackString;
+import io.github.goldeneas.cosmicmining.CosmicMining;
+import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -25,12 +25,12 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Set;
 
 public class PlayerArmorEquip implements Listener {
-    private static MiningRestrictions plugin;
+    private static CosmicMining plugin;
 
     private final YamlDocument config;
     private final ExperienceHelper experienceHelper;
 
-    public PlayerArmorEquip(MiningRestrictions _plugin, ExperienceHelper experienceHelper) {
+    public PlayerArmorEquip(CosmicMining _plugin, ExperienceHelper experienceHelper) {
         plugin = _plugin;
         config = plugin.getConfig("config.yml");
 

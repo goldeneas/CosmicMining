@@ -1,16 +1,16 @@
-package io.github.goldeneas.miningrestrictions.helpers;
+package io.github.goldeneas.cosmicmining.helpers;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.block.implementation.Section;
-import io.github.goldeneas.miningrestrictions.MiningRestrictions;
+import io.github.goldeneas.cosmicmining.CosmicMining;
 import org.bukkit.Bukkit;
 
 import java.util.LinkedHashMap;
 
 public class ConfigHelper {
-    private static MiningRestrictions plugin;
+    private static CosmicMining plugin;
 
-    public ConfigHelper(MiningRestrictions _plugin) {
+    public ConfigHelper(CosmicMining _plugin) {
         plugin = _plugin;
     }
 

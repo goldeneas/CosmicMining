@@ -1,11 +1,11 @@
-package io.github.goldeneas.miningrestrictions.events;
+package io.github.goldeneas.cosmicmining.events;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
-import io.github.goldeneas.miningrestrictions.ConfigPaths;
-import io.github.goldeneas.miningrestrictions.Database;
-import io.github.goldeneas.miningrestrictions.FeedbackString;
-import io.github.goldeneas.miningrestrictions.MiningRestrictions;
-import io.github.goldeneas.miningrestrictions.helpers.ExperienceHelper;
+import io.github.goldeneas.cosmicmining.ConfigPaths;
+import io.github.goldeneas.cosmicmining.Database;
+import io.github.goldeneas.cosmicmining.FeedbackString;
+import io.github.goldeneas.cosmicmining.CosmicMining;
+import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -20,13 +20,13 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.Collection;
 
 public class PlayerBreakBlock implements Listener {
-    private static MiningRestrictions plugin;
+    private static CosmicMining plugin;
 
     private final Database database;
     private final YamlDocument config;
     private final ExperienceHelper experienceHelper;
 
-    public PlayerBreakBlock(MiningRestrictions _plugin, Database database, ExperienceHelper experienceHelper) {
+    public PlayerBreakBlock(CosmicMining _plugin, Database database, ExperienceHelper experienceHelper) {
         plugin = _plugin;
         config = plugin.getConfig("config.yml");
 
