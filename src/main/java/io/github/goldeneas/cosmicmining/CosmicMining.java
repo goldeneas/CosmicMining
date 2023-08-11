@@ -1,11 +1,15 @@
 package io.github.goldeneas.cosmicmining;
 
+import com.jeff_media.updatechecker.UpdateCheckSource;
+import com.jeff_media.updatechecker.UpdateChecker;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.goldeneas.cosmicmining.events.PlayerArmorEquip;
 import io.github.goldeneas.cosmicmining.events.PlayerBreakBlock;
 import io.github.goldeneas.cosmicmining.events.PlayerAddToDatabase;
 import io.github.goldeneas.cosmicmining.helpers.ConfigHelper;
 import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
+import org.bstats.bukkit.Metrics;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -28,6 +32,9 @@ public final class CosmicMining extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerAddToDatabase(database), this);
         getServer().getPluginManager().registerEvents(new PlayerArmorEquip(this, experienceHelper), this);
         getServer().getPluginManager().registerEvents(new PlayerBreakBlock(this, database, experienceHelper), this);
+
+        checkForUpdates();
+        enablePluginMetrics();
     }
 
     public YamlDocument getConfig(String name) {
@@ -41,5 +48,23 @@ public final class CosmicMining extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void checkForUpdates() {
+        YamlDocument config = getConfig("config.yml");
+
+        final int SPIGOT_RESOURCE_ID = 111794;
+        final String UPDATE_PERMISSION = config.getString("update-permission");
+
+        new UpdateChecker(this, UpdateCheckSource.SPIGET, String.valueOf(SPIGOT_RESOURCE_ID))
+                .setDownloadLink(SPIGOT_RESOURCE_ID)
+                .setNotifyOpsOnJoin(true)
+                .setNotifyByPermissionOnJoin(UPDATE_PERMISSION)
+                .checkNow();
+    }
+
+    private void enablePluginMetrics() {
+        final int pluginId = 19461;
+        new Metrics(this, pluginId);
     }
 }

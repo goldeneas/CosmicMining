@@ -7,6 +7,9 @@ library:
   - org.xerial:sqlite-jdbc:3.42.0.0
 api-version: '1.20'
 permissions:
-  cosmicmining:
+  cosmicmining.bypass:
     default: op
     description: bypass plugin
+  cosmicmining.update:
+    default: op
+    description: get a notification about plugin's updates

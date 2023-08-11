@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="MiningRestrictions" />
+        <module name="CosmicMining" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="MiningRestrictions" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
