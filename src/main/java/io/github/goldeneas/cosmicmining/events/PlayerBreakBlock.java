@@ -1,7 +1,7 @@
 package io.github.goldeneas.cosmicmining.events;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
-import io.github.goldeneas.cosmicmining.ConfigPaths;
+import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import io.github.goldeneas.cosmicmining.Database;
 import io.github.goldeneas.cosmicmining.FeedbackString;
 import io.github.goldeneas.cosmicmining.CosmicMining;

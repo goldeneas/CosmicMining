@@ -1,7 +1,9 @@
 package io.github.goldeneas.cosmicmining;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import io.github.goldeneas.cosmicmining.utils.DependencyChecker;
 import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
@@ -70,6 +72,10 @@ public class FeedbackString {
 
     public void sendTo(Player player, ChatMessageType type) {
         String message = stringBuilder.toString();
+
+        if(DependencyChecker.IS_PLACEHOLDERAPI_AVAILABLE)
+            message = PlaceholderAPI.setPlaceholders(player, message);
+
         TextComponent component = new TextComponent(message);
         player.spigot().sendMessage(type, component);
 

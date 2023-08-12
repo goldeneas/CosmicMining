@@ -7,9 +7,9 @@ import io.github.goldeneas.cosmicmining.events.PlayerArmorEquip;
 import io.github.goldeneas.cosmicmining.events.PlayerBreakBlock;
 import io.github.goldeneas.cosmicmining.events.PlayerAddToDatabase;
 import io.github.goldeneas.cosmicmining.helpers.ConfigHelper;
+import io.github.goldeneas.cosmicmining.utils.DependencyChecker;
 import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -25,6 +25,7 @@ public final class CosmicMining extends JavaPlugin {
         createConfig("config.yml");
         createConfig("messages.yml");
 
+        new DependencyChecker();
         Database database = new Database(this);
         ConfigHelper configHelper = new ConfigHelper(this);
         ExperienceHelper experienceHelper = new ExperienceHelper(database, configHelper);

@@ -6,4 +6,5 @@ io\github\goldeneas\cosmicmining\helpers\ConfigHelper.class
 io\github\goldeneas\cosmicmining\FeedbackString.class
 io\github\goldeneas\cosmicmining\Database.class
 io\github\goldeneas\cosmicmining\events\PlayerArmorEquip.class
+io\github\goldeneas\cosmicmining\DependencyChecker.class
 io\github\goldeneas\cosmicmining\events\PlayerBreakBlock.class
