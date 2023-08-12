@@ -73,7 +73,7 @@ public class PlayerBreakBlock implements Listener {
                 continue;
 
             new FeedbackString(plugin)
-                    .append("inventory-full")
+                    .loadString("inventory-full")
                     .formatDefault(experienceHelper, player)
                     .playSound(Sound.ENTITY_PAINTING_BREAK)
                     .sendTo(player, ChatMessageType.ACTION_BAR);
@@ -103,7 +103,7 @@ public class PlayerBreakBlock implements Listener {
         database.removeExperience(player, expToLevelUp);
 
         new FeedbackString(plugin)
-                .append("level-up")
+                .loadString("level-up")
                 .formatDefault(experienceHelper, player)
                 .playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
                 .sendTo(player);
@@ -111,7 +111,7 @@ public class PlayerBreakBlock implements Listener {
 
     private void denyPickaxeUsage(Player player, Cancellable e) {
         new FeedbackString(plugin)
-                .append("pickaxe-level-too-low")
+                .loadString("pickaxe-level-too-low")
                 .formatDefault(experienceHelper, player)
                 .playSound(Sound.ENTITY_VILLAGER_NO)
                 .sendTo(player, ChatMessageType.ACTION_BAR);

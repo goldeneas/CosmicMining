@@ -36,11 +36,7 @@ public class ExperienceHelper {
     }
 
     public int getCurrentExperienceForPlayer(Player player) {
-        int currentLevel = getCurrentLevelForPlayer(player);
-        int expToNextLevel = getExperienceToNextLevel(player);
-        int requiredExp = getRequiredExperienceForLevel(currentLevel);
-
-        return requiredExp - expToNextLevel;
+        return database.getExperience(player).orElse(0);
     }
 
     public int getRequiredExperienceForLevel(int playerLevel) {

@@ -25,7 +25,6 @@ public final class CosmicMining extends JavaPlugin {
         createConfig("config.yml");
         createConfig("messages.yml");
 
-        new DependencyChecker();
         Database database = new Database(this);
         ConfigHelper configHelper = new ConfigHelper(this);
         ExperienceHelper experienceHelper = new ExperienceHelper(database, configHelper);
@@ -33,6 +32,10 @@ public final class CosmicMining extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerAddToDatabase(database), this);
         getServer().getPluginManager().registerEvents(new PlayerArmorEquip(this, experienceHelper), this);
         getServer().getPluginManager().registerEvents(new PlayerBreakBlock(this, database, experienceHelper), this);
+
+        checkForDependencies();
+        if(DependencyChecker.IS_PLACEHOLDERAPI_AVAILABLE)
+            new PapiExpansion(this, experienceHelper).register();
 
         checkForUpdates();
         enablePluginMetrics();
@@ -67,5 +70,9 @@ public final class CosmicMining extends JavaPlugin {
     private void enablePluginMetrics() {
         final int pluginId = 19461;
         new Metrics(this, pluginId);
+    }
+
+    private void checkForDependencies() {
+        new DependencyChecker();
     }
 }

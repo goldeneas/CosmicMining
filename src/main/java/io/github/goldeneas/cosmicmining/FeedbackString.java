@@ -32,7 +32,7 @@ public class FeedbackString {
         return this;
     }
 
-    public FeedbackString append(String path) {
+    public FeedbackString loadString(String path) {
         if(!cachedStrings.containsKey(path))
             cachedStrings.put(path, messages.getString(path));
 
@@ -40,6 +40,15 @@ public class FeedbackString {
         String translated = ChatColor.translateAlternateColorCodes('&', message);
         stringBuilder.append(translated);
         return this;
+    }
+
+    public FeedbackString append(String s) {
+        stringBuilder.append(s);
+        return this;
+    }
+
+    public String get() {
+        return stringBuilder.toString();
     }
 
     public FeedbackString formatDefault(ExperienceHelper experienceHelper, Player player) {

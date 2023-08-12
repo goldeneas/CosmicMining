@@ -125,7 +125,7 @@ public class PlayerArmorEquip implements Listener {
 
     private void denyArmorUsage(Player player, Cancellable e) {
         new FeedbackString(plugin)
-                .append("armor-level-too-low")
+                .loadString("armor-level-too-low")
                 .formatDefault(experienceHelper, player)
                 .playSound(Sound.ENTITY_VILLAGER_NO)
                 .sendTo(player, ChatMessageType.ACTION_BAR);
