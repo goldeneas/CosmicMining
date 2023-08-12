@@ -1,8 +1,13 @@
 # PLACEHOLDERS
-# %player_level% -> player's current level
-# %player_experience% -> player's current experience points
+# In this config file you can use both the normal and PlaceholderAPI variants of Cosmic Mining's placeholders.
+# However, if any of them are required ELSEWHERE, you MUST use PlaceholderAPI's variant.
+# This can be accomplished by adding "cosmic_" before the required placeholder.
+#
+# For example:
+# if you'd want to include a player's current mining level on a scoreboard
+# you would have to use "%cosmic_player_level%" instead of "%player_level%".
 
-level-up: "&2You have level-ed up!"
+level-up: "&2You have level-ed up! Your new level is %player_level%"
 inventory-full: "Your inventory is full!"
 armor-level-too-low: "&cYou cannot equip this armor because your mining level is too low!"
 pickaxe-level-too-low: "&cYou cannot use this pickaxe because your mining level is too low!"
