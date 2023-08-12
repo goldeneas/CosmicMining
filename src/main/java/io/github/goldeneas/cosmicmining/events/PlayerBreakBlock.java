@@ -6,6 +6,7 @@ import io.github.goldeneas.cosmicmining.Database;
 import io.github.goldeneas.cosmicmining.FeedbackString;
 import io.github.goldeneas.cosmicmining.CosmicMining;
 import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
+import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -74,8 +75,8 @@ public class PlayerBreakBlock implements Listener {
             new FeedbackString(plugin)
                     .append("inventory-full")
                     .formatDefault(experienceHelper, player)
-                    .playSound(Sound.BLOCK_DEEPSLATE_BREAK)
-                    .sendTo(player);
+                    .playSound(Sound.ENTITY_PAINTING_BREAK)
+                    .sendTo(player, ChatMessageType.ACTION_BAR);
         }
     }
 
@@ -104,7 +105,7 @@ public class PlayerBreakBlock implements Listener {
         new FeedbackString(plugin)
                 .append("level-up")
                 .formatDefault(experienceHelper, player)
-                .playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST)
+                .playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
                 .sendTo(player);
     }
 
@@ -112,8 +113,8 @@ public class PlayerBreakBlock implements Listener {
         new FeedbackString(plugin)
                 .append("pickaxe-level-too-low")
                 .formatDefault(experienceHelper, player)
-                .playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
-                .sendTo(player);
+                .playSound(Sound.ENTITY_VILLAGER_NO)
+                .sendTo(player, ChatMessageType.ACTION_BAR);
 
         e.setCancelled(true);
     }

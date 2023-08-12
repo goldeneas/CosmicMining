@@ -1,5 +1,5 @@
 name: CosmicMining
-version: '1.3.2'
+version: '1.3.3'
 aliases: mr
 main: io.github.goldeneas.cosmicmining.CosmicMining
 author: Goldeneas
@@ -7,6 +7,9 @@ library:
   - org.xerial:sqlite-jdbc:3.42.0.0
 api-version: '1.20'
 permissions:
-  cosmicmining:
+  cosmicmining.bypass:
     default: op
     description: bypass plugin
+  cosmicmining.update:
+    default: op
+    description: get a notification about plugin's updates

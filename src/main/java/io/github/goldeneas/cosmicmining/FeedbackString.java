@@ -65,9 +65,13 @@ public class FeedbackString {
     }
 
     public void sendTo(Player player) {
+        sendTo(player, ChatMessageType.CHAT);
+    }
+
+    public void sendTo(Player player, ChatMessageType type) {
         String message = stringBuilder.toString();
         TextComponent component = new TextComponent(message);
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, component);
+        player.spigot().sendMessage(type, component);
 
         Location l = player.getLocation();
         player.playSound(l, soundToPlay, 1.0f, 1.0f);

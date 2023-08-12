@@ -5,6 +5,7 @@ import io.github.goldeneas.cosmicmining.ConfigPaths;
 import io.github.goldeneas.cosmicmining.FeedbackString;
 import io.github.goldeneas.cosmicmining.CosmicMining;
 import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
+import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -126,8 +127,8 @@ public class PlayerArmorEquip implements Listener {
         new FeedbackString(plugin)
                 .append("armor-level-too-low")
                 .formatDefault(experienceHelper, player)
-                .playSound(Sound.BLOCK_DEEPSLATE_BREAK)
-                .sendTo(player);
+                .playSound(Sound.ENTITY_VILLAGER_NO)
+                .sendTo(player, ChatMessageType.ACTION_BAR);
 
         e.setCancelled(true);
     }
