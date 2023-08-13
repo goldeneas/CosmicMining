@@ -38,12 +38,46 @@ armors:
     leather_boots: 10
 
 blocks:
-  given-experience:
-    stone: 1
-    coal_ore: 2
-    gold_ore: 3
-    iron_ore: 4
-    diamond_ore: 5
+  stone:
+    respawn-time: 20
+    required-item: STONE_PICKAXE
+    experience-dropped: 1
+  coal_ore:
+    respawn-time: 20
+    required-item: STONE_PICKAXE
+    experience-dropped: 2
+  gold_ore:
+    respawn-time: 20
+    required-item: STONE_PICKAXE
+    experience-dropped: 3
+  iron_ore:
+    respawn-time: 20
+    required-item: STONE_PICKAXE
+    experience-dropped: 4
+  diamond_ore:
+    respawn-time: 20
+    required-item: STONE_PICKAXE
+    experience-dropped: 5
+
+#blocks:
+#  respawn-time:
+#    stone: 1
+#    coal_ore: 2
+#    gold_ore: 3
+#    iron_ore: 4
+#    diamond_ore: 5
+#  required-item:
+#    stone: 1
+#    coal_ore: 2
+#    gold_ore: 3
+#    iron_ore: 4
+#    diamond_ore: 5
+#  given-experience:
+#    stone: 1
+#    coal_ore: 2
+#    gold_ore: 3
+#    iron_ore: 4
+#    diamond_ore: 5
 
 level-ups:
   to-level:

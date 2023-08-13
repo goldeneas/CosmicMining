@@ -7,6 +7,7 @@ import io.github.goldeneas.cosmicmining.events.PlayerArmorEquip;
 import io.github.goldeneas.cosmicmining.events.PlayerBreakBlock;
 import io.github.goldeneas.cosmicmining.events.PlayerAddToDatabase;
 import io.github.goldeneas.cosmicmining.helpers.ConfigHelper;
+import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import io.github.goldeneas.cosmicmining.utils.DependencyChecker;
 import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
 import org.bstats.bukkit.Metrics;
@@ -58,7 +59,7 @@ public final class CosmicMining extends JavaPlugin {
         YamlDocument config = getConfig("config.yml");
 
         final int SPIGOT_RESOURCE_ID = 111794;
-        final String UPDATE_PERMISSION = config.getString("update-permission");
+        final String UPDATE_PERMISSION = config.getString(ConfigPaths.UPDATE_PERMISSION_PATH);
 
         new UpdateChecker(this, UpdateCheckSource.SPIGET, String.valueOf(SPIGOT_RESOURCE_ID))
                 .setDownloadLink(SPIGOT_RESOURCE_ID)

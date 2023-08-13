@@ -21,10 +21,16 @@ public class ExperienceHelper {
     public ExperienceHelper(Database _database, ConfigHelper configHelper) {
         database = _database;
 
-        requiredLevelForArmor = configHelper.loadSectionsInt(ConfigPaths.REQUIRED_ARMOR_LEVEL_PATH);
-        requiredLevelForPickaxe = configHelper.loadSectionsInt(ConfigPaths.REQUIRED_PICKAXE_LEVEL_PATH);
-        experienceGivenForBlock = configHelper.loadSectionsInt(ConfigPaths.BLOCKS_GIVEN_EXPERIENCE_PATH);
-        requiredExperienceForLevel = configHelper.loadSectionsInt(ConfigPaths.REQUIRED_EXPERIENCE_FOR_LEVEL_PATH);
+        requiredLevelForArmor = configHelper
+                .getSectionWithIntegers(ConfigPaths.REQUIRED_ARMOR_LEVEL_PATH, "config.yml");
+
+        requiredLevelForPickaxe = configHelper
+                .getSectionWithIntegers(ConfigPaths.REQUIRED_PICKAXE_LEVEL_PATH, "config.yml");
+
+        requiredExperienceForLevel = configHelper
+                .getSectionWithIntegers(ConfigPaths.REQUIRED_EXPERIENCE_FOR_LEVEL_PATH, "config.yml");
+
+        experienceGivenForBlock = configHelper.getExperienceGivenForBlocks();
     }
 
     public int getCurrentLevelForPlayer(Player player) {
