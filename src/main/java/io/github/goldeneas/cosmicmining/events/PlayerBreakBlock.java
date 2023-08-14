@@ -93,6 +93,7 @@ public class PlayerBreakBlock implements Listener {
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             state.update(true, false);
         }, secondsToRegenerate);
+
     }
 
     private void giveExperience(Player player, Block block) {
