@@ -9,9 +9,22 @@ public class BlockHelper {
     private LinkedHashMap<String, Integer> secondsToRegenerateBlocks;
 
     public BlockHelper(ConfigHelper configHelper) {
-        requiredItemForBlocks = configHelper.getRequiredItemForBlocks();
-        experienceGivenForBlocks = configHelper.getExperienceGivenForBlocks();
-        secondsToRegenerateBlocks = configHelper.getSecondsToRegenerateBlocks();
+        requiredItemForBlocks = getRequiredItemForBlocks();
+        experienceGivenForBlocks = getExperienceGivenForBlocks();
+        secondsToRegenerateBlocks = getSecondsToRegenerateBlocks();
+    }
+
+
+    private LinkedHashMap<String, String> getRequiredItemForBlocks() {
+
+    }
+
+    private LinkedHashMap<String, Integer> getSecondsToRegenerateBlocks() {
+
+    }
+
+    private LinkedHashMap<String, Integer> getExperienceGivenForBlocks() {
+
     }
 
 }

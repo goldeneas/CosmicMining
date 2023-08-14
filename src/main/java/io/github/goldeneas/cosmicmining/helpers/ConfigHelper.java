@@ -37,18 +37,6 @@ public class ConfigHelper {
         return temp;
     }
 
-    public LinkedHashMap<String, String> getRequiredItemForBlocks() {
-
-    }
-
-    public LinkedHashMap<String, Integer> getSecondsToRegenerateBlocks() {
-
-    }
-
-    public LinkedHashMap<String, Integer> getExperienceGivenForBlocks() {
-
-    }
-
     private ArrayList<String> getBlocks(String path, String configName) {
         YamlDocument config = plugin.getConfig(configName);
         ArrayList<String> blocks = new ArrayList<>();
@@ -69,12 +57,10 @@ public class ConfigHelper {
         if(section == null)
             throw new RuntimeException("Could not load attributes sections in " + this.getClass().getName() + "!");
 
-        String attributeName;
-        String attributeValue;
         LinkedHashMap<String, String> attributes = new LinkedHashMap<>();
         for (Object o : section.getKeys()) {
-            attributeName = o.toString();
-            attributeValue = config.getString(path + "." + material + "." + attributeName);
+            String attributeName = o.toString();
+            String attributeValue = getAttributeForBlock(path, configName, material, attributeName);
 
             attributes.put(attributeName, attributeValue);
         }
@@ -83,7 +69,7 @@ public class ConfigHelper {
     }
 
     private String getAttributeForBlock(String path, String configName, String material, String attributeName) {
-        LinkedHashMap<String, String> attributes = getAttributesForBlock(path, configName, material);
-        return attributes.get(attributeName);
+        YamlDocument config = plugin.getConfig(configName);
+        return config.getString(path + "." + material + "." + attributeName);
     }
 }
