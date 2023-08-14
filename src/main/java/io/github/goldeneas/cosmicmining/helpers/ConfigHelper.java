@@ -3,6 +3,7 @@ package io.github.goldeneas.cosmicmining.helpers;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.block.implementation.Section;
 import io.github.goldeneas.cosmicmining.CosmicMining;
+import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -11,8 +12,11 @@ import java.util.LinkedHashMap;
 public class ConfigHelper {
     private static CosmicMining plugin;
 
+    private final YamlDocument blocksConfig;
+
     public ConfigHelper(CosmicMining _plugin) {
         plugin = _plugin;
+        this.blocksConfig = plugin.getConfig("config.yml");
     }
 
     public LinkedHashMap<String, Integer> getSectionWithIntegers(String sectionPath, String configName) {
@@ -37,23 +41,10 @@ public class ConfigHelper {
         return temp;
     }
 
-    public LinkedHashMap<String, String> getRequiredItemForBlocks() {
-
-    }
-
-    public LinkedHashMap<String, Integer> getSecondsToRegenerateBlocks() {
-
-    }
-
-    public LinkedHashMap<String, Integer> getExperienceGivenForBlocks() {
-
-    }
-
-    private ArrayList<String> getBlocks(String path, String configName) {
-        YamlDocument config = plugin.getConfig(configName);
+    public ArrayList<String> getBlocks() {
         ArrayList<String> blocks = new ArrayList<>();
 
-        Section sections = config.getSection(path);
+        Section sections = blocksConfig.getSection(ConfigPaths.BLOCKS_PATH);
         for(Object key : sections.getKeys()) {
             String blockMaterial = key.toString();
             blocks.add(blockMaterial);
@@ -62,10 +53,8 @@ public class ConfigHelper {
         return blocks;
     }
 
-    private LinkedHashMap<String, String> getAttributesForBlock(String path, String configName, String material) {
-        YamlDocument config = plugin.getConfig(configName);
-
-        Section section = config.getSection(path + "." + material);
+    public LinkedHashMap<String, String> getAttributesForBlock(String block) {
+        Section section = blocksConfig.getSection(ConfigPaths.BLOCKS_PATH + "." + block);
         if(section == null)
             throw new RuntimeException("Could not load attributes sections in " + this.getClass().getName() + "!");
 
@@ -74,7 +63,7 @@ public class ConfigHelper {
         LinkedHashMap<String, String> attributes = new LinkedHashMap<>();
         for (Object o : section.getKeys()) {
             attributeName = o.toString();
-            attributeValue = config.getString(path + "." + material + "." + attributeName);
+            attributeValue = blocksConfig.getString(ConfigPaths.BLOCKS_PATH + "." + block + "." + attributeName);
 
             attributes.put(attributeName, attributeValue);
         }
@@ -82,8 +71,8 @@ public class ConfigHelper {
         return attributes;
     }
 
-    private String getAttributeForBlock(String path, String configName, String material, String attributeName) {
-        LinkedHashMap<String, String> attributes = getAttributesForBlock(path, configName, material);
+    public String getAttributeForBlock(String block, String attributeName) {
+        LinkedHashMap<String, String> attributes = getAttributesForBlock(block);
         return attributes.get(attributeName);
     }
 }

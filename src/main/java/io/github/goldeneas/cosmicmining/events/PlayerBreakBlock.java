@@ -1,6 +1,7 @@
 package io.github.goldeneas.cosmicmining.events;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import io.github.goldeneas.cosmicmining.helpers.BlockHelper;
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import io.github.goldeneas.cosmicmining.Database;
 import io.github.goldeneas.cosmicmining.FeedbackString;
@@ -25,13 +26,15 @@ public class PlayerBreakBlock implements Listener {
 
     private final Database database;
     private final YamlDocument config;
+    private final BlockHelper blockHelper;
     private final ExperienceHelper experienceHelper;
 
-    public PlayerBreakBlock(CosmicMining _plugin, Database database, ExperienceHelper experienceHelper) {
+    public PlayerBreakBlock(CosmicMining _plugin, Database database, BlockHelper blockHelper, ExperienceHelper experienceHelper) {
         plugin = _plugin;
         config = plugin.getConfig("config.yml");
 
         this.database = database;
+        this.blockHelper = blockHelper;
         this.experienceHelper = experienceHelper;
     }
 
@@ -82,16 +85,19 @@ public class PlayerBreakBlock implements Listener {
 
     private void regenerateBlock(Block block) {
         BlockState state = block.getState();
+        Material blockType = block.getType();
 
         block.setType(Material.COBBLESTONE);
 
+        long secondsToRegenerate = blockHelper.getSecondsToRegenerateBlock(blockType);
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             state.update(true, false);
-        }, 20L);
+        }, secondsToRegenerate);
     }
 
     private void giveExperience(Player player, Block block) {
-        int expToGive = experienceHelper.getExperienceToGiveForBlock(block);
+        Material blockType = block.getType();
+        int expToGive = blockHelper.getExperienceToGiveForBlock(blockType);
         database.addExperience(player, expToGive);
     };
 
@@ -120,7 +126,8 @@ public class PlayerBreakBlock implements Listener {
     }
 
     private boolean shouldIgnoreBlock(Block block) {
-        return experienceHelper.getExperienceToGiveForBlock(block) == 0;
+        Material blockType = block.getType();
+        return blockHelper.getExperienceToGiveForBlock(blockType) == 0;
     }
 
     private boolean shouldLevelUp(Player player) {

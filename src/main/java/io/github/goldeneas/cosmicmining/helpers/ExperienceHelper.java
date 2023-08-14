@@ -15,7 +15,6 @@ public class ExperienceHelper {
 
     private static LinkedHashMap<String, Integer> requiredLevelForArmor;
     private static LinkedHashMap<String, Integer> requiredLevelForPickaxe;
-    private static LinkedHashMap<String, Integer> experienceGivenForBlock;
     private static LinkedHashMap<String, Integer> requiredExperienceForLevel;
 
     public ExperienceHelper(Database _database, ConfigHelper configHelper) {
@@ -29,8 +28,6 @@ public class ExperienceHelper {
 
         requiredExperienceForLevel = configHelper
                 .getSectionWithIntegers(ConfigPaths.REQUIRED_EXPERIENCE_FOR_LEVEL_PATH, "config.yml");
-
-        experienceGivenForBlock = configHelper.getExperienceGivenForBlocks();
     }
 
     public int getCurrentLevelForPlayer(Player player) {
@@ -71,13 +68,6 @@ public class ExperienceHelper {
 
     public int getRequiredLevelForArmor(ItemStack item) {
         return getRequiredLevel(item, requiredLevelForArmor);
-    }
-
-    public int getExperienceToGiveForBlock(Block block) {
-        Material m = block.getType();
-        String id = m.toString();
-
-        return experienceGivenForBlock.getOrDefault(id, 0);
     }
 
     public boolean canUsePickaxe(Player player, ItemStack item) {
