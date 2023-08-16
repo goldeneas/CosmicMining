@@ -54,9 +54,11 @@ public class FeedbackString {
     public FeedbackString formatDefault(ExperienceHelper experienceHelper, Player player) {
         int currentLevel = experienceHelper.getCurrentLevelForPlayer(player);
         int currentExperience = experienceHelper.getCurrentExperienceForPlayer(player);
+        int requiredExperience = experienceHelper.getRequiredExperienceForLevel(currentLevel);
 
         replace("%player_level%", currentLevel);
         replace("%player_experience%", currentExperience);
+        replace("%player_required_experience%", requiredExperience);
         return this;
     }
 
