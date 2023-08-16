@@ -1,6 +1,8 @@
 package io.github.goldeneas.cosmicmining.helpers;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.LinkedHashMap;
 
@@ -8,15 +10,25 @@ public class BlockHelper {
     private final ConfigHelper configHelper;
 
     private final LinkedHashMap<String, String> requiredItemForBlocks;
-    private final LinkedHashMap<String, Integer> experienceGivenForBlocks;
-    private final LinkedHashMap<String, Integer> secondsToRegenerateBlocks;
+    private final LinkedHashMap<String, String> experienceGivenForBlocks;
+    private final LinkedHashMap<String, String> secondsToRegenerateBlocks;
 
     public BlockHelper(ConfigHelper configHelper) {
         this.configHelper = configHelper;
 
-        requiredItemForBlocks = getRequiredItemForBlocks();
-        experienceGivenForBlocks = getExperienceGivenForBlocks();
-        secondsToRegenerateBlocks = getSecondsToRegenerateBlocks();
+        requiredItemForBlocks = loadAttribute("required-item");
+        secondsToRegenerateBlocks = loadAttribute("respawn-time");
+        experienceGivenForBlocks = loadAttribute("experience-dropped");
+    }
+
+    public boolean canItemBreakBlock(ItemStack item, Block block) {
+        Material itemType = item.getType();
+        Material requiredItemType = getRequiredItemForBlock(block.getType());
+
+        int itemWeight = getWeightForItem(itemType);
+        int requiredWeight = getWeightForItem(requiredItemType);
+
+        return itemWeight >= requiredWeight;
     }
 
     public Material getRequiredItemForBlock(Material blockType) {
@@ -25,49 +37,46 @@ public class BlockHelper {
     }
 
     public int getExperienceToGiveForBlock(Material blockType) {
-        return experienceGivenForBlocks.getOrDefault(blockType.toString(), 0);
+        String expString = experienceGivenForBlocks.getOrDefault(blockType.toString(), "0");
+        return Integer.parseInt(expString);
     }
 
     public int getSecondsToRegenerateBlock(Material blockType) {
-        return secondsToRegenerateBlocks.getOrDefault(blockType.toString(), 0);
+        String respawnTimeString = secondsToRegenerateBlocks.getOrDefault(blockType.toString(), "0");
+        return Integer.parseInt(respawnTimeString);
     }
 
-    private LinkedHashMap<String, String> getRequiredItemForBlocks() {
+    private LinkedHashMap<String, String> loadAttribute(String attribute) {
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
 
         for(String block : configHelper.getBlocks()) {
-            String requiredItem = configHelper.getAttributeForBlock(block, "required-item");
+            String attributeString = configHelper.getAttributeForBlock(block, attribute);
 
-            map.put(block, requiredItem);
+            map.put(block, attributeString);
         }
 
         return map;
     }
 
-    private LinkedHashMap<String, Integer> getExperienceGivenForBlocks() {
-        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
-
-        for(String block : configHelper.getBlocks()) {
-            String experienceGivenString = configHelper.getAttributeForBlock(block, "experience-dropped");
-            int experienceGiven = Integer.parseInt(experienceGivenString);
-
-            map.put(block, experienceGiven);
+    // TODO: absolutely change this
+    // maybe make this configurable from the config file to allow other items
+    private int getWeightForItem(Material material) {
+        switch (material) {
+            case WOODEN_PICKAXE:
+                return 1;
+            case STONE_PICKAXE:
+                return 2;
+            case GOLDEN_PICKAXE:
+                return 3;
+            case IRON_PICKAXE:
+                return 4;
+            case DIAMOND_PICKAXE:
+                return 5;
+            case NETHERITE_PICKAXE:
+                return 6;
         }
 
-        return map;
-    }
-
-    private LinkedHashMap<String, Integer> getSecondsToRegenerateBlocks() {
-        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
-
-        for(String block : configHelper.getBlocks()) {
-            String secondsToRegenerateString = configHelper.getAttributeForBlock(block, "experience-dropped");
-            int secondsToRegenerate = Integer.parseInt(secondsToRegenerateString);
-
-            map.put(block, secondsToRegenerate);
-        }
-
-        return map;
+        return 0;
     }
 
 }

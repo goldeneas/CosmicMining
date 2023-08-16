@@ -38,7 +38,7 @@ required-levels:
 blocks:
   stone:
     respawn-time: 20
-    required-item: STONE_PICKAXE
+    required-item: WOODEN_PICKAXE
     experience-dropped: 1
   coal_ore:
     respawn-time: 20
@@ -46,15 +46,15 @@ blocks:
     experience-dropped: 2
   gold_ore:
     respawn-time: 20
-    required-item: STONE_PICKAXE
+    required-item: IRON_PICKAXE
     experience-dropped: 3
   iron_ore:
     respawn-time: 20
-    required-item: STONE_PICKAXE
+    required-item: DIAMOND_PICKAXE
     experience-dropped: 4
   diamond_ore:
     respawn-time: 20
-    required-item: STONE_PICKAXE
+    required-item: NETHERITE_PICKAXEßß
     experience-dropped: 5
 
 level-ups:

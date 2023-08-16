@@ -57,6 +57,11 @@ public class PlayerBreakBlock implements Listener {
         if(shouldIgnoreBlock(block))
             return;
 
+        if(!canHeldItemBreakBlock(player, block)) {
+            preventBlockBreak(player, e);
+            return;
+        }
+
         e.setCancelled(true);
         giveExperience(player, block);
         giveBlockDrops(player, block);
@@ -139,6 +144,22 @@ public class PlayerBreakBlock implements Listener {
         PlayerInventory inventory = player.getInventory();
         ItemStack heldItem = inventory.getItemInMainHand();
         return experienceHelper.canUsePickaxe(player, heldItem);
+    }
+
+    private boolean canHeldItemBreakBlock(Player player, Block block) {
+        PlayerInventory inventory = player.getInventory();
+        ItemStack heldItem = inventory.getItemInMainHand();
+        return blockHelper.canItemBreakBlock(heldItem, block);
+    }
+
+    private void preventBlockBreak(Player player, Cancellable e) {
+        new FeedbackString(plugin)
+                .loadString("incorrect-item")
+                .formatDefault(experienceHelper, player)
+                .playSound(Sound.ENTITY_VILLAGER_NO)
+                .sendTo(player, ChatMessageType.ACTION_BAR);
+
+        e.setCancelled(true);
     }
 
 }
