@@ -19,12 +19,17 @@ public class FeedbackString {
     private final YamlDocument messages;
     private final StringBuilder stringBuilder;
 
+    private String title;
+    private String subtitle;
     private Sound soundToPlay;
 
     public FeedbackString(CosmicMining plugin) {
         cachedStrings = new HashMap<>();
         this.stringBuilder = new StringBuilder();
         this.messages = plugin.getConfig("messages.yml");
+
+        this.title = "";
+        this.subtitle = "";
     }
 
     public FeedbackString playSound(Sound sound) {
@@ -77,6 +82,13 @@ public class FeedbackString {
         return this;
     }
 
+    public FeedbackString addTitle(String title, String subtitle) {
+        this.title = title;
+        this.subtitle = subtitle;
+
+        return this;
+    }
+
     public void sendTo(Player player) {
         sendTo(player, ChatMessageType.CHAT);
     }
@@ -90,8 +102,13 @@ public class FeedbackString {
         TextComponent component = new TextComponent(message);
         player.spigot().sendMessage(type, component);
 
-        Location l = player.getLocation();
-        player.playSound(l, soundToPlay, 1.0f, 1.0f);
+        if(soundToPlay != null) {
+            Location l = player.getLocation();
+            player.playSound(l, soundToPlay, 1.0f, 1.0f);
+        }
+
+        if(!title.equals(""))
+            player.sendTitle(title, subtitle, 0, 300, 0);
     }
 
 }

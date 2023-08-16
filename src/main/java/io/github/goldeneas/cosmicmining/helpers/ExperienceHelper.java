@@ -46,7 +46,7 @@ public class ExperienceHelper {
         for(String key : requiredExperienceForLevel.keySet()) {
             int currentLevel = Integer.parseInt(key);
 
-            if(playerLevel <= currentLevel)
+            if(playerLevel < currentLevel)
                 return requiredExperienceForLevel.get(key);
         }
 

@@ -66,8 +66,6 @@ public class ConfigHelper {
             map.put(block, attributeString);
         }
 
-        System.out.println(map);
-
         return map;
     }
 
