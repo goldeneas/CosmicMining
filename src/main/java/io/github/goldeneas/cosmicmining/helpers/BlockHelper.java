@@ -1,34 +1,22 @@
 package io.github.goldeneas.cosmicmining.helpers;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 public class BlockHelper {
-    private final ConfigHelper configHelper;
-
     private final LinkedHashMap<String, String> requiredItemForBlocks;
     private final LinkedHashMap<String, String> experienceGivenForBlocks;
     private final LinkedHashMap<String, String> secondsToRegenerateBlocks;
 
     public BlockHelper(ConfigHelper configHelper) {
-        this.configHelper = configHelper;
-
-        requiredItemForBlocks = loadAttribute("required-item");
-        secondsToRegenerateBlocks = loadAttribute("respawn-time");
-        experienceGivenForBlocks = loadAttribute("experience-dropped");
-    }
-
-    public boolean canItemBreakBlock(ItemStack item, Block block) {
-        Material itemType = item.getType();
-        Material requiredItemType = getRequiredItemForBlock(block.getType());
-
-        int itemWeight = getWeightForItem(itemType);
-        int requiredWeight = getWeightForItem(requiredItemType);
-
-        return itemWeight >= requiredWeight;
+        requiredItemForBlocks = configHelper.getAttributeForBlocks("required-item");
+        secondsToRegenerateBlocks = configHelper.getAttributeForBlocks("respawn-time");
+        experienceGivenForBlocks = configHelper.getAttributeForBlocks("experience-dropped");
     }
 
     public Material getRequiredItemForBlock(Material blockType) {
@@ -46,16 +34,14 @@ public class BlockHelper {
         return Integer.parseInt(respawnTimeString);
     }
 
-    private LinkedHashMap<String, String> loadAttribute(String attribute) {
-        LinkedHashMap<String, String> map = new LinkedHashMap<>();
+    public boolean canItemBreakBlock(ItemStack item, Block block) {
+        Material itemType = item.getType();
+        Material requiredItemType = getRequiredItemForBlock(block.getType());
 
-        for(String block : configHelper.getBlocks()) {
-            String attributeString = configHelper.getAttributeForBlock(block, attribute);
+        int itemWeight = getWeightForItem(itemType);
+        int requiredWeight = getWeightForItem(requiredItemType);
 
-            map.put(block, attributeString);
-        }
-
-        return map;
+        return itemWeight >= requiredWeight;
     }
 
     // TODO: absolutely change this

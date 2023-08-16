@@ -1,60 +1,26 @@
 update-permission: "cosmicmining.update"
 bypass_permission: "cosmicmining.bypass"
 
-required-levels:
-  items:
-    wooden_pickaxe: 0
-    stone_pickaxe: 15
-    golden_pickaxe: 40
-    iron_pickaxe: 50
-    diamond_pickaxe: 70
-    netherite_pickaxe: 90
-  armors:
-    netherite_helmet: 90
-    netherite_chestplate: 90
-    netherite_leggings: 90
-    netherite_boots: 90
-    diamond_helmet: 70
-    diamond_chestplate: 70
-    diamond_leggings: 70
-    diamond_boots: 70
-    iron_helmet: 50
-    iron_chestplate: 50
-    iron_leggings: 50
-    iron_boots: 50
-    golden_helmet: 40
-    golden_chestplate: 40
-    golden_leggings: 40
-    golden_boots: 40
-    chainmail_helmet: 25
-    chainmail_chestplate: 25
-    chainmail_leggings: 25
-    chainmail_boots: 25
-    leather_helmet: 10
-    leather_chestplate: 10
-    leather_leggings: 10
-    leather_boots: 10
-
 blocks:
-  stone:
+  STONE:
     respawn-time: 20
     required-item: WOODEN_PICKAXE
     experience-dropped: 1
-  coal_ore:
+  COAL_ORE:
     respawn-time: 20
     required-item: STONE_PICKAXE
     experience-dropped: 2
-  gold_ore:
+  GOLD_ORE:
     respawn-time: 20
     required-item: IRON_PICKAXE
     experience-dropped: 3
-  iron_ore:
+  IRON_ORE:
     respawn-time: 20
     required-item: DIAMOND_PICKAXE
     experience-dropped: 4
-  diamond_ore:
+  DIAMOND_ORE:
     respawn-time: 20
-    required-item: NETHERITE_PICKAXEßß
+    required-item: NETHERITE_PICKAXE
     experience-dropped: 5
 
 level-ups:
@@ -72,3 +38,37 @@ level-ups:
     93: 900
     94: 1000
     100: 1100
+
+required-levels:
+  items:
+    WOODEN_PICKAXE: 0
+    STONE_PICKAXE: 15
+    GOLDEN_PICKAXE: 40
+    IRON_PICKAXE: 50
+    DIAMOND_PICKAXE: 70
+    NETHERITE_PICKAXE: 90
+  armors:
+    NETHERITE_HELMET: 90
+    NETHERITE_CHESTPLATE: 90
+    NETHERITE_LEGGINGS: 90
+    NETHERITE_BOOTS: 90
+    DIAMOND_HELMET: 70
+    DIAMOND_CHESTPLATE: 70
+    DIAMOND_LEGGINGS: 70
+    DIAMOND_BOOTS: 70
+    IRON_HELMET: 50
+    IRON_CHESTPLATE: 50
+    IRON_LEGGINGS: 50
+    IRON_BOOTS: 50
+    GOLDEN_HELMET: 40
+    GOLDEN_CHESTPLATE: 40
+    GOLDEN_LEGGINGS: 40
+    GOLDEN_BOOTS: 40
+    CHAINMAIL_HELMET: 25
+    CHAINMAIL_CHESTPLATE: 25
+    CHAINMAIL_LEGGINGS: 25
+    CHAINMAIL_BOOTS: 25
+    LEATHER_HELMET: 10
+    LEATHER_CHESTPLATE: 10
+    LEATHER_LEGGINGS: 10
+    LEATHER_BOOTS: 10

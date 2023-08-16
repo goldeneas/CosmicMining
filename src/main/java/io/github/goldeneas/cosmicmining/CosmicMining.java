@@ -6,6 +6,7 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.goldeneas.cosmicmining.events.PlayerArmorEquip;
 import io.github.goldeneas.cosmicmining.events.PlayerBreakBlock;
 import io.github.goldeneas.cosmicmining.events.PlayerAddToDatabase;
+import io.github.goldeneas.cosmicmining.helpers.BlockHelper;
 import io.github.goldeneas.cosmicmining.helpers.ConfigHelper;
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import io.github.goldeneas.cosmicmining.utils.DependencyChecker;
@@ -28,11 +29,12 @@ public final class CosmicMining extends JavaPlugin {
 
         Database database = new Database(this);
         ConfigHelper configHelper = new ConfigHelper(this);
+        BlockHelper blockHelper = new BlockHelper(configHelper);
         ExperienceHelper experienceHelper = new ExperienceHelper(database, configHelper);
 
         getServer().getPluginManager().registerEvents(new PlayerAddToDatabase(database), this);
         getServer().getPluginManager().registerEvents(new PlayerArmorEquip(this, experienceHelper), this);
-        getServer().getPluginManager().registerEvents(new PlayerBreakBlock(this, database, experienceHelper), this);
+        getServer().getPluginManager().registerEvents(new PlayerBreakBlock(this, database, blockHelper, experienceHelper), this);
 
         checkForDependencies();
         if(DependencyChecker.IS_PLACEHOLDERAPI_AVAILABLE)

@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 public class ConfigHelper {
     private static CosmicMining plugin;
@@ -35,7 +36,7 @@ public class ConfigHelper {
             String key = s.toString();
 
             int value = config.getInt(sectionPath + "." + key);
-            temp.put(key.toUpperCase(), value);
+            temp.put(key, value);
         }
 
         return temp;
@@ -53,26 +54,24 @@ public class ConfigHelper {
         return blocks;
     }
 
-    public LinkedHashMap<String, String> getAttributesForBlock(String block) {
-        Section section = blocksConfig.getSection(ConfigPaths.BLOCKS_PATH + "." + block);
-        if(section == null)
-            throw new RuntimeException("Could not load attributes sections in " + this.getClass().getName() + "!");
+    public LinkedHashMap<String, String> getAttributeForBlocks(String attribute) {
+        LinkedHashMap<String, String> map = new LinkedHashMap<>();
 
-        String attributeName;
-        String attributeValue;
-        LinkedHashMap<String, String> attributes = new LinkedHashMap<>();
-        for (Object o : section.getKeys()) {
-            attributeName = o.toString();
-            attributeValue = blocksConfig.getString(ConfigPaths.BLOCKS_PATH + "." + block + "." + attributeName);
+        for(String block : getBlocks()) {
+            String attributeString = getAttributeForBlock(block, attribute);
 
-            attributes.put(attributeName, attributeValue);
+            if(Objects.equals(attributeString, null))
+                Bukkit.getLogger().severe("Could not load attribute " + attribute + " for " + block);
+
+            map.put(block, attributeString);
         }
 
-        return attributes;
+        System.out.println(map);
+
+        return map;
     }
 
     public String getAttributeForBlock(String block, String attributeName) {
-        LinkedHashMap<String, String> attributes = getAttributesForBlock(block);
-        return attributes.get(attributeName);
+        return blocksConfig.getString(ConfigPaths.BLOCKS_PATH + "." + block + "." + attributeName);
     }
 }
