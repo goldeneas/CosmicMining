@@ -38,13 +38,27 @@ public class FeedbackString {
     }
 
     public FeedbackString loadString(String path) {
+        String message = load(path);
+        stringBuilder.append(message);
+        return this;
+    }
+
+    public FeedbackString loadTitle(String path) {
+        this.title = load(path);
+        return this;
+    }
+
+    public FeedbackString loadSubtitle(String path) {
+        this.subtitle = load(path);
+        return this;
+    }
+
+    private String load(String path) {
         if(!cachedStrings.containsKey(path))
             cachedStrings.put(path, messages.getString(path));
 
         String message = cachedStrings.get(path);
-        String translated = ChatColor.translateAlternateColorCodes('&', message);
-        stringBuilder.append(translated);
-        return this;
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public FeedbackString append(String s) {
@@ -82,7 +96,7 @@ public class FeedbackString {
         return this;
     }
 
-    public FeedbackString addTitle(String title, String subtitle) {
+    public FeedbackString setTitle(String title, String subtitle) {
         this.title = title;
         this.subtitle = subtitle;
 
@@ -108,7 +122,7 @@ public class FeedbackString {
         }
 
         if(!title.equals(""))
-            player.sendTitle(title, subtitle, 0, 300, 0);
+            player.sendTitle(title, subtitle, 10, 70, 20);
     }
 
 }

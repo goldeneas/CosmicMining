@@ -118,6 +118,7 @@ public class PlayerBreakBlock implements Listener {
                 .loadString("level-up")
                 .formatDefault(experienceHelper, player)
                 .playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
+                .loadTitle("level-up-title")
                 .sendTo(player);
     }
 
