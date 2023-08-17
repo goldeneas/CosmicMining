@@ -50,7 +50,7 @@ public class ExperienceHelper {
                 return requiredExperienceForLevel.get(key);
         }
 
-        // TODO: log that no upper milestone was found (player is at max level)
+        // player is at max level!
         return Integer.MAX_VALUE;
     }
 
@@ -68,6 +68,11 @@ public class ExperienceHelper {
 
     public int getRequiredLevelForArmor(ItemStack item) {
         return getRequiredLevel(item, requiredLevelForArmor);
+    }
+
+    public boolean isPlayerMaxLevel(Player player) {
+        int currentLevel = getCurrentLevelForPlayer(player);
+        return getRequiredExperienceForLevel(currentLevel) == Integer.MAX_VALUE;
     }
 
     public boolean canUsePickaxe(Player player, ItemStack item) {
