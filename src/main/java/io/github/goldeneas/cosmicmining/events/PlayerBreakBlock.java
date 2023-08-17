@@ -63,7 +63,9 @@ public class PlayerBreakBlock implements Listener {
         }
 
         e.setCancelled(true);
-        giveExperience(player, block);
+        if(!experienceHelper.isPlayerMaxLevel(player))
+            giveExperience(player, block);
+
         giveBlockDrops(player, block);
         regenerateBlock(block);
 

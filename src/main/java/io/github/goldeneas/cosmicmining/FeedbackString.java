@@ -77,7 +77,12 @@ public class FeedbackString {
 
         replace("%player_level%", currentLevel);
         replace("%player_experience%", currentExperience);
-        replace("%player_required_experience%", requiredExperience);
+
+        if(!experienceHelper.isPlayerMaxLevel(player))
+            replace("%player_required_experience%", requiredExperience);
+        else
+            replace("%player_required_experience%", "∞");
+
         return this;
     }
 
