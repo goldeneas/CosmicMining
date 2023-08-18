@@ -64,7 +64,7 @@ public class PlayerBreakBlock implements Listener {
 
         e.setCancelled(true);
         if(!experienceHelper.isPlayerMaxLevel(player))
-            giveExperience(player, block);
+            giveExperienceToPlayer(player, block);
 
         giveBlockDrops(player, block);
         regenerateBlock(block);
@@ -103,7 +103,7 @@ public class PlayerBreakBlock implements Listener {
 
     }
 
-    private void giveExperience(Player player, Block block) {
+    private void giveExperienceToPlayer(Player player, Block block) {
         Material blockType = block.getType();
         int expToGive = blockHelper.getExperienceToGiveForBlock(blockType);
         database.addExperience(player, expToGive);
