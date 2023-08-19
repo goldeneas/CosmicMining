@@ -53,7 +53,7 @@ public final class CosmicMining extends JavaPlugin {
             YamlDocument document = YamlDocument.create(new File(getDataFolder(), name), getResource(name));
             configs.put(name, document);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Could not create config file " + name + " in plugin's folder!");
         }
     }
 

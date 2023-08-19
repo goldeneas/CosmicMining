@@ -3,7 +3,6 @@ package io.github.goldeneas.cosmicmining.helpers;
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import io.github.goldeneas.cosmicmining.Database;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -42,16 +41,36 @@ public class ExperienceHelper {
         return database.getExperience(player).orElse(0);
     }
 
-    public int getRequiredExperienceForLevel(int playerLevel) {
-        for(String key : requiredExperienceForLevel.keySet()) {
-            int currentLevel = Integer.parseInt(key);
+    public int getPlayerMaxLevel() {
+        int currentMaxLevel = 0;
 
-            if(playerLevel < currentLevel)
-                return requiredExperienceForLevel.get(key);
+        for(String key : requiredExperienceForLevel.keySet()) {
+            int currentMilestone = Integer.parseInt(key);
+
+            if(currentMilestone > currentMaxLevel)
+                currentMaxLevel = currentMilestone;
         }
 
-        // player is at max level!
-        return Integer.MAX_VALUE;
+        return currentMaxLevel;
+    }
+
+    public int getRequiredExperienceForLevel(int playerLevel) {
+        int bestUpperMilestoneGuess = getPlayerMaxLevel();
+
+        for(String key : requiredExperienceForLevel.keySet()) {
+            int currentMilestone = Integer.parseInt(key);
+
+            if(bestUpperMilestoneGuess == -1) {
+                bestUpperMilestoneGuess = currentMilestone;
+                continue;
+            }
+
+            if(playerLevel < currentMilestone && currentMilestone < bestUpperMilestoneGuess)
+                bestUpperMilestoneGuess = currentMilestone;
+        }
+
+        String closestMilestone = String.valueOf(bestUpperMilestoneGuess);
+        return requiredExperienceForLevel.getOrDefault(closestMilestone, 0);
     }
 
     public int getExperienceToNextLevel(Player player) {
@@ -71,8 +90,7 @@ public class ExperienceHelper {
     }
 
     public boolean isPlayerMaxLevel(Player player) {
-        int currentLevel = getCurrentLevelForPlayer(player);
-        return getRequiredExperienceForLevel(currentLevel) == Integer.MAX_VALUE;
+        return getPlayerMaxLevel() <= getCurrentLevelForPlayer(player);
     }
 
     public boolean canUsePickaxe(Player player, ItemStack item) {

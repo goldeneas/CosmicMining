@@ -12,7 +12,6 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -48,21 +47,21 @@ public class PlayerBreakBlock implements Listener {
         if((player.getGameMode() == GameMode.CREATIVE) || player.hasPermission(bypassPermission))
             return;
 
-        if(!canUseHeldItem(player)) {
-            denyPickaxeUsage(player, e);
-            return;
-        }
-
         Block block = e.getBlock();
         if(shouldIgnoreBlock(block))
             return;
 
-        if(!canHeldItemBreakBlock(player, block)) {
-            preventBlockBreak(player, e);
+        e.setCancelled(true);
+        if(!canUseHeldItem(player)) {
+            denyPickaxeUsageFeedback(player);
             return;
         }
 
-        e.setCancelled(true);
+        if(!canHeldItemBreakBlock(player, block)) {
+            preventBlockBreakFeedback(player);
+            return;
+        }
+
         if(!experienceHelper.isPlayerMaxLevel(player))
             giveExperienceToPlayer(player, block);
 
@@ -97,17 +96,15 @@ public class PlayerBreakBlock implements Listener {
         block.setType(Material.COBBLESTONE);
 
         long secondsToRegenerate = blockHelper.getSecondsToRegenerateBlock(blockType);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            state.update(true, false);
-        }, secondsToRegenerate);
-
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () ->
+                state.update(true, false), secondsToRegenerate);
     }
 
     private void giveExperienceToPlayer(Player player, Block block) {
         Material blockType = block.getType();
         int expToGive = blockHelper.getExperienceToGiveForBlock(blockType);
         database.addExperience(player, expToGive);
-    };
+    }
 
     private void levelUp(Player player) {
         int currentLevel = experienceHelper.getCurrentLevelForPlayer(player);
@@ -124,14 +121,12 @@ public class PlayerBreakBlock implements Listener {
                 .sendTo(player);
     }
 
-    private void denyPickaxeUsage(Player player, Cancellable e) {
+    private void denyPickaxeUsageFeedback(Player player) {
         new FeedbackString(plugin)
                 .loadString("pickaxe-level-too-low")
                 .formatDefault(experienceHelper, player)
                 .playSound(Sound.ENTITY_VILLAGER_NO)
                 .sendTo(player, ChatMessageType.ACTION_BAR);
-
-        e.setCancelled(true);
     }
 
     private boolean shouldIgnoreBlock(Block block) {
@@ -155,14 +150,12 @@ public class PlayerBreakBlock implements Listener {
         return blockHelper.canItemBreakBlock(heldItem, block);
     }
 
-    private void preventBlockBreak(Player player, Cancellable e) {
+    private void preventBlockBreakFeedback(Player player) {
         new FeedbackString(plugin)
                 .loadString("incorrect-item")
                 .formatDefault(experienceHelper, player)
                 .playSound(Sound.ENTITY_VILLAGER_NO)
                 .sendTo(player, ChatMessageType.ACTION_BAR);
-
-        e.setCancelled(true);
     }
 
 }
