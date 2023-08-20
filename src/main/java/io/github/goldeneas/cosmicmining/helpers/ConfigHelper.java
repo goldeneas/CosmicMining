@@ -7,19 +7,27 @@ import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 
 public class ConfigHelper {
     private static CosmicMining plugin;
 
+    private final YamlDocument armorsConfig;
     private final YamlDocument blocksConfig;
+    private final YamlDocument pickaxesConfig;
 
+    // TODO: maybe add caching
     public ConfigHelper(CosmicMining _plugin) {
         plugin = _plugin;
+
+        this.armorsConfig = plugin.getConfig("config.yml");
         this.blocksConfig = plugin.getConfig("config.yml");
+        this.pickaxesConfig = plugin.getConfig("config.yml");
     }
 
+    // TODO: try removing this method, it's only being used once
     public LinkedHashMap<String, Integer> getSectionWithIntegers(String sectionPath, String configName) {
         YamlDocument config = plugin.getConfig(configName);
         LinkedHashMap<String, Integer> temp = new LinkedHashMap<>();
@@ -42,34 +50,46 @@ public class ConfigHelper {
         return temp;
     }
 
-    public ArrayList<String> getBlocks() {
-        ArrayList<String> blocks = new ArrayList<>();
-
-        Section sections = blocksConfig.getSection(ConfigPaths.BLOCKS_PATH);
-        for(Object key : sections.getKeys()) {
-            String blockMaterial = key.toString();
-            blocks.add(blockMaterial);
-        }
-
-        return blocks;
+    public HashMap<String, String> getAttributeForArmors(String attributeName) {
+        return getAttributes(attributeName, ConfigPaths.ARMORS_PATH, armorsConfig);
     }
 
-    public LinkedHashMap<String, String> getAttributeForBlocks(String attribute) {
-        LinkedHashMap<String, String> map = new LinkedHashMap<>();
-
-        for(String block : getBlocks()) {
-            String attributeString = getAttributeForBlock(block, attribute);
-
-            if(Objects.equals(attributeString, null))
-                Bukkit.getLogger().severe("Could not load attribute " + attribute + " for " + block);
-
-            map.put(block, attributeString);
-        }
-
-        return map;
+    public HashMap<String, String> getAttributeForBlocks(String attributeName) {
+        return getAttributes(attributeName, ConfigPaths.BLOCKS_PATH, blocksConfig);
     }
 
-    public String getAttributeForBlock(String block, String attributeName) {
-        return blocksConfig.getString(ConfigPaths.BLOCKS_PATH + "." + block + "." + attributeName);
+    public HashMap<String, String> getAttributeForPickaxes(String attributeName) {
+        return getAttributes(attributeName, ConfigPaths.PICKAXES_PATH, pickaxesConfig);
+    }
+
+    private ArrayList<String> getMaterials(String path, YamlDocument config) {
+        ArrayList<String> materials = new ArrayList<>();
+
+        Section section = config.getSection(path);
+        for(Object key : section.getKeys()) {
+            String material = key.toString();
+            materials.add(material);
+        }
+
+        return materials;
+    }
+    
+    private HashMap<String, String> getAttributes(String attributeName, String path, YamlDocument config) {
+        HashMap<String, String> attributes = new HashMap<>();
+
+        for(String material : getMaterials(path, config)) {
+            String attribute = getAttribute(material, attributeName, path, config);
+
+            if(Objects.equals(attribute, null))
+                throw new RuntimeException("Could not load attribute " + attributeName + " for " + material);
+
+            attributes.put(material, attribute);
+        }
+
+        return attributes;
+    }
+
+    private String getAttribute(String material, String attributeName, String path, YamlDocument config) {
+        return config.getString(path + "." + material + "." + attributeName);
     }
 }

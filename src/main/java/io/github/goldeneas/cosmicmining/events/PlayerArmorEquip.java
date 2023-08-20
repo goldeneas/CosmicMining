@@ -1,6 +1,7 @@
 package io.github.goldeneas.cosmicmining.events;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import io.github.goldeneas.cosmicmining.FeedbackString;
 import io.github.goldeneas.cosmicmining.CosmicMining;
@@ -29,12 +30,14 @@ public class PlayerArmorEquip implements Listener {
     private static CosmicMining plugin;
 
     private final YamlDocument config;
+    private final ItemHelper itemHelper;
     private final ExperienceHelper experienceHelper;
 
-    public PlayerArmorEquip(CosmicMining _plugin, ExperienceHelper experienceHelper) {
+    public PlayerArmorEquip(CosmicMining _plugin, ExperienceHelper experienceHelper, ItemHelper itemHelper) {
         plugin = _plugin;
         config = plugin.getConfig("config.yml");
 
+        this.itemHelper = itemHelper;
         this.experienceHelper = experienceHelper;
     }
 
@@ -52,7 +55,7 @@ public class PlayerArmorEquip implements Listener {
             return;
 
         ItemStack item = e.getItem();
-        if(experienceHelper.canUseArmor(player, item))
+        if(itemHelper.canPlayerUseArmor(player, item))
             return;
 
         denyArmorUsage(player, e);
@@ -79,7 +82,7 @@ public class PlayerArmorEquip implements Listener {
             return;
 
         ItemStack cursorItem = isShiftClicked ? e.getCurrentItem() : e.getCursor();
-        if(experienceHelper.canUseArmor(player, cursorItem))
+        if(itemHelper.canPlayerUseArmor(player, cursorItem))
             return;
 
         denyArmorUsage(player, e);
@@ -105,7 +108,7 @@ public class PlayerArmorEquip implements Listener {
             return;
         }
 
-        if(experienceHelper.canUseArmor(player, item))
+        if(itemHelper.canPlayerUseArmor(player, item))
             return;
 
         denyArmorUsage(player, e);

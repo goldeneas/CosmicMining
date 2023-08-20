@@ -3,28 +3,28 @@ bypass_permission: "cosmicmining.bypass"
 
 blocks:
   STONE:
-    respawn-time: 20
-    required-item: WOODEN_PICKAXE
-    experience-dropped: 1
-  COAL_ORE:
-    respawn-time: 20
-    required-item: STONE_PICKAXE
-    experience-dropped: 2
-  GOLD_ORE:
-    respawn-time: 20
-    required-item: IRON_PICKAXE
-    experience-dropped: 3
-  IRON_ORE:
-    respawn-time: 20
-    required-item: DIAMOND_PICKAXE
-    experience-dropped: 4
-  DIAMOND_ORE:
-    respawn-time: 20
-    required-item: NETHERITE_PICKAXE
+    respawn-time: 3
+    required-pickaxe: WOODEN_PICKAXE
     experience-dropped: 5
+  COAL_ORE:
+    respawn-time: 10
+    required-pickaxe: STONE_PICKAXE
+    experience-dropped: 10
+  GOLD_ORE:
+    respawn-time: 15
+    required-pickaxe: IRON_PICKAXE
+    experience-dropped: 15
+  IRON_ORE:
+    respawn-time: 40
+    required-pickaxe: DIAMOND_PICKAXE
+    experience-dropped: 20
+  DIAMOND_ORE:
+    respawn-time: 60
+    required-pickaxe: NETHERITE_PICKAXE
+    experience-dropped: 25
 
 level-ups:
-  to-level:
+  experience-to-level:
     5: 100
     10: 150
     20: 225
@@ -38,6 +38,58 @@ level-ups:
     93: 900
     94: 1000
     100: 1100
+
+pickaxes:
+  WOODEN_PICKAXE:
+    required-level: 0
+    base-max-experience: 100
+    per-level-multiplier: 1
+  STONE_PICKAXE:
+    required-level: 0
+    base-max-experience: 100
+    per-level-multiplier: 1.3
+  GOLDEN_PICKAXE:
+    required-level: 0
+    base-max-experience: 100
+    per-level-multiplier: 1.4
+  IRON_PICKAXE:
+    required-level: 0
+    base-max-experience: 100
+    per-level-multiplier: 1.7
+  DIAMOND_PICKAXE:
+    required-level: 0
+    base-max-experience: 100
+    per-level-multiplier: 2
+  NETHERITE_PICKAXE:
+    required-level: 0
+    base-max-experience: 100
+    per-level-multiplier: 2.2
+
+armors:
+  LEATHER_ARMOR:
+    required-level: 10
+    base-max-experience: 100
+    per-level-multiplier: 1
+  CHAINMAIL_ARMOR:
+    required-level: 25
+    base-max-experience: 200
+    per-level-multiplier: 1.3
+  GOLDEN_ARMOR:
+    required-level: 40
+    base-max-experience: 250
+    per-level-multiplier: 1.4
+  IRON_ARMOR:
+    required-level: 50
+    base-max-experience: 300
+    per-level-multiplier: 1.7
+  DIAMOND_ARMOR:
+    required-level: 70
+    base-max-experience: 350
+    per-level-multiplier: 2
+  NETHERITE_ARMOR:
+    required-level: 90
+    base-max-experience: 400
+    per-level-multiplier: 2.2
 
 required-levels:
   items:

@@ -101,7 +101,7 @@ public class PlayerBreakBlock implements Listener {
 
         long secondsToRegenerate = blockHelper.getSecondsToRegenerateBlock(blockType);
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () ->
-                state.update(true, false), secondsToRegenerate);
+                state.update(true, false), secondsToRegenerate * 20);
     }
 
     private void giveExperienceToPlayer(Player player, Block block) {
@@ -145,7 +145,7 @@ public class PlayerBreakBlock implements Listener {
     private boolean canUseHeldItem(Player player) {
         PlayerInventory inventory = player.getInventory();
         ItemStack heldItem = inventory.getItemInMainHand();
-        return experienceHelper.canUsePickaxe(player, heldItem);
+        return itemHelper.canPlayerUsePickaxe(player, heldItem);
     }
 
     private boolean canHeldItemBreakBlock(Player player, Block block) {

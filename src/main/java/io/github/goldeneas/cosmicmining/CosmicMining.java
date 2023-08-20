@@ -30,13 +30,12 @@ public final class CosmicMining extends JavaPlugin {
 
         Database database = new Database(this);
         ConfigHelper configHelper = new ConfigHelper(this);
-
-        ItemHelper itemHelper = new ItemHelper(configHelper);
         BlockHelper blockHelper = new BlockHelper(configHelper);
         ExperienceHelper experienceHelper = new ExperienceHelper(database, configHelper);
+        ItemHelper itemHelper = new ItemHelper(this, database, configHelper, experienceHelper);
 
         getServer().getPluginManager().registerEvents(new PlayerAddToDatabase(database), this);
-        getServer().getPluginManager().registerEvents(new PlayerArmorEquip(this, experienceHelper), this);
+        getServer().getPluginManager().registerEvents(new PlayerArmorEquip(this, experienceHelper, itemHelper), this);
         getServer().getPluginManager().registerEvents(new PlayerBreakBlock(this, database, blockHelper, experienceHelper, itemHelper), this);
 
         checkForDependencies();
