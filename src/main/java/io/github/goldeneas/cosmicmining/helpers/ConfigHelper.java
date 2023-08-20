@@ -28,9 +28,9 @@ public class ConfigHelper {
     }
 
     // TODO: try removing this method, it's only being used once
-    public LinkedHashMap<String, Integer> getSectionWithIntegers(String sectionPath, String configName) {
+    public HashMap<String, String> getSectionWithIntegers(String sectionPath, String configName) {
         YamlDocument config = plugin.getConfig(configName);
-        LinkedHashMap<String, Integer> temp = new LinkedHashMap<>();
+        HashMap<String, String> temp = new LinkedHashMap<>();
 
         Section sections =
                 config.getSection(sectionPath);
@@ -42,8 +42,8 @@ public class ConfigHelper {
 
         for(Object s : sections.getKeys()) {
             String key = s.toString();
+            String value = config.getString(sectionPath + "." + key);
 
-            int value = config.getInt(sectionPath + "." + key);
             temp.put(key, value);
         }
 
@@ -90,6 +90,9 @@ public class ConfigHelper {
     }
 
     private String getAttribute(String material, String attributeName, String path, YamlDocument config) {
+        System.out.println("Tried getting " + attributeName + " for " + material + ".");
+        System.out.println("Got value! It is: " + config.getString(path + "." + material + "." + attributeName));
+        System.out.println("Full path is " + path + "." + material + "." + attributeName);
         return config.getString(path + "." + material + "." + attributeName);
     }
 }

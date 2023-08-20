@@ -79,9 +79,6 @@ public class ItemHelper {
         setItemExperience(item, currentExperience + experience);
     }
 
-    public boolean isItemFullOfExperience(ItemStack item) {
-
-    }
 
     public boolean canPlayerUsePickaxe(Player player, ItemStack item) {
         int requiredLevel = experienceHelper.getRequiredLevelForPickaxe(item);

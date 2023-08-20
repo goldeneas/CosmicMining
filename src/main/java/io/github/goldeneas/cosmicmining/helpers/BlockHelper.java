@@ -2,10 +2,11 @@ package io.github.goldeneas.cosmicmining.helpers;
 
 import org.bukkit.Material;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 
-public class BlockHelper { private final LinkedHashMap<String, String> experienceGivenForBlocks;
-    private final LinkedHashMap<String, String> secondsToRegenerateBlocks;
+public class BlockHelper {
+    private final HashMap<String, String> experienceGivenForBlocks;
+    private final HashMap<String, String> secondsToRegenerateBlocks;
 
     public BlockHelper(ConfigHelper configHelper) {
         secondsToRegenerateBlocks = configHelper.getAttributeForBlocks("respawn-time");

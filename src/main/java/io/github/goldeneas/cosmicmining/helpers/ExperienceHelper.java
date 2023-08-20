@@ -7,23 +7,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.OptionalInt;
 
 public class ExperienceHelper {
     private static Database database;
 
-    private static HashMap<String, Integer> requiredLevelForArmor;
-    private static HashMap<String, Integer> requiredLevelForPickaxe;
-    private static HashMap<String, Integer> requiredExperienceForLevel;
+    private static HashMap<String, String> requiredLevelForArmor;
+    private static HashMap<String, String> requiredLevelForPickaxe;
+    private static HashMap<String, String> requiredExperienceForLevel;
 
     public ExperienceHelper(Database _database, ConfigHelper configHelper) {
         database = _database;
 
         requiredLevelForArmor = configHelper.getAttributeForArmors("required-level");
-
-        requiredLevelForPickaxe = configHelper.getAttributeForPickaxes("required-level")
-
+        requiredLevelForPickaxe = configHelper.getAttributeForPickaxes("required-level");
         requiredExperienceForLevel = configHelper
                 .getSectionWithIntegers(ConfigPaths.REQUIRED_EXPERIENCE_FOR_LEVEL_PATH, "config.yml");
     }
@@ -69,7 +66,9 @@ public class ExperienceHelper {
         }
 
         String closestMilestone = String.valueOf(bestUpperMilestoneGuess);
-        return requiredExperienceForLevel.getOrDefault(closestMilestone, 0);
+
+        String requiredExperience = requiredExperienceForLevel.getOrDefault(closestMilestone, "0");
+        return Integer.parseInt(requiredExperience);
     }
 
     public int getExperienceToNextLevel(Player player) {
@@ -92,11 +91,12 @@ public class ExperienceHelper {
         return getPlayerMaxLevel() <= getCurrentLevelForPlayer(player);
     }
 
-    private int getRequiredLevelForItem(ItemStack item, LinkedHashMap<String, Integer> map) {
+    private int getRequiredLevelForItem(ItemStack item, HashMap<String, String> map) {
         Material m = item.getType();
         String id = m.toString();
 
-        return map.getOrDefault(id, 0);
+        String s = map.getOrDefault(id, "0");
+        return Integer.parseInt(s);
     }
 
 }

@@ -45,23 +45,23 @@ pickaxes:
     base-max-experience: 100
     per-level-multiplier: 1
   STONE_PICKAXE:
-    required-level: 0
+    required-level: 15
     base-max-experience: 100
     per-level-multiplier: 1.3
   GOLDEN_PICKAXE:
-    required-level: 0
+    required-level: 40
     base-max-experience: 100
     per-level-multiplier: 1.4
   IRON_PICKAXE:
-    required-level: 0
+    required-level: 50
     base-max-experience: 100
     per-level-multiplier: 1.7
   DIAMOND_PICKAXE:
-    required-level: 0
+    required-level: 70
     base-max-experience: 100
     per-level-multiplier: 2
   NETHERITE_PICKAXE:
-    required-level: 0
+    required-level: 90
     base-max-experience: 100
     per-level-multiplier: 2.2
 
