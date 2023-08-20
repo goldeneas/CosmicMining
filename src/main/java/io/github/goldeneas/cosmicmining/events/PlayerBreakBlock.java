@@ -2,6 +2,7 @@ package io.github.goldeneas.cosmicmining.events;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.goldeneas.cosmicmining.helpers.BlockHelper;
+import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import io.github.goldeneas.cosmicmining.Database;
 import io.github.goldeneas.cosmicmining.FeedbackString;
@@ -25,14 +26,17 @@ public class PlayerBreakBlock implements Listener {
 
     private final Database database;
     private final YamlDocument config;
+    private final ItemHelper itemHelper;
     private final BlockHelper blockHelper;
     private final ExperienceHelper experienceHelper;
 
-    public PlayerBreakBlock(CosmicMining _plugin, Database database, BlockHelper blockHelper, ExperienceHelper experienceHelper) {
+    public PlayerBreakBlock(CosmicMining _plugin, Database database, BlockHelper blockHelper,
+                            ExperienceHelper experienceHelper, ItemHelper itemHelper) {
         plugin = _plugin;
         config = plugin.getConfig("config.yml");
 
         this.database = database;
+        this.itemHelper = itemHelper;
         this.blockHelper = blockHelper;
         this.experienceHelper = experienceHelper;
     }
@@ -147,7 +151,7 @@ public class PlayerBreakBlock implements Listener {
     private boolean canHeldItemBreakBlock(Player player, Block block) {
         PlayerInventory inventory = player.getInventory();
         ItemStack heldItem = inventory.getItemInMainHand();
-        return blockHelper.canItemBreakBlock(heldItem, block);
+        return itemHelper.canItemBreakBlock(heldItem, block);
     }
 
     private void preventBlockBreakFeedback(Player player) {

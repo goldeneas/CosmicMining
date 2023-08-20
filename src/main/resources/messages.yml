@@ -9,7 +9,9 @@
 
 level-up: "&2You have level-ed up! Your new level is %player_level%"
 level-up-title: "&2Level Up"
+
 inventory-full: "Your inventory is full!"
+
 incorrect-item: "This block cannot be broken by this item!"
 armor-level-too-low: "&cYou cannot equip this armor because your mining level is too low!"
 pickaxe-level-too-low: "&cYou cannot use this pickaxe because your mining level is too low!"
