@@ -80,8 +80,6 @@ public class ItemHelper {
         if(itemLevel == 0)
             itemLevel = 1;
 
-        System.out.println("Item level is " + itemLevel);
-
         return itemLevel;
     }
 
@@ -96,8 +94,6 @@ public class ItemHelper {
 
         if(pdc.has(experienceKey, PersistentDataType.INTEGER))
             itemExperience = pdc.get(experienceKey, PersistentDataType.INTEGER);
-        else
-            System.out.println("Could not find experience for item!");
 
         return itemExperience;
     }
@@ -111,7 +107,7 @@ public class ItemHelper {
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
         pdc.set(experienceKey, PersistentDataType.INTEGER, experience);
 
-        System.out.println("Set item " + item.getType() + " experience to " + experience);
+        item.setItemMeta(meta);
     }
 
     public void addItemExperience(ItemStack item, int experience){
@@ -135,8 +131,6 @@ public class ItemHelper {
 
         int levelMultiplier = Integer.parseInt(levelMultiplierString);
         int baseMaxExperience = Integer.parseInt(baseMaxExperienceString);
-
-        System.out.println("Item " + item.getType() + " max experience is " +getItemMaxExperience(item, baseMaxExperience, levelMultiplier));
 
         return getItemMaxExperience(item, baseMaxExperience, levelMultiplier);
     }

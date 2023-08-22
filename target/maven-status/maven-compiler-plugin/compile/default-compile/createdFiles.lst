@@ -1,0 +1,13 @@
+io\github\goldeneas\cosmicmining\helpers\ExperienceHelper.class
+io\github\goldeneas\cosmicmining\utils\ConfigPaths.class
+io\github\goldeneas\cosmicmining\CosmicMining.class
+io\github\goldeneas\cosmicmining\events\PlayerAddToDatabase.class
+io\github\goldeneas\cosmicmining\helpers\ConfigHelper.class
+io\github\goldeneas\cosmicmining\FeedbackString.class
+io\github\goldeneas\cosmicmining\Database.class
+io\github\goldeneas\cosmicmining\helpers\ItemHelper.class
+io\github\goldeneas\cosmicmining\utils\DependencyChecker.class
+io\github\goldeneas\cosmicmining\events\PlayerArmorEquip.class
+io\github\goldeneas\cosmicmining\helpers\BlockHelper.class
+io\github\goldeneas\cosmicmining\PapiExpansion.class
+io\github\goldeneas\cosmicmining\events\PlayerBreakBlock.class
