@@ -151,7 +151,7 @@ public class PlayerBreakBlock implements Listener {
     private boolean canHeldItemBreakBlock(Player player, Block block) {
         PlayerInventory inventory = player.getInventory();
         ItemStack heldItem = inventory.getItemInMainHand();
-        return itemHelper.canItemBreakBlock(heldItem, block);
+        return itemHelper.canPickaxeBreakBlock(heldItem, block);
     }
 
     private void preventBlockBreakFeedback(Player player) {
@@ -160,6 +160,12 @@ public class PlayerBreakBlock implements Listener {
                 .formatDefault(experienceHelper, player)
                 .playSound(Sound.ENTITY_VILLAGER_NO)
                 .sendTo(player, ChatMessageType.ACTION_BAR);
+    }
+
+    private void giveExperienceToPickaxe(ItemStack item, Block block) {
+        if(itemHelper) {
+
+        }
     }
 
 }

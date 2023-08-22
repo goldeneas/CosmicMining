@@ -15,33 +15,66 @@ import java.util.HashMap;
 import java.util.OptionalInt;
 
 public class ItemHelper {
+    private final NamespacedKey levelsKey;
+    private final NamespacedKey experienceKey;
 
     private final Database database;
-    private final NamespacedKey pickaxesKey;
+    private final ConfigHelper configHelper;
     private final ExperienceHelper experienceHelper;
-    private final HashMap<String, String> requiredItemForBlocks;
+    private final HashMap<String, String> requiredPickaxesForBlocks;
 
     public ItemHelper(CosmicMining _plugin, Database database, ConfigHelper configHelper, ExperienceHelper experienceHelper) {
         this.database = database;
+        this.configHelper = configHelper;
         this.experienceHelper = experienceHelper;
-        this.pickaxesKey = new NamespacedKey(_plugin, "pickaxes");
 
-        requiredItemForBlocks = configHelper.getAttributeForBlocks("required-pickaxe");
+        this.levelsKey = new NamespacedKey(_plugin, "levels");
+        this.experienceKey = new NamespacedKey(_plugin, "experience");
+
+        requiredPickaxesForBlocks = configHelper.getAttributeForBlocks("required-pickaxe");
     }
 
-    public Material getRequiredItemForBlock(Material blockType) {
-        String requiredItemString = requiredItemForBlocks.get(blockType.toString());
+    public Material getRequiredPickaxeForBlock(Material blockType) {
+        String requiredItemString = requiredPickaxesForBlocks.get(blockType.toString());
         return Material.valueOf(requiredItemString);
     }
 
-    public boolean canItemBreakBlock(ItemStack item, Block block) {
+    public boolean canPickaxeBreakBlock(ItemStack item, Block block) {
         Material itemType = item.getType();
-        Material requiredItemType = getRequiredItemForBlock(block.getType());
+        Material requiredItemType = getRequiredPickaxeForBlock(block.getType());
 
         int itemWeight = getWeightForItem(itemType);
         int requiredWeight = getWeightForItem(requiredItemType);
 
         return itemWeight >= requiredWeight;
+    }
+
+    public boolean canPlayerUsePickaxe(Player player, ItemStack item) {
+        int requiredLevel = experienceHelper.getRequiredLevelForPickaxe(item);
+        return canPlayerUseItem(player, requiredLevel);
+    }
+
+    public boolean canPlayerUseArmor(Player player, ItemStack item) {
+        int requiredLevel = experienceHelper.getRequiredLevelForArmor(item);
+        return canPlayerUseItem(player, requiredLevel);
+    }
+
+    public int getItemLevel(ItemStack item) {
+        int itemLevel = 0;
+        ItemMeta meta = item.getItemMeta();
+
+        if(meta == null)
+            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
+
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+
+        if(pdc.has(levelsKey, PersistentDataType.INTEGER))
+            itemLevel = pdc.get(levelsKey, PersistentDataType.INTEGER);
+
+        if(itemLevel == 0)
+            itemLevel = 1;
+
+        return itemLevel;
     }
 
     public int getItemExperience(ItemStack item) {
@@ -53,8 +86,8 @@ public class ItemHelper {
 
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
 
-        if(pdc.has(pickaxesKey, PersistentDataType.INTEGER))
-            itemExperience = pdc.get(pickaxesKey, PersistentDataType.INTEGER);
+        if(pdc.has(experienceKey, PersistentDataType.INTEGER))
+            itemExperience = pdc.get(experienceKey, PersistentDataType.INTEGER);
 
         return itemExperience;
     }
@@ -66,7 +99,7 @@ public class ItemHelper {
             throw new UnsupportedOperationException("Could not get meta for " + item.getType());
 
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
-        pdc.set(pickaxesKey, PersistentDataType.INTEGER, experience);
+        pdc.set(experienceKey, PersistentDataType.INTEGER, experience);
     }
 
     public void addItemExperience(ItemStack item, int experience){
@@ -79,15 +112,13 @@ public class ItemHelper {
         setItemExperience(item, currentExperience + experience);
     }
 
+    private int getItemMaxExperience(ItemStack item, int baseMaxExperience, int levelMultiplier) {
+        int itemLevel = getItemLevel(item);
 
-    public boolean canPlayerUsePickaxe(Player player, ItemStack item) {
-        int requiredLevel = experienceHelper.getRequiredLevelForPickaxe(item);
-        return canPlayerUseItem(player, requiredLevel);
-    }
-
-    public boolean canPlayerUseArmor(Player player, ItemStack item) {
-        int requiredLevel = experienceHelper.getRequiredLevelForArmor(item);
-        return canPlayerUseItem(player, requiredLevel);
+        if(itemLevel == 1)
+            return baseMaxExperience;
+        else
+            return levelMultiplier * itemLevel * baseMaxExperience;
     }
 
     private boolean canPlayerUseItem(Player player, int requiredLevel) {
