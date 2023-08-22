@@ -5,6 +5,7 @@ import dev.dejvokep.boostedyaml.block.implementation.Section;
 import io.github.goldeneas.cosmicmining.CosmicMining;
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +19,6 @@ public class ConfigHelper {
     private final YamlDocument blocksConfig;
     private final YamlDocument pickaxesConfig;
 
-    // TODO: maybe add caching
     public ConfigHelper(CosmicMining _plugin) {
         plugin = _plugin;
 
@@ -51,6 +51,11 @@ public class ConfigHelper {
     }
 
     public HashMap<String, String> getAttributeForArmors(String attributeName) {
+
+        for(String m : getMaterials(ConfigPaths.ARMORS_PATH, armorsConfig)) {
+
+        }
+
         return getAttributes(attributeName, ConfigPaths.ARMORS_PATH, armorsConfig);
     }
 
@@ -60,6 +65,16 @@ public class ConfigHelper {
 
     public HashMap<String, String> getAttributeForPickaxes(String attributeName) {
         return getAttributes(attributeName, ConfigPaths.PICKAXES_PATH, pickaxesConfig);
+    }
+
+    public String getAttributeForPickaxe(Material material, String attributeName) {
+        String materialString = material.toString();
+        return pickaxesConfig.getString(ConfigPaths.PICKAXES_PATH + "." + materialString + "." + attributeName);
+    }
+
+    public String getAttributeForArmor(Material material, String attributeName) {
+        String materialString = material.toString();
+        return pickaxesConfig.getString(ConfigPaths.ARMORS_PATH + "." + materialString + "." + attributeName);
     }
 
     private ArrayList<String> getMaterials(String path, YamlDocument config) {
@@ -90,9 +105,6 @@ public class ConfigHelper {
     }
 
     private String getAttribute(String material, String attributeName, String path, YamlDocument config) {
-        System.out.println("Tried getting " + attributeName + " for " + material + ".");
-        System.out.println("Got value! It is: " + config.getString(path + "." + material + "." + attributeName));
-        System.out.println("Full path is " + path + "." + material + "." + attributeName);
         return config.getString(path + "." + material + "." + attributeName);
     }
 }

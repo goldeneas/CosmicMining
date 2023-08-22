@@ -52,22 +52,27 @@ public class PlayerBreakBlock implements Listener {
             return;
 
         Block block = e.getBlock();
-        if(shouldIgnoreBlock(block))
+        PlayerInventory inventory = player.getInventory();
+        ItemStack heldItem = inventory.getItemInMainHand();
+        if(shouldIgnoreBlock(block) || shouldIgnoreItem(heldItem))
             return;
 
         e.setCancelled(true);
-        if(!canUseHeldItem(player)) {
+        if(!itemHelper.canPlayerUsePickaxe(player, heldItem)) {
             denyPickaxeUsageFeedback(player);
             return;
         }
 
-        if(!canHeldItemBreakBlock(player, block)) {
+        if(!itemHelper.canPickaxeBreakBlock(heldItem, block)) {
             preventBlockBreakFeedback(player);
             return;
         }
 
         if(!experienceHelper.isPlayerMaxLevel(player))
             giveExperienceToPlayer(player, block);
+
+        if(!itemHelper.isPickaxeFullOfExperience(heldItem))
+            giveExperienceToItemForBlock(heldItem, block);
 
         giveBlockDrops(player, block);
         regenerateBlock(block);
@@ -138,20 +143,12 @@ public class PlayerBreakBlock implements Listener {
         return blockHelper.getExperienceToGiveForBlock(blockType) == 0;
     }
 
+    private boolean shouldIgnoreItem(ItemStack item) {
+        return !itemHelper.isItemPickaxe(item);
+    }
+
     private boolean shouldLevelUp(Player player) {
         return experienceHelper.getExperienceToNextLevel(player) <= 0;
-    }
-
-    private boolean canUseHeldItem(Player player) {
-        PlayerInventory inventory = player.getInventory();
-        ItemStack heldItem = inventory.getItemInMainHand();
-        return itemHelper.canPlayerUsePickaxe(player, heldItem);
-    }
-
-    private boolean canHeldItemBreakBlock(Player player, Block block) {
-        PlayerInventory inventory = player.getInventory();
-        ItemStack heldItem = inventory.getItemInMainHand();
-        return itemHelper.canPickaxeBreakBlock(heldItem, block);
     }
 
     private void preventBlockBreakFeedback(Player player) {
@@ -162,10 +159,10 @@ public class PlayerBreakBlock implements Listener {
                 .sendTo(player, ChatMessageType.ACTION_BAR);
     }
 
-    private void giveExperienceToPickaxe(ItemStack item, Block block) {
-        if(itemHelper) {
-
-        }
+    private void giveExperienceToItemForBlock(ItemStack item, Block block) {
+        Material blockType = block.getType();
+        int exp = blockHelper.getExperienceToGiveForBlock(blockType);
+        itemHelper.addItemExperience(item, exp);
     }
 
 }

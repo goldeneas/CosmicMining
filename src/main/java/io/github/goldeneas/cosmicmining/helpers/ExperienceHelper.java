@@ -80,23 +80,24 @@ public class ExperienceHelper {
     }
 
     public int getRequiredLevelForPickaxe(ItemStack item) {
-        return getRequiredLevelForItem(item, requiredLevelForPickaxe);
+        Material m = item.getType();
+        String id = m.toString().toUpperCase();
+
+        String s = requiredLevelForPickaxe.getOrDefault(id, "0");
+        return Integer.parseInt(s);
     }
 
     public int getRequiredLevelForArmor(ItemStack item) {
-        return getRequiredLevelForItem(item, requiredLevelForArmor);
+        String materialString = item.getType().toString();
+        String armorType = materialString.split("_")[0];
+        String armorsOfType = armorType + "_ARMOR";
+
+        String requiredLevelString = requiredLevelForArmor.getOrDefault(armorsOfType, "0");
+        return Integer.parseInt(requiredLevelString);
     }
 
     public boolean isPlayerMaxLevel(Player player) {
         return getPlayerMaxLevel() <= getCurrentLevelForPlayer(player);
-    }
-
-    private int getRequiredLevelForItem(ItemStack item, HashMap<String, String> map) {
-        Material m = item.getType();
-        String id = m.toString();
-
-        String s = map.getOrDefault(id, "0");
-        return Integer.parseInt(s);
     }
 
 }

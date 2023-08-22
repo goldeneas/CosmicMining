@@ -34,17 +34,18 @@ public class ItemHelper {
         requiredPickaxesForBlocks = configHelper.getAttributeForBlocks("required-pickaxe");
     }
 
-    public Material getRequiredPickaxeForBlock(Material blockType) {
-        String requiredItemString = requiredPickaxesForBlocks.get(blockType.toString());
+    public Material getRequiredPickaxeForBlock(Block block) {
+        Material material = block.getType();
+        String requiredItemString = requiredPickaxesForBlocks.get(material.toString());
         return Material.valueOf(requiredItemString);
     }
 
     public boolean canPickaxeBreakBlock(ItemStack item, Block block) {
         Material itemType = item.getType();
-        Material requiredItemType = getRequiredPickaxeForBlock(block.getType());
+        Material requiredItemType = getRequiredPickaxeForBlock(block);
 
-        int itemWeight = getWeightForItem(itemType);
-        int requiredWeight = getWeightForItem(requiredItemType);
+        int itemWeight = getWeightForPickaxe(itemType);
+        int requiredWeight = getWeightForPickaxe(requiredItemType);
 
         return itemWeight >= requiredWeight;
     }
@@ -57,6 +58,11 @@ public class ItemHelper {
     public boolean canPlayerUseArmor(Player player, ItemStack item) {
         int requiredLevel = experienceHelper.getRequiredLevelForArmor(item);
         return canPlayerUseItem(player, requiredLevel);
+    }
+
+    public boolean isItemPickaxe(ItemStack item) {
+        Material itemMaterial = item.getType();
+        return getWeightForPickaxe(itemMaterial) != 0;
     }
 
     public int getItemLevel(ItemStack item) {
@@ -74,6 +80,8 @@ public class ItemHelper {
         if(itemLevel == 0)
             itemLevel = 1;
 
+        System.out.println("Item level is " + itemLevel);
+
         return itemLevel;
     }
 
@@ -88,6 +96,8 @@ public class ItemHelper {
 
         if(pdc.has(experienceKey, PersistentDataType.INTEGER))
             itemExperience = pdc.get(experienceKey, PersistentDataType.INTEGER);
+        else
+            System.out.println("Could not find experience for item!");
 
         return itemExperience;
     }
@@ -100,6 +110,8 @@ public class ItemHelper {
 
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
         pdc.set(experienceKey, PersistentDataType.INTEGER, experience);
+
+        System.out.println("Set item " + item.getType() + " experience to " + experience);
     }
 
     public void addItemExperience(ItemStack item, int experience){
@@ -110,6 +122,23 @@ public class ItemHelper {
 
         int currentExperience = getItemExperience(item);
         setItemExperience(item, currentExperience + experience);
+    }
+
+    public boolean isPickaxeFullOfExperience(ItemStack item) {
+        return getItemExperience(item) >= getPickaxeMaxExperience(item);
+    }
+
+    public int getPickaxeMaxExperience(ItemStack item) {
+        Material material = item.getType();
+        String baseMaxExperienceString = configHelper.getAttributeForPickaxe(material, "base-max-experience");
+        String levelMultiplierString = configHelper.getAttributeForPickaxe(material, "per-level-multiplier");
+
+        int levelMultiplier = Integer.parseInt(levelMultiplierString);
+        int baseMaxExperience = Integer.parseInt(baseMaxExperienceString);
+
+        System.out.println("Item " + item.getType() + " max experience is " +getItemMaxExperience(item, baseMaxExperience, levelMultiplier));
+
+        return getItemMaxExperience(item, baseMaxExperience, levelMultiplier);
     }
 
     private int getItemMaxExperience(ItemStack item, int baseMaxExperience, int levelMultiplier) {
@@ -127,7 +156,7 @@ public class ItemHelper {
         return requiredLevel <= playerLevel.orElse(0);
     }
 
-    private int getWeightForItem(Material material) {
+    private int getWeightForPickaxe(Material material) {
         String m = material.toString();
 
         switch (m) {
