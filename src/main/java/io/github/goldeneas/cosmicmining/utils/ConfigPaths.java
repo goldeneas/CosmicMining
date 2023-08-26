@@ -1,8 +1,8 @@
 package io.github.goldeneas.cosmicmining.utils;
 
 public class ConfigPaths {
-    public static String UPDATE_PERMISSION_PATH = "update-permission";
-    public static String BYPASS_PERMISSION_PATH = "bypass_permission";
+    public static final String UPDATE_PERMISSION_PATH = "update-permission";
+    public static final String BYPASS_PERMISSION_PATH = "bypass_permission";
 
     public static final String BLOCKS_PATH = "blocks";
     public static final String ARMORS_PATH = "armors";

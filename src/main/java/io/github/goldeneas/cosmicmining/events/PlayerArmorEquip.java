@@ -3,7 +3,7 @@ package io.github.goldeneas.cosmicmining.events;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
-import io.github.goldeneas.cosmicmining.FeedbackString;
+import io.github.goldeneas.cosmicmining.feedback.FeedbackString;
 import io.github.goldeneas.cosmicmining.CosmicMining;
 import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
 import net.md_5.bungee.api.ChatMessageType;

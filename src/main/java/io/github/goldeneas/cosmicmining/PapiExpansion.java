@@ -1,5 +1,6 @@
 package io.github.goldeneas.cosmicmining;
 
+import io.github.goldeneas.cosmicmining.feedback.FeedbackString;
 import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;

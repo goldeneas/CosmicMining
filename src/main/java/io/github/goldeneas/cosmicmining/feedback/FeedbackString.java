@@ -1,6 +1,7 @@
-package io.github.goldeneas.cosmicmining;
+package io.github.goldeneas.cosmicmining.feedback;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import io.github.goldeneas.cosmicmining.CosmicMining;
 import io.github.goldeneas.cosmicmining.utils.DependencyChecker;
 import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
 import me.clip.placeholderapi.PlaceholderAPI;

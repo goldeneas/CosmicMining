@@ -1,11 +1,12 @@
 package io.github.goldeneas.cosmicmining.events;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import io.github.goldeneas.cosmicmining.feedback.FeedbackLore;
 import io.github.goldeneas.cosmicmining.helpers.BlockHelper;
 import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import io.github.goldeneas.cosmicmining.Database;
-import io.github.goldeneas.cosmicmining.FeedbackString;
+import io.github.goldeneas.cosmicmining.feedback.FeedbackString;
 import io.github.goldeneas.cosmicmining.CosmicMining;
 import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
 import net.md_5.bungee.api.ChatMessageType;
@@ -18,8 +19,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class PlayerBreakBlock implements Listener {
     private static CosmicMining plugin;
@@ -71,8 +75,10 @@ public class PlayerBreakBlock implements Listener {
         if(!experienceHelper.isPlayerMaxLevel(player))
             giveExperienceToPlayer(player, block);
 
-        if(!itemHelper.isPickaxeFullOfExperience(heldItem))
-            giveExperienceToItemForBlock(heldItem, block);
+        if(!itemHelper.isPickaxeFullOfExperience(heldItem)) {
+            giveExperienceToPickaxe(heldItem, block);
+            refreshPickaxeLore(heldItem);
+        }
 
         giveBlockDrops(player, block);
         regenerateBlock(block);
@@ -159,10 +165,18 @@ public class PlayerBreakBlock implements Listener {
                 .sendTo(player, ChatMessageType.ACTION_BAR);
     }
 
-    private void giveExperienceToItemForBlock(ItemStack item, Block block) {
+    private void giveExperienceToPickaxe(ItemStack item, Block block) {
         Material blockType = block.getType();
         int exp = blockHelper.getExperienceToGiveForBlock(blockType);
         itemHelper.addItemExperience(item, exp);
+    }
+
+    private void refreshPickaxeLore(ItemStack item) {
+        List<String> lore = new FeedbackLore(plugin)
+                .get();
+
+        ItemMeta meta = item.getItemMeta();
+        meta.setLore(lore);
     }
 
 }
