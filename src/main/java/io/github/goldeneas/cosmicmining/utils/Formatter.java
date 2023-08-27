@@ -20,9 +20,11 @@ public class Formatter {
     }
 
     public static String replacePickaxePlaceholders(String message, ItemStack item, ItemHelper itemHelper) {
+        int currentPickaxeLevel = itemHelper.getItemLevel(item);
         int currentPickaxeExperience = itemHelper.getItemExperience(item);
         int pickaxeMaxExperience = itemHelper.getPickaxeMaxExperience(item);
 
+        message = replace(message, "%pickaxe_level%", currentPickaxeLevel);
         message = replace(message, "%pickaxe_experience%", currentPickaxeExperience);
         message = replace(message, "%pickaxe_max_experience%", pickaxeMaxExperience);
         message = replace(message, "%pickaxe_experience_bars%", getExperienceBars(currentPickaxeExperience, pickaxeMaxExperience));

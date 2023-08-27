@@ -9,6 +9,7 @@ import io.github.goldeneas.cosmicmining.Database;
 import io.github.goldeneas.cosmicmining.feedback.FeedbackString;
 import io.github.goldeneas.cosmicmining.CosmicMining;
 import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
+import io.github.goldeneas.cosmicmining.utils.Formatter;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -73,16 +74,17 @@ public class PlayerBreakBlock implements Listener {
         if(!experienceHelper.isPlayerMaxLevel(player))
             giveExperienceToPlayer(player, block);
 
-        if(!itemHelper.isPickaxeFullOfExperience(heldItem)) {
+        if(!itemHelper.isPickaxeFullOfExperience(heldItem))
             giveExperienceToPickaxe(heldItem, block);
-            refreshPickaxeLore(heldItem);
-        }
+        else
+            pickaxeLevelUp(player, heldItem);
 
+        refreshPickaxeMeta(heldItem);
         giveBlockDrops(player, block);
         regenerateBlock(block);
 
-        if(shouldLevelUp(player))
-            levelUp(player);
+        if(shouldPlayerLevelUp(player))
+            playerLevelUp(player);
     }
 
     private void giveBlockDrops(Player player, Block block) {
@@ -118,7 +120,16 @@ public class PlayerBreakBlock implements Listener {
         database.addExperience(player, expToGive);
     }
 
-    private void levelUp(Player player) {
+    private void pickaxeLevelUp(Player player, ItemStack item) {
+        itemHelper.addItemLevel(item, 1);
+
+        new FeedbackString(plugin)
+                .loadString("pickaxe-level-up")
+                .playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
+                .sendTo(player);
+    }
+
+    private void playerLevelUp(Player player) {
         int currentLevel = experienceHelper.getCurrentLevelForPlayer(player);
         int expToLevelUp = experienceHelper.getRequiredExperienceForLevel(currentLevel);
 
@@ -148,7 +159,7 @@ public class PlayerBreakBlock implements Listener {
         return !itemHelper.isItemPickaxe(item);
     }
 
-    private boolean shouldLevelUp(Player player) {
+    private boolean shouldPlayerLevelUp(Player player) {
         return experienceHelper.getExperienceToNextLevel(player) <= 0;
     }
 
@@ -165,13 +176,26 @@ public class PlayerBreakBlock implements Listener {
         itemHelper.addItemExperience(item, exp);
     }
 
-    private void refreshPickaxeLore(ItemStack item) {
+    // TODO: test this refresh meta with name
+    // and also test pickaxe level up
+    private void refreshPickaxeMeta(ItemStack item) {
         List<String> lore = new FeedbackLore(plugin)
                 .loadString("pickaxe-lore")
                 .getForPickaxe(item);
 
         ItemMeta meta = item.getItemMeta();
+
+        if(meta == null)
+            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
+
+        String baseName = item.getType().name();
+
+        String formattedName = Formatter
+                .replacePickaxePlaceholders(baseName + " &7[%pickaxe_level%]", item, itemHelper);
+
+        meta.setDisplayName(formattedName);
         meta.setLore(lore);
+
         item.setItemMeta(meta);
     }
 

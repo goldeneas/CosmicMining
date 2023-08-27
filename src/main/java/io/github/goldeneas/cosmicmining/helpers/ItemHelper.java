@@ -65,6 +65,8 @@ public class ItemHelper {
         return getWeightForPickaxe(itemMaterial) != 0;
     }
 
+    // TODO: PDC related functions can be made shorter by making a common function for them
+    // for example, we can make a function that return the PDC and also handles if ItemMeta is null
     public int getItemLevel(ItemStack item) {
         int itemLevel = 0;
         ItemMeta meta = item.getItemMeta();
@@ -81,6 +83,28 @@ public class ItemHelper {
             itemLevel = 1;
 
         return itemLevel;
+    }
+
+    public void addItemLevel(ItemStack item, int level) {
+        ItemMeta meta = item.getItemMeta();
+
+        if(meta == null)
+            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
+
+        int currentLevel = getItemLevel(item);
+        setItemExperience(item, currentLevel + level);
+    }
+
+    public void setItemLevel(ItemStack item, int level) {
+        ItemMeta meta = item.getItemMeta();
+
+        if(meta == null)
+            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
+
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        pdc.set(levelsKey, PersistentDataType.INTEGER, level);
+
+        item.setItemMeta(meta);
     }
 
     public int getItemExperience(ItemStack item) {
