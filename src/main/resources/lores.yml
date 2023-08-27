@@ -1,6 +1,7 @@
 pickaxe-lore:
   - "&dCosmical Experience"
-  - "&d%pickaxe_experience%/%pickaxe_max_experience%"
+  - "&7%pickaxe_experience_bars%"
+  - "&7(%pickaxe_experience%/%pickaxe_max_experience%)"
   - ""
   - "&7When your pickaxe is"
   - "&7full of experience, you can"

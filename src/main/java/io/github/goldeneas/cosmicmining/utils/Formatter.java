@@ -14,19 +14,18 @@ public class Formatter {
 
         message = replace(message, "%player_level%", currentLevel);
         message = replace(message, "%player_experience%", currentExperience);
-
-        String requiredExperienceString = experienceHelper.isPlayerMaxLevel(player) ? "∞" : String.valueOf(requiredExperience);
-        message = replace(message, "%player_required_experience%", requiredExperienceString);
+        message = replace(message, "%player_required_experience%", requiredExperience);
 
         return message;
     }
 
     public static String replacePickaxePlaceholders(String message, ItemStack item, ItemHelper itemHelper) {
         int currentPickaxeExperience = itemHelper.getItemExperience(item);
-        int currentPickaxeMaxExperience = itemHelper.getPickaxeMaxExperience(item);
+        int pickaxeMaxExperience = itemHelper.getPickaxeMaxExperience(item);
 
         message = replace(message, "%pickaxe_experience%", currentPickaxeExperience);
-        message = replace(message, "%pickaxe_max_experience%", currentPickaxeMaxExperience);
+        message = replace(message, "%pickaxe_max_experience%", pickaxeMaxExperience);
+        message = replace(message, "%pickaxe_experience_bars%", getExperienceBars(currentPickaxeExperience, pickaxeMaxExperience));
 
         return message;
     }
@@ -37,6 +36,18 @@ public class Formatter {
 
     private static String replace(String message, String from, int to) {
         return message.replace(from, String.valueOf(to));
+    }
+
+    private static String getExperienceBars(float currentExperience, float maxExperience) {
+        int barsLength = 25;
+        String barSymbol = "▍";
+        String fullBarColor = "&d";
+        String emptyBarColor = "&7";
+
+        int fullBarsLength = Math.round(currentExperience / maxExperience * barsLength);
+        int emptyBarsLength = barsLength - fullBarsLength;
+
+        return (fullBarColor + barSymbol).repeat(fullBarsLength) + (emptyBarColor + barSymbol).repeat(emptyBarsLength);
     }
 
 }
