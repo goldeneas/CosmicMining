@@ -2,9 +2,8 @@ package io.github.goldeneas.cosmicmining.feedback;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.goldeneas.cosmicmining.CosmicMining;
-import io.github.goldeneas.cosmicmining.utils.DependencyChecker;
 import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
-import me.clip.placeholderapi.PlaceholderAPI;
+import io.github.goldeneas.cosmicmining.utils.Formatter;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
@@ -19,6 +18,7 @@ public class FeedbackString {
 
     private final YamlDocument messages;
     private final StringBuilder stringBuilder;
+    private final ExperienceHelper experienceHelper;
 
     private String title;
     private String subtitle;
@@ -27,6 +27,7 @@ public class FeedbackString {
     public FeedbackString(CosmicMining plugin) {
         cachedStrings = new HashMap<>();
         this.stringBuilder = new StringBuilder();
+        this.experienceHelper = plugin.getExperienceHelper();
         this.messages = plugin.getConfig("messages.yml");
 
         this.title = "";
@@ -71,37 +72,6 @@ public class FeedbackString {
         return stringBuilder.toString();
     }
 
-    public FeedbackString formatDefault(ExperienceHelper experienceHelper, Player player) {
-        int currentLevel = experienceHelper.getCurrentLevelForPlayer(player);
-        int currentExperience = experienceHelper.getCurrentExperienceForPlayer(player);
-        int requiredExperience = experienceHelper.getRequiredExperienceForLevel(currentLevel);
-
-        replace("%player_level%", currentLevel);
-        replace("%player_experience%", currentExperience);
-
-        if(!experienceHelper.isPlayerMaxLevel(player))
-            replace("%player_required_experience%", requiredExperience);
-        else
-            replace("%player_required_experience%", "∞");
-
-        return this;
-    }
-
-    public FeedbackString replace(String from, int to) {
-        return replace(from, String.valueOf(to));
-    }
-
-    public FeedbackString replace(String from, String to) {
-        int index = stringBuilder.indexOf(from);
-        while (index != -1) {
-            stringBuilder.replace(index, index + from.length(), to);
-            index += to.length();
-            index = stringBuilder.indexOf(from, index);
-        }
-
-        return this;
-    }
-
     public FeedbackString setTitle(String title, String subtitle) {
         this.title = title;
         this.subtitle = subtitle;
@@ -115,9 +85,7 @@ public class FeedbackString {
 
     public void sendTo(Player player, ChatMessageType type) {
         String message = stringBuilder.toString();
-
-        if(DependencyChecker.IS_PLACEHOLDERAPI_AVAILABLE)
-            message = PlaceholderAPI.setPlaceholders(player, message);
+        message = Formatter.setPlaceholders(message, player, experienceHelper);
 
         TextComponent component = new TextComponent(message);
         player.spigot().sendMessage(type, component);
@@ -127,7 +95,7 @@ public class FeedbackString {
             player.playSound(l, soundToPlay, 1.0f, 1.0f);
         }
 
-        if(!title.equals(""))
+        if(!title.isEmpty())
             player.sendTitle(title, subtitle, 10, 70, 20);
     }
 

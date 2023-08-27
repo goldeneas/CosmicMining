@@ -1,17 +1,15 @@
 package io.github.goldeneas.cosmicmining;
 
-import io.github.goldeneas.cosmicmining.feedback.FeedbackString;
 import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
+import io.github.goldeneas.cosmicmining.utils.Formatter;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class PapiExpansion extends PlaceholderExpansion {
-    private static CosmicMining plugin;
     private final ExperienceHelper experienceHelper;
 
-    public PapiExpansion(CosmicMining _plugin, ExperienceHelper experienceHelper) {
-        plugin = _plugin;
+    public PapiExpansion(ExperienceHelper experienceHelper) {
         this.experienceHelper = experienceHelper;
     }
 
@@ -37,9 +35,7 @@ public class PapiExpansion extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, @NotNull String params) {
-        return new FeedbackString(plugin)
-                .append("%" + params + "%")
-                .formatDefault(experienceHelper, player)
-                .get();
+        String requiredPlaceholder = "%" + params + "%";
+        return Formatter.setPlaceholders(requiredPlaceholder, player, experienceHelper);
     }
 }

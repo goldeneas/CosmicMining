@@ -21,7 +21,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,15 +33,14 @@ public class PlayerBreakBlock implements Listener {
     private final BlockHelper blockHelper;
     private final ExperienceHelper experienceHelper;
 
-    public PlayerBreakBlock(CosmicMining _plugin, Database database, BlockHelper blockHelper,
-                            ExperienceHelper experienceHelper, ItemHelper itemHelper) {
+    public PlayerBreakBlock(CosmicMining _plugin) {
         plugin = _plugin;
         config = plugin.getConfig("config.yml");
 
-        this.database = database;
-        this.itemHelper = itemHelper;
-        this.blockHelper = blockHelper;
-        this.experienceHelper = experienceHelper;
+        this.database = plugin.getDatabase();
+        this.itemHelper = plugin.getItemHelper();
+        this.blockHelper = plugin.getBlockHelper();
+        this.experienceHelper = plugin.getExperienceHelper();
     }
 
     @EventHandler
@@ -77,7 +75,7 @@ public class PlayerBreakBlock implements Listener {
 
         if(!itemHelper.isPickaxeFullOfExperience(heldItem)) {
             giveExperienceToPickaxe(heldItem, block);
-            refreshPickaxeLore(heldItem);
+            refreshPickaxeLore(player, heldItem);
         }
 
         giveBlockDrops(player, block);
@@ -98,7 +96,6 @@ public class PlayerBreakBlock implements Listener {
 
             new FeedbackString(plugin)
                     .loadString("inventory-full")
-                    .formatDefault(experienceHelper, player)
                     .playSound(Sound.ENTITY_PAINTING_BREAK)
                     .sendTo(player, ChatMessageType.ACTION_BAR);
         }
@@ -130,7 +127,6 @@ public class PlayerBreakBlock implements Listener {
 
         new FeedbackString(plugin)
                 .loadString("level-up")
-                .formatDefault(experienceHelper, player)
                 .playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
                 .loadTitle("level-up-title")
                 .sendTo(player);
@@ -139,7 +135,6 @@ public class PlayerBreakBlock implements Listener {
     private void denyPickaxeUsageFeedback(Player player) {
         new FeedbackString(plugin)
                 .loadString("pickaxe-level-too-low")
-                .formatDefault(experienceHelper, player)
                 .playSound(Sound.ENTITY_VILLAGER_NO)
                 .sendTo(player, ChatMessageType.ACTION_BAR);
     }
@@ -160,7 +155,6 @@ public class PlayerBreakBlock implements Listener {
     private void preventBlockBreakFeedback(Player player) {
         new FeedbackString(plugin)
                 .loadString("incorrect-item")
-                .formatDefault(experienceHelper, player)
                 .playSound(Sound.ENTITY_VILLAGER_NO)
                 .sendTo(player, ChatMessageType.ACTION_BAR);
     }
@@ -171,9 +165,10 @@ public class PlayerBreakBlock implements Listener {
         itemHelper.addItemExperience(item, exp);
     }
 
-    private void refreshPickaxeLore(ItemStack item) {
+    private void refreshPickaxeLore(Player player, ItemStack item) {
         List<String> lore = new FeedbackLore(plugin)
-                .get();
+                .loadString("pickaxe-lore")
+                .getForPlayer(player);
 
         ItemMeta meta = item.getItemMeta();
         meta.setLore(lore);

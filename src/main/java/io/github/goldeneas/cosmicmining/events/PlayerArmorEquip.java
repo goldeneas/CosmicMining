@@ -31,14 +31,12 @@ public class PlayerArmorEquip implements Listener {
 
     private final YamlDocument config;
     private final ItemHelper itemHelper;
-    private final ExperienceHelper experienceHelper;
 
-    public PlayerArmorEquip(CosmicMining _plugin, ExperienceHelper experienceHelper, ItemHelper itemHelper) {
+    public PlayerArmorEquip(CosmicMining _plugin) {
         plugin = _plugin;
         config = plugin.getConfig("config.yml");
 
-        this.itemHelper = itemHelper;
-        this.experienceHelper = experienceHelper;
+        this.itemHelper = plugin.getItemHelper();
     }
 
     @EventHandler
@@ -129,7 +127,6 @@ public class PlayerArmorEquip implements Listener {
     private void denyArmorUsage(Player player, Cancellable e) {
         new FeedbackString(plugin)
                 .loadString("armor-level-too-low")
-                .formatDefault(experienceHelper, player)
                 .playSound(Sound.ENTITY_VILLAGER_NO)
                 .sendTo(player, ChatMessageType.ACTION_BAR);
 

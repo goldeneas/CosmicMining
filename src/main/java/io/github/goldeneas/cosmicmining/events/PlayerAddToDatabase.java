@@ -1,5 +1,6 @@
 package io.github.goldeneas.cosmicmining.events;
 
+import io.github.goldeneas.cosmicmining.CosmicMining;
 import io.github.goldeneas.cosmicmining.Database;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,8 +12,8 @@ import java.util.OptionalInt;
 public class PlayerAddToDatabase implements Listener {
     private final Database database;
 
-    public PlayerAddToDatabase(Database database) {
-        this.database = database;
+    public PlayerAddToDatabase(CosmicMining plugin) {
+        this.database = plugin.getDatabase();
     }
 
     @EventHandler

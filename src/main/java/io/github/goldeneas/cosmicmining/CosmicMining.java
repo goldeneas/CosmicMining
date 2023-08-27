@@ -22,25 +22,31 @@ import java.util.HashMap;
 public final class CosmicMining extends JavaPlugin {
     private HashMap<String, YamlDocument> configs;
 
+    private Database database;
+    private ItemHelper itemHelper;
+    private BlockHelper blockHelper;
+    private ConfigHelper configHelper;
+    private ExperienceHelper experienceHelper;
+
     @Override
     public void onEnable() {
         configs = new HashMap<>();
         createConfig("config.yml");
         createConfig("messages.yml");
 
-        Database database = new Database(this);
-        ConfigHelper configHelper = new ConfigHelper(this);
-        BlockHelper blockHelper = new BlockHelper(configHelper);
-        ExperienceHelper experienceHelper = new ExperienceHelper(database, configHelper);
-        ItemHelper itemHelper = new ItemHelper(this, database, configHelper, experienceHelper);
-
-        getServer().getPluginManager().registerEvents(new PlayerAddToDatabase(database), this);
-        getServer().getPluginManager().registerEvents(new PlayerArmorEquip(this, experienceHelper, itemHelper), this);
-        getServer().getPluginManager().registerEvents(new PlayerBreakBlock(this, database, blockHelper, experienceHelper, itemHelper), this);
+        database = new Database(this);
+        configHelper = new ConfigHelper(this);
+        blockHelper = new BlockHelper(configHelper);
+        experienceHelper = new ExperienceHelper(database, configHelper);
+        itemHelper = new ItemHelper(this, database, configHelper, experienceHelper);
 
         checkForDependencies();
         if(DependencyChecker.IS_PLACEHOLDERAPI_AVAILABLE)
-            new PapiExpansion(this, experienceHelper).register();
+            new PapiExpansion(experienceHelper).register();
+
+        getServer().getPluginManager().registerEvents(new PlayerBreakBlock(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerArmorEquip(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerAddToDatabase(this), this);
 
         checkForUpdates();
         enablePluginMetrics();
@@ -48,6 +54,26 @@ public final class CosmicMining extends JavaPlugin {
 
     public YamlDocument getConfig(String name) {
         return configs.get(name);
+    }
+
+    public ItemHelper getItemHelper() {
+        return itemHelper;
+    }
+
+    public ConfigHelper getConfigHelper() {
+        return configHelper;
+    }
+
+    public ExperienceHelper getExperienceHelper() {
+        return experienceHelper;
+    }
+
+    public BlockHelper getBlockHelper() {
+        return blockHelper;
+    }
+
+    public Database getDatabase() {
+        return database;
     }
 
     private void createConfig(String name) {
