@@ -36,6 +36,6 @@ public class PapiExpansion extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player player, @NotNull String params) {
         String requiredPlaceholder = "%" + params + "%";
-        return Formatter.setPlaceholders(requiredPlaceholder, player, experienceHelper);
+        return Formatter.replacePlayerPlaceholders(requiredPlaceholder, player, experienceHelper);
     }
 }

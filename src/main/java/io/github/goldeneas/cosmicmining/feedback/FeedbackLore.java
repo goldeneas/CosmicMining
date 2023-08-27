@@ -2,9 +2,10 @@ package io.github.goldeneas.cosmicmining.feedback;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.goldeneas.cosmicmining.CosmicMining;
-import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
+import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
 import io.github.goldeneas.cosmicmining.utils.Formatter;
-import org.bukkit.entity.Player;
+import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,12 +16,12 @@ public class FeedbackLore {
 
     private List<String> lore;
     private final YamlDocument lores;
-    private final ExperienceHelper experienceHelper;
+    private final ItemHelper itemHelper;
 
     public FeedbackLore(CosmicMining plugin) {
         cachedLores = new HashMap<>();
         this.lores = plugin.getConfig("lores.yml");
-        this.experienceHelper = plugin.getExperienceHelper();
+        this.itemHelper = plugin.getItemHelper();
     }
 
     public FeedbackLore loadString(String path) {
@@ -31,12 +32,14 @@ public class FeedbackLore {
         return this;
     }
 
-    public List<String> getForPlayer(Player player) {
+    public List<String> getForPickaxe(ItemStack item) {
         ArrayList<String> temp = new ArrayList<>();
 
         for(String line : lore) {
-            String formattedLine = Formatter.setPlaceholders(line, player, experienceHelper);
-            temp.add(formattedLine);
+            String modifiedLine = line;
+            modifiedLine = Formatter.replacePickaxePlaceholders(modifiedLine, item, itemHelper);
+            modifiedLine = ChatColor.translateAlternateColorCodes('&', modifiedLine);
+            temp.add(modifiedLine);
         }
 
         return temp;

@@ -85,7 +85,7 @@ public class FeedbackString {
 
     public void sendTo(Player player, ChatMessageType type) {
         String message = stringBuilder.toString();
-        message = Formatter.setPlaceholders(message, player, experienceHelper);
+        message = Formatter.replacePlayerPlaceholders(message, player, experienceHelper);
 
         TextComponent component = new TextComponent(message);
         player.spigot().sendMessage(type, component);

@@ -31,6 +31,7 @@ public final class CosmicMining extends JavaPlugin {
     @Override
     public void onEnable() {
         configs = new HashMap<>();
+        createConfig("lores.yml");
         createConfig("config.yml");
         createConfig("messages.yml");
 

@@ -75,7 +75,7 @@ public class PlayerBreakBlock implements Listener {
 
         if(!itemHelper.isPickaxeFullOfExperience(heldItem)) {
             giveExperienceToPickaxe(heldItem, block);
-            refreshPickaxeLore(player, heldItem);
+            refreshPickaxeLore(heldItem);
         }
 
         giveBlockDrops(player, block);
@@ -165,13 +165,14 @@ public class PlayerBreakBlock implements Listener {
         itemHelper.addItemExperience(item, exp);
     }
 
-    private void refreshPickaxeLore(Player player, ItemStack item) {
+    private void refreshPickaxeLore(ItemStack item) {
         List<String> lore = new FeedbackLore(plugin)
                 .loadString("pickaxe-lore")
-                .getForPlayer(player);
+                .getForPickaxe(item);
 
         ItemMeta meta = item.getItemMeta();
         meta.setLore(lore);
+        item.setItemMeta(meta);
     }
 
 }
