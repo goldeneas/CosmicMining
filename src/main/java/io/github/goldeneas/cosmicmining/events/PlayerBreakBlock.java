@@ -19,6 +19,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -180,14 +182,13 @@ public class PlayerBreakBlock implements Listener {
     }
 
     private void refreshPickaxeMeta(ItemStack item) {
+        ItemMeta meta = item.getItemMeta();
+        if(meta == null)
+            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
+
         List<String> lore = new FeedbackLore(plugin)
                 .loadString("pickaxe-lore")
                 .getForPickaxe(item);
-
-        ItemMeta meta = item.getItemMeta();
-
-        if(meta == null)
-            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
 
         String baseName = StringUtils.capitalizeMaterialName(item.getType());
         String formattedName = baseName + "&7[%pickaxe_level%]";
@@ -195,9 +196,10 @@ public class PlayerBreakBlock implements Listener {
         formattedName = Formatter.replacePickaxePlaceholders(formattedName, item, itemHelper);
         formattedName = ChatColor.translateAlternateColorCodes('&', formattedName);
 
-        meta.setDisplayName(formattedName);
         meta.setLore(lore);
-
+        meta.setUnbreakable(true);
+        meta.setDisplayName(formattedName);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         item.setItemMeta(meta);
     }
 

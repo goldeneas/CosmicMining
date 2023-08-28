@@ -149,9 +149,6 @@ public class ItemHelper {
     }
 
     public boolean isPickaxeFullOfExperience(ItemStack item) {
-        System.out.println(getItemExperience(item));
-        System.out.println(getPickaxeMaxExperience(item));
-        System.out.println(getItemExperience(item) >= getPickaxeMaxExperience(item));
         return getItemExperience(item) >= getPickaxeMaxExperience(item);
     }
 
