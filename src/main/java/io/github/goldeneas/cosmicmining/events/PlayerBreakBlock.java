@@ -10,6 +10,7 @@ import io.github.goldeneas.cosmicmining.feedback.FeedbackString;
 import io.github.goldeneas.cosmicmining.CosmicMining;
 import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
 import io.github.goldeneas.cosmicmining.utils.Formatter;
+import io.github.goldeneas.cosmicmining.utils.StringUtils;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -74,9 +75,8 @@ public class PlayerBreakBlock implements Listener {
         if(!experienceHelper.isPlayerMaxLevel(player))
             giveExperienceToPlayer(player, block);
 
-        if(!itemHelper.isPickaxeFullOfExperience(heldItem))
-            giveExperienceToPickaxe(heldItem, block);
-        else
+        giveExperienceToPickaxe(heldItem, block);
+        if(itemHelper.isPickaxeFullOfExperience(heldItem))
             pickaxeLevelUp(player, heldItem);
 
         refreshPickaxeMeta(heldItem);
@@ -121,7 +121,10 @@ public class PlayerBreakBlock implements Listener {
     }
 
     private void pickaxeLevelUp(Player player, ItemStack item) {
+        int pickaxeMaxExperience = itemHelper.getPickaxeMaxExperience(item);
+
         itemHelper.addItemLevel(item, 1);
+        itemHelper.removeItemExperience(item, pickaxeMaxExperience);
 
         new FeedbackString(plugin)
                 .loadString("pickaxe-level-up")
@@ -176,8 +179,6 @@ public class PlayerBreakBlock implements Listener {
         itemHelper.addItemExperience(item, exp);
     }
 
-    // TODO: test this refresh meta with name
-    // and also test pickaxe level up
     private void refreshPickaxeMeta(ItemStack item) {
         List<String> lore = new FeedbackLore(plugin)
                 .loadString("pickaxe-lore")
@@ -188,10 +189,11 @@ public class PlayerBreakBlock implements Listener {
         if(meta == null)
             throw new UnsupportedOperationException("Could not get meta for " + item.getType());
 
-        String baseName = item.getType().name();
+        String baseName = StringUtils.capitalizeMaterialName(item.getType());
+        String formattedName = baseName + "&7[%pickaxe_level%]";
 
-        String formattedName = Formatter
-                .replacePickaxePlaceholders(baseName + " &7[%pickaxe_level%]", item, itemHelper);
+        formattedName = Formatter.replacePickaxePlaceholders(formattedName, item, itemHelper);
+        formattedName = ChatColor.translateAlternateColorCodes('&', formattedName);
 
         meta.setDisplayName(formattedName);
         meta.setLore(lore);

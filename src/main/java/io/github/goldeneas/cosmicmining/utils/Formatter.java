@@ -46,7 +46,7 @@ public class Formatter {
         String fullBarColor = "&d";
         String emptyBarColor = "&7";
 
-        int fullBarsLength = Math.round(currentExperience / maxExperience * barsLength);
+        int fullBarsLength = (int) (currentExperience / maxExperience * barsLength);
         int emptyBarsLength = barsLength - fullBarsLength;
 
         return (fullBarColor + barSymbol).repeat(fullBarsLength) + (emptyBarColor + barSymbol).repeat(emptyBarsLength);
