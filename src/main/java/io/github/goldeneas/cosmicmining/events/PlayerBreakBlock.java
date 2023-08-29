@@ -6,7 +6,7 @@ import io.github.goldeneas.cosmicmining.helpers.BlockHelper;
 import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import io.github.goldeneas.cosmicmining.Database;
-import io.github.goldeneas.cosmicmining.feedback.FeedbackString;
+import io.github.goldeneas.cosmicmining.feedback.FeedbackMessage;
 import io.github.goldeneas.cosmicmining.CosmicMining;
 import io.github.goldeneas.cosmicmining.helpers.PlayerHelper;
 import io.github.goldeneas.cosmicmining.utils.Formatter;
@@ -97,7 +97,7 @@ public class PlayerBreakBlock implements Listener {
             if(itemsNotStored.isEmpty())
                 continue;
 
-            new FeedbackString(plugin)
+            new FeedbackMessage(plugin)
                     .loadString("inventory-full")
                     .playSound(Sound.ENTITY_PAINTING_BREAK)
                     .sendTo(player, ChatMessageType.ACTION_BAR);
@@ -127,7 +127,7 @@ public class PlayerBreakBlock implements Listener {
         itemHelper.addItemLevel(item, 1);
         itemHelper.removeItemExperience(item, pickaxeMaxExperience);
 
-        new FeedbackString(plugin)
+        new FeedbackMessage(plugin)
                 .loadString("pickaxe-level-up")
                 .playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
                 .sendTo(player);
@@ -140,7 +140,7 @@ public class PlayerBreakBlock implements Listener {
         database.addLevels(player, 1);
         database.removeExperience(player, expToLevelUp);
 
-        new FeedbackString(plugin)
+        new FeedbackMessage(plugin)
                 .loadString("level-up")
                 .playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
                 .loadTitle("level-up-title")
@@ -148,7 +148,7 @@ public class PlayerBreakBlock implements Listener {
     }
 
     private void denyPickaxeUsageFeedback(Player player) {
-        new FeedbackString(plugin)
+        new FeedbackMessage(plugin)
                 .loadString("pickaxe-level-too-low")
                 .playSound(Sound.ENTITY_VILLAGER_NO)
                 .sendTo(player, ChatMessageType.ACTION_BAR);
@@ -168,7 +168,7 @@ public class PlayerBreakBlock implements Listener {
     }
 
     private void preventBlockBreakFeedback(Player player) {
-        new FeedbackString(plugin)
+        new FeedbackMessage(plugin)
                 .loadString("incorrect-item")
                 .playSound(Sound.ENTITY_VILLAGER_NO)
                 .sendTo(player, ChatMessageType.ACTION_BAR);

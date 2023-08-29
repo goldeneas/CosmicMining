@@ -3,7 +3,7 @@ package io.github.goldeneas.cosmicmining.events;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.goldeneas.cosmicmining.helpers.PlayerHelper;
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
-import io.github.goldeneas.cosmicmining.feedback.FeedbackString;
+import io.github.goldeneas.cosmicmining.feedback.FeedbackMessage;
 import io.github.goldeneas.cosmicmining.CosmicMining;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.GameMode;
@@ -124,7 +124,7 @@ public class PlayerArmorEquip implements Listener {
     }
 
     private void denyArmorUsage(Player player, Cancellable e) {
-        new FeedbackString(plugin)
+        new FeedbackMessage(plugin)
                 .loadString("armor-level-too-low")
                 .playSound(Sound.ENTITY_VILLAGER_NO)
                 .sendTo(player, ChatMessageType.ACTION_BAR);
