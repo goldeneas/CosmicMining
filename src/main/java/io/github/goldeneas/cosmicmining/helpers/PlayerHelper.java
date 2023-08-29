@@ -2,25 +2,22 @@ package io.github.goldeneas.cosmicmining.helpers;
 
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import io.github.goldeneas.cosmicmining.Database;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.OptionalInt;
 
-public class ExperienceHelper {
-    private static Database database;
+public class PlayerHelper {
+    private final Database database;
+    private final ItemHelper itemHelper;
 
-    private static HashMap<String, String> requiredLevelForArmor;
-    private static HashMap<String, String> requiredLevelForPickaxe;
     private static HashMap<String, String> requiredExperienceForLevel;
 
-    public ExperienceHelper(Database _database, ConfigHelper configHelper) {
-        database = _database;
+    public PlayerHelper(Database database, ItemHelper itemHelper, ConfigHelper configHelper) {
+        this.database = database;
+        this.itemHelper = itemHelper;
 
-        requiredLevelForArmor = configHelper.getAttributeForArmors("required-level");
-        requiredLevelForPickaxe = configHelper.getAttributeForPickaxes("required-level");
         requiredExperienceForLevel = configHelper
                 .getSectionWithIntegers(ConfigPaths.REQUIRED_EXPERIENCE_FOR_LEVEL_PATH, "config.yml");
     }
@@ -79,25 +76,23 @@ public class ExperienceHelper {
         return requiredExp - (currentExp.orElse(0));
     }
 
-    public int getRequiredLevelForPickaxe(ItemStack item) {
-        Material m = item.getType();
-        String id = m.toString().toUpperCase();
-
-        String s = requiredLevelForPickaxe.getOrDefault(id, "0");
-        return Integer.parseInt(s);
+    public boolean canPlayerUsePickaxe(Player player, ItemStack item) {
+        int requiredLevel = itemHelper.getRequiredLevelForPickaxe(item);
+        return canPlayerUseItem(player, requiredLevel);
     }
 
-    public int getRequiredLevelForArmor(ItemStack item) {
-        String materialString = item.getType().toString();
-        String armorType = materialString.split("_")[0];
-        String armorsOfType = armorType + "_ARMOR";
-
-        String requiredLevelString = requiredLevelForArmor.getOrDefault(armorsOfType, "0");
-        return Integer.parseInt(requiredLevelString);
+    public boolean canPlayerUseArmor(Player player, ItemStack item) {
+        int requiredLevel = itemHelper.getRequiredLevelForArmor(item);
+        return canPlayerUseItem(player, requiredLevel);
     }
 
     public boolean isPlayerMaxLevel(Player player) {
         return getPlayerMaxLevel() <= getCurrentLevelForPlayer(player);
     }
 
+    private boolean canPlayerUseItem(Player player, int requiredLevel) {
+        OptionalInt playerLevel = database.getLevel(player);
+
+        return requiredLevel <= playerLevel.orElse(0);
+    }
 }

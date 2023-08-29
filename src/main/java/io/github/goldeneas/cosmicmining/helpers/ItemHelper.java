@@ -1,36 +1,33 @@
 package io.github.goldeneas.cosmicmining.helpers;
 
 import io.github.goldeneas.cosmicmining.CosmicMining;
-import io.github.goldeneas.cosmicmining.Database;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.HashMap;
-import java.util.OptionalInt;
 
 public class ItemHelper {
     private final NamespacedKey levelsKey;
     private final NamespacedKey experienceKey;
 
-    private final Database database;
     private final ConfigHelper configHelper;
-    private final ExperienceHelper experienceHelper;
+    private final HashMap<String, String> requiredLevelForArmor;
+    private final HashMap<String, String> requiredLevelForPickaxe;
     private final HashMap<String, String> requiredPickaxesForBlocks;
 
-    public ItemHelper(CosmicMining _plugin, Database database, ConfigHelper configHelper, ExperienceHelper experienceHelper) {
-        this.database = database;
+    public ItemHelper(CosmicMining plugin, ConfigHelper configHelper) {
         this.configHelper = configHelper;
-        this.experienceHelper = experienceHelper;
 
-        this.levelsKey = new NamespacedKey(_plugin, "levels");
-        this.experienceKey = new NamespacedKey(_plugin, "experience");
+        this.levelsKey = new NamespacedKey(plugin, "levels");
+        this.experienceKey = new NamespacedKey(plugin, "experience");
 
+        requiredLevelForArmor = configHelper.getAttributeForArmors("required-level");
+        requiredLevelForPickaxe = configHelper.getAttributeForPickaxes("required-level");
         requiredPickaxesForBlocks = configHelper.getAttributeForBlocks("required-pickaxe");
     }
 
@@ -48,16 +45,6 @@ public class ItemHelper {
         int requiredWeight = getWeightForPickaxe(requiredItemType);
 
         return itemWeight >= requiredWeight;
-    }
-
-    public boolean canPlayerUsePickaxe(Player player, ItemStack item) {
-        int requiredLevel = experienceHelper.getRequiredLevelForPickaxe(item);
-        return canPlayerUseItem(player, requiredLevel);
-    }
-
-    public boolean canPlayerUseArmor(Player player, ItemStack item) {
-        int requiredLevel = experienceHelper.getRequiredLevelForArmor(item);
-        return canPlayerUseItem(player, requiredLevel);
     }
 
     public boolean isItemPickaxe(ItemStack item) {
@@ -163,6 +150,23 @@ public class ItemHelper {
         return getItemMaxExperience(item, baseMaxExperience, levelMultiplier);
     }
 
+    public int getRequiredLevelForPickaxe(ItemStack item) {
+        Material m = item.getType();
+        String id = m.toString().toUpperCase();
+
+        String s = requiredLevelForPickaxe.getOrDefault(id, "0");
+        return Integer.parseInt(s);
+    }
+
+    public int getRequiredLevelForArmor(ItemStack item) {
+        String materialString = item.getType().toString();
+        String armorType = materialString.split("_")[0];
+        String armorsOfType = armorType + "_ARMOR";
+
+        String requiredLevelString = requiredLevelForArmor.getOrDefault(armorsOfType, "0");
+        return Integer.parseInt(requiredLevelString);
+    }
+
     private int getItemMaxExperience(ItemStack item, int baseMaxExperience, int levelMultiplier) {
         int itemLevel = getItemLevel(item);
 
@@ -170,12 +174,6 @@ public class ItemHelper {
             return baseMaxExperience;
         else
             return levelMultiplier * itemLevel * baseMaxExperience;
-    }
-
-    private boolean canPlayerUseItem(Player player, int requiredLevel) {
-        OptionalInt playerLevel = database.getLevel(player);
-
-        return requiredLevel <= playerLevel.orElse(0);
     }
 
     private int getWeightForPickaxe(Material material) {

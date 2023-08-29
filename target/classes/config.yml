@@ -23,22 +23,6 @@ blocks:
     required-pickaxe: NETHERITE_PICKAXE
     experience-dropped: 25
 
-level-ups:
-  experience-to-level:
-    5: 100
-    10: 150
-    20: 225
-    40: 300
-    55: 370
-    75: 450
-    80: 500
-    90: 700
-    91: 800
-    92: 850
-    93: 900
-    94: 1000
-    100: 1100
-
 pickaxes:
   WOODEN_PICKAXE:
     required-level: 0
@@ -90,3 +74,19 @@ armors:
     required-level: 90
     base-max-experience: 400
     per-level-multiplier: 2.2
+
+level-ups:
+  experience-to-level:
+    5: 100
+    10: 150
+    20: 225
+    40: 300
+    55: 370
+    75: 450
+    80: 500
+    90: 700
+    91: 800
+    92: 850
+    93: 900
+    94: 1000
+    100: 1100

@@ -51,11 +51,6 @@ public class ConfigHelper {
     }
 
     public HashMap<String, String> getAttributeForArmors(String attributeName) {
-
-        for(String m : getMaterials(ConfigPaths.ARMORS_PATH, armorsConfig)) {
-
-        }
-
         return getAttributes(attributeName, ConfigPaths.ARMORS_PATH, armorsConfig);
     }
 

@@ -1,16 +1,16 @@
 package io.github.goldeneas.cosmicmining.utils;
 
-import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
+import io.github.goldeneas.cosmicmining.helpers.PlayerHelper;
 import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Formatter {
 
-    public static String replacePlayerPlaceholders(String message, Player player, ExperienceHelper experienceHelper) {
-        int currentLevel = experienceHelper.getCurrentLevelForPlayer(player);
-        int currentExperience = experienceHelper.getCurrentExperienceForPlayer(player);
-        int requiredExperience = experienceHelper.getRequiredExperienceForLevel(currentLevel);
+    public static String replacePlayerPlaceholders(String message, Player player, PlayerHelper playerHelper) {
+        int currentLevel = playerHelper.getCurrentLevelForPlayer(player);
+        int currentExperience = playerHelper.getCurrentExperienceForPlayer(player);
+        int requiredExperience = playerHelper.getRequiredExperienceForLevel(currentLevel);
 
         message = replace(message, "%player_level%", currentLevel);
         message = replace(message, "%player_experience%", currentExperience);

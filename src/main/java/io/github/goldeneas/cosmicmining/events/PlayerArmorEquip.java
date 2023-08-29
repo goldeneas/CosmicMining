@@ -1,11 +1,10 @@
 package io.github.goldeneas.cosmicmining.events;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
-import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
+import io.github.goldeneas.cosmicmining.helpers.PlayerHelper;
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import io.github.goldeneas.cosmicmining.feedback.FeedbackString;
 import io.github.goldeneas.cosmicmining.CosmicMining;
-import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -30,13 +29,13 @@ public class PlayerArmorEquip implements Listener {
     private static CosmicMining plugin;
 
     private final YamlDocument config;
-    private final ItemHelper itemHelper;
+    private final PlayerHelper playerHelper;
 
     public PlayerArmorEquip(CosmicMining _plugin) {
         plugin = _plugin;
         config = plugin.getConfig("config.yml");
 
-        this.itemHelper = plugin.getItemHelper();
+        this.playerHelper = plugin.getPlayerHelper();
     }
 
     @EventHandler
@@ -53,7 +52,7 @@ public class PlayerArmorEquip implements Listener {
             return;
 
         ItemStack item = e.getItem();
-        if(itemHelper.canPlayerUseArmor(player, item))
+        if(playerHelper.canPlayerUseArmor(player, item))
             return;
 
         denyArmorUsage(player, e);
@@ -80,7 +79,7 @@ public class PlayerArmorEquip implements Listener {
             return;
 
         ItemStack cursorItem = isShiftClicked ? e.getCurrentItem() : e.getCursor();
-        if(itemHelper.canPlayerUseArmor(player, cursorItem))
+        if(playerHelper.canPlayerUseArmor(player, cursorItem))
             return;
 
         denyArmorUsage(player, e);
@@ -106,7 +105,7 @@ public class PlayerArmorEquip implements Listener {
             return;
         }
 
-        if(itemHelper.canPlayerUseArmor(player, item))
+        if(playerHelper.canPlayerUseArmor(player, item))
             return;
 
         denyArmorUsage(player, e);

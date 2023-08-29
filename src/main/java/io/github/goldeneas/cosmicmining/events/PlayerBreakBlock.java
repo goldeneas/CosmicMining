@@ -8,7 +8,7 @@ import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import io.github.goldeneas.cosmicmining.Database;
 import io.github.goldeneas.cosmicmining.feedback.FeedbackString;
 import io.github.goldeneas.cosmicmining.CosmicMining;
-import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
+import io.github.goldeneas.cosmicmining.helpers.PlayerHelper;
 import io.github.goldeneas.cosmicmining.utils.Formatter;
 import io.github.goldeneas.cosmicmining.utils.StringUtils;
 import net.md_5.bungee.api.ChatMessageType;
@@ -19,7 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -35,7 +34,7 @@ public class PlayerBreakBlock implements Listener {
     private final YamlDocument config;
     private final ItemHelper itemHelper;
     private final BlockHelper blockHelper;
-    private final ExperienceHelper experienceHelper;
+    private final PlayerHelper playerHelper;
 
     public PlayerBreakBlock(CosmicMining _plugin) {
         plugin = _plugin;
@@ -44,7 +43,7 @@ public class PlayerBreakBlock implements Listener {
         this.database = plugin.getDatabase();
         this.itemHelper = plugin.getItemHelper();
         this.blockHelper = plugin.getBlockHelper();
-        this.experienceHelper = plugin.getExperienceHelper();
+        this.playerHelper = plugin.getPlayerHelper();
     }
 
     @EventHandler
@@ -64,7 +63,7 @@ public class PlayerBreakBlock implements Listener {
             return;
 
         e.setCancelled(true);
-        if(!itemHelper.canPlayerUsePickaxe(player, heldItem)) {
+        if(!playerHelper.canPlayerUsePickaxe(player, heldItem)) {
             denyPickaxeUsageFeedback(player);
             return;
         }
@@ -74,7 +73,7 @@ public class PlayerBreakBlock implements Listener {
             return;
         }
 
-        if(!experienceHelper.isPlayerMaxLevel(player))
+        if(!playerHelper.isPlayerMaxLevel(player))
             giveExperienceToPlayer(player, block);
 
         giveExperienceToPickaxe(heldItem, block);
@@ -135,8 +134,8 @@ public class PlayerBreakBlock implements Listener {
     }
 
     private void playerLevelUp(Player player) {
-        int currentLevel = experienceHelper.getCurrentLevelForPlayer(player);
-        int expToLevelUp = experienceHelper.getRequiredExperienceForLevel(currentLevel);
+        int currentLevel = playerHelper.getCurrentLevelForPlayer(player);
+        int expToLevelUp = playerHelper.getRequiredExperienceForLevel(currentLevel);
 
         database.addLevels(player, 1);
         database.removeExperience(player, expToLevelUp);
@@ -165,7 +164,7 @@ public class PlayerBreakBlock implements Listener {
     }
 
     private boolean shouldPlayerLevelUp(Player player) {
-        return experienceHelper.getExperienceToNextLevel(player) <= 0;
+        return playerHelper.getExperienceToNextLevel(player) <= 0;
     }
 
     private void preventBlockBreakFeedback(Player player) {

@@ -11,7 +11,7 @@ import io.github.goldeneas.cosmicmining.helpers.ConfigHelper;
 import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import io.github.goldeneas.cosmicmining.utils.DependencyChecker;
-import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
+import io.github.goldeneas.cosmicmining.helpers.PlayerHelper;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,7 +26,7 @@ public final class CosmicMining extends JavaPlugin {
     private ItemHelper itemHelper;
     private BlockHelper blockHelper;
     private ConfigHelper configHelper;
-    private ExperienceHelper experienceHelper;
+    private PlayerHelper playerHelper;
 
     @Override
     public void onEnable() {
@@ -38,12 +38,12 @@ public final class CosmicMining extends JavaPlugin {
         database = new Database(this);
         configHelper = new ConfigHelper(this);
         blockHelper = new BlockHelper(configHelper);
-        experienceHelper = new ExperienceHelper(database, configHelper);
-        itemHelper = new ItemHelper(this, database, configHelper, experienceHelper);
+        itemHelper = new ItemHelper(this, configHelper);
+        playerHelper = new PlayerHelper(database, itemHelper, configHelper);
 
         checkForDependencies();
         if(DependencyChecker.IS_PLACEHOLDERAPI_AVAILABLE)
-            new PapiExpansion(experienceHelper).register();
+            new PapiExpansion(playerHelper).register();
 
         getServer().getPluginManager().registerEvents(new PlayerBreakBlock(this), this);
         getServer().getPluginManager().registerEvents(new PlayerArmorEquip(this), this);
@@ -65,8 +65,8 @@ public final class CosmicMining extends JavaPlugin {
         return configHelper;
     }
 
-    public ExperienceHelper getExperienceHelper() {
-        return experienceHelper;
+    public PlayerHelper getPlayerHelper() {
+        return playerHelper;
     }
 
     public BlockHelper getBlockHelper() {

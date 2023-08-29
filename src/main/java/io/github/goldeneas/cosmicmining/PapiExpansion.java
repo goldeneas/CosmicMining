@@ -1,16 +1,16 @@
 package io.github.goldeneas.cosmicmining;
 
-import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
+import io.github.goldeneas.cosmicmining.helpers.PlayerHelper;
 import io.github.goldeneas.cosmicmining.utils.Formatter;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class PapiExpansion extends PlaceholderExpansion {
-    private final ExperienceHelper experienceHelper;
+    private final PlayerHelper playerHelper;
 
-    public PapiExpansion(ExperienceHelper experienceHelper) {
-        this.experienceHelper = experienceHelper;
+    public PapiExpansion(PlayerHelper playerHelper) {
+        this.playerHelper = playerHelper;
     }
 
     @Override
@@ -36,6 +36,6 @@ public class PapiExpansion extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player player, @NotNull String params) {
         String requiredPlaceholder = "%" + params + "%";
-        return Formatter.replacePlayerPlaceholders(requiredPlaceholder, player, experienceHelper);
+        return Formatter.replacePlayerPlaceholders(requiredPlaceholder, player, playerHelper);
     }
 }

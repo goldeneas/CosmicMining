@@ -2,7 +2,7 @@ package io.github.goldeneas.cosmicmining.feedback;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.goldeneas.cosmicmining.CosmicMining;
-import io.github.goldeneas.cosmicmining.helpers.ExperienceHelper;
+import io.github.goldeneas.cosmicmining.helpers.PlayerHelper;
 import io.github.goldeneas.cosmicmining.utils.Formatter;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -18,7 +18,7 @@ public class FeedbackString {
 
     private final YamlDocument messages;
     private final StringBuilder stringBuilder;
-    private final ExperienceHelper experienceHelper;
+    private final PlayerHelper playerHelper;
 
     private String title;
     private String subtitle;
@@ -27,7 +27,7 @@ public class FeedbackString {
     public FeedbackString(CosmicMining plugin) {
         cachedStrings = new HashMap<>();
         this.stringBuilder = new StringBuilder();
-        this.experienceHelper = plugin.getExperienceHelper();
+        this.playerHelper = plugin.getPlayerHelper();
         this.messages = plugin.getConfig("messages.yml");
 
         this.title = "";
@@ -85,7 +85,7 @@ public class FeedbackString {
 
     public void sendTo(Player player, ChatMessageType type) {
         String message = stringBuilder.toString();
-        message = Formatter.replacePlayerPlaceholders(message, player, experienceHelper);
+        message = Formatter.replacePlayerPlaceholders(message, player, playerHelper);
 
         TextComponent component = new TextComponent(message);
         player.spigot().sendMessage(type, component);
