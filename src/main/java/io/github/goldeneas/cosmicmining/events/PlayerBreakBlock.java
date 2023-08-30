@@ -98,8 +98,7 @@ public class PlayerBreakBlock implements Listener {
                 continue;
 
             new FeedbackMessage(plugin)
-                    .loadString("inventory-full")
-                    .playSound(Sound.ENTITY_PAINTING_BREAK)
+                    .load("inventory-full")
                     .sendTo(player, ChatMessageType.ACTION_BAR);
         }
     }
@@ -128,8 +127,7 @@ public class PlayerBreakBlock implements Listener {
         itemHelper.removeItemExperience(item, pickaxeMaxExperience);
 
         new FeedbackMessage(plugin)
-                .loadString("pickaxe-level-up")
-                .playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
+                .load("pickaxe-level-up")
                 .sendTo(player);
     }
 
@@ -141,16 +139,13 @@ public class PlayerBreakBlock implements Listener {
         database.removeExperience(player, expToLevelUp);
 
         new FeedbackMessage(plugin)
-                .loadString("level-up")
-                .playSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP)
-                .loadTitle("level-up-title")
+                .load("level-up")
                 .sendTo(player);
     }
 
     private void denyPickaxeUsageFeedback(Player player) {
         new FeedbackMessage(plugin)
-                .loadString("pickaxe-level-too-low")
-                .playSound(Sound.ENTITY_VILLAGER_NO)
+                .load("pickaxe-level-too-low")
                 .sendTo(player, ChatMessageType.ACTION_BAR);
     }
 
@@ -169,8 +164,7 @@ public class PlayerBreakBlock implements Listener {
 
     private void preventBlockBreakFeedback(Player player) {
         new FeedbackMessage(plugin)
-                .loadString("incorrect-item")
-                .playSound(Sound.ENTITY_VILLAGER_NO)
+                .load("incorrect-item")
                 .sendTo(player, ChatMessageType.ACTION_BAR);
     }
 
@@ -193,7 +187,6 @@ public class PlayerBreakBlock implements Listener {
         String formattedName = baseName + "&7[%pickaxe_level%]";
 
         formattedName = Formatter.replacePickaxePlaceholders(formattedName, item, itemHelper);
-        formattedName = ChatColor.translateAlternateColorCodes('&', formattedName);
 
         meta.setLore(lore);
         meta.setUnbreakable(true);

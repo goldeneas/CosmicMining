@@ -38,7 +38,6 @@ public class FeedbackLore {
         for(String line : lore) {
             String modifiedLine = line;
             modifiedLine = Formatter.replacePickaxePlaceholders(modifiedLine, item, itemHelper);
-            modifiedLine = ChatColor.translateAlternateColorCodes('&', modifiedLine);
             temp.add(modifiedLine);
         }
 

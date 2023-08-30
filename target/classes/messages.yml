@@ -7,12 +7,38 @@
 # if you'd want to include a player's current mining level on a scoreboard
 # you would have to use "%cosmic_player_level%" instead of "%player_level%".
 
-level-up: "&2You have level-ed up! Your new level is %player_level%"
-level-up-title: "&2Level Up"
+level-up:
+  chat-message: "&2You have level-ed up!"
+  title: "&2Level Up!"
+  subtitle: "new level"
+  sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
 
-pickaxe-level-up: "&2Your pickaxe has level-ed up!"
+pickaxe-level-up:
+  chat-message: "&2Your pickaxe has level-ed up!"
+  title: ""
+  subtitle: ""
+  sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
 
-inventory-full: "Your inventory is full!"
-incorrect-item: "This block cannot be broken by this item!"
-armor-level-too-low: "&cYou cannot equip this armor because your mining level is too low!"
-pickaxe-level-too-low: "&cYou cannot use this pickaxe because your mining level is too low!"
+inventory-full:
+  chat-message: "&cYour inventory is full!"
+  title: ""
+  subtitle: ""
+  sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
+
+incorrect-item:
+  chat-message: "&cYou cannot use this item to mine this block!"
+  title: ""
+  subtitle: ""
+  sound: "ENTITY_VILLAGER_HURT"
+
+armor-level-too-low:
+  chat-message: "&cYour level is too low for this armor!"
+  title: ""
+  subtitle: ""
+  sound: "ENTITY_VILLAGER_NO"
+
+pickaxe-level-too-low:
+  chat-message: "&cYour level is too low for this pickaxe!"
+  title: ""
+  subtitle: ""
+  sound: "ENTITY_VILLAGER_NO"

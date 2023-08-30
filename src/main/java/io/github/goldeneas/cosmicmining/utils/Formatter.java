@@ -2,6 +2,7 @@ package io.github.goldeneas.cosmicmining.utils;
 
 import io.github.goldeneas.cosmicmining.helpers.PlayerHelper;
 import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,6 +17,7 @@ public class Formatter {
         message = replace(message, "%player_experience%", currentExperience);
         message = replace(message, "%player_required_experience%", requiredExperience);
 
+        message = ChatColor.translateAlternateColorCodes('&', message);
         return message;
     }
 
@@ -29,6 +31,7 @@ public class Formatter {
         message = replace(message, "%pickaxe_max_experience%", pickaxeMaxExperience);
         message = replace(message, "%pickaxe_experience_bars%", getExperienceBars(currentPickaxeExperience, pickaxeMaxExperience));
 
+        message = ChatColor.translateAlternateColorCodes('&', message);
         return message;
     }
 
