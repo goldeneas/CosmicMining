@@ -1,6 +1,7 @@
 package io.github.goldeneas.cosmicmining.events;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import io.github.goldeneas.cosmicmining.animations.ChargedPummel;
 import io.github.goldeneas.cosmicmining.feedback.FeedbackLore;
 import io.github.goldeneas.cosmicmining.helpers.BlockHelper;
 import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
@@ -51,6 +52,8 @@ public class PlayerBreakBlock implements Listener {
             return;
 
         Player player = e.getPlayer();
+        new ChargedPummel(player.getLocation(), plugin).play();
+
         String bypassPermission = config.getString(ConfigPaths.BYPASS_PERMISSION_PATH);
         if((player.getGameMode() == GameMode.CREATIVE) || player.hasPermission(bypassPermission))
             return;

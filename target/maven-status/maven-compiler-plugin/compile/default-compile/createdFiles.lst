@@ -7,6 +7,7 @@ io/github/goldeneas/cosmicmining/helpers/ItemHelper.class
 io/github/goldeneas/cosmicmining/utils/Formatter.class
 io/github/goldeneas/cosmicmining/events/PlayerArmorEquip.class
 io/github/goldeneas/cosmicmining/events/PlayerAddToDatabase.class
+io/github/goldeneas/cosmicmining/animations/ChargedPummel.class
 io/github/goldeneas/cosmicmining/PapiExpansion.class
 io/github/goldeneas/cosmicmining/helpers/BlockHelper.class
 io/github/goldeneas/cosmicmining/helpers/ConfigHelper.class
@@ -15,3 +16,4 @@ io/github/goldeneas/cosmicmining/helpers/EnchantHelper.class
 io/github/goldeneas/cosmicmining/utils/StringUtils.class
 io/github/goldeneas/cosmicmining/Database.class
 io/github/goldeneas/cosmicmining/helpers/PlayerHelper.class
+io/github/goldeneas/cosmicmining/animations/Animation.class
