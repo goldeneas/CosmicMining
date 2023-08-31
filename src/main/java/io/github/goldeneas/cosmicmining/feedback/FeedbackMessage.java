@@ -27,6 +27,7 @@ public class FeedbackMessage {
     private String subtitle;
     private Sound soundToPlay;
     private String chatMessage;
+    private String actionBarMessage;
 
     public FeedbackMessage(CosmicMining plugin) {
         cachedMessages = new HashMap<>();
@@ -34,11 +35,6 @@ public class FeedbackMessage {
         this.messages = plugin.getConfig("messages.yml");
 
         this.messageProperties = new HashMap<>();
-    }
-
-    public FeedbackMessage setSound(Sound sound) {
-        this.soundToPlay = sound;
-        return this;
     }
 
     public FeedbackMessage load(String path) {
@@ -61,6 +57,7 @@ public class FeedbackMessage {
         title = getProperty("title");
         subtitle = getProperty("subtitle");
         chatMessage = getProperty("chat-message");
+        actionBarMessage = getProperty("action-bar-message");
 
         String soundName = getProperty("sound").toUpperCase();
         soundToPlay = Sound.valueOf(soundName);
@@ -69,21 +66,12 @@ public class FeedbackMessage {
         return this;
     }
 
-    public FeedbackMessage setTitle(String title, String subtitle) {
-        this.title = title;
-        this.subtitle = subtitle;
-
-        return this;
-    }
-
     public void sendTo(Player player) {
-        sendTo(player, ChatMessageType.CHAT);
-    }
-
-    public void sendTo(Player player, ChatMessageType type) {
         chatMessage = Formatter.replacePlayerPlaceholders(chatMessage, player, playerHelper);
-        TextComponent component = new TextComponent(chatMessage);
-        player.spigot().sendMessage(type, component);
+        player.sendMessage(chatMessage);
+
+        actionBarMessage = Formatter.replacePlayerPlaceholders(actionBarMessage, player, playerHelper);
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(chatMessage));
 
         if(soundToPlay != null) {
             Location l = player.getLocation();

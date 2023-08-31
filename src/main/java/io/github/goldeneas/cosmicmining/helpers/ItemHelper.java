@@ -52,19 +52,8 @@ public class ItemHelper {
         return getWeightForPickaxe(itemMaterial) != 0;
     }
 
-    // TODO: PDC related functions can be made shorter by making a common function for them
-    // for example, we can make a function that return the PDC and also handles if ItemMeta is null
     public int getItemLevel(ItemStack item) {
-        int itemLevel = 0;
-        ItemMeta meta = item.getItemMeta();
-
-        if(meta == null)
-            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
-
-        PersistentDataContainer pdc = meta.getPersistentDataContainer();
-
-        if(pdc.has(levelsKey, PersistentDataType.INTEGER))
-            itemLevel = pdc.get(levelsKey, PersistentDataType.INTEGER);
+        int itemLevel = getPersistentProperty(item, PersistentDataType.INTEGER, levelsKey);
 
         if(itemLevel == 0)
             itemLevel = 1;
@@ -73,52 +62,16 @@ public class ItemHelper {
     }
 
     public void addItemLevel(ItemStack item, int level) {
-        ItemMeta meta = item.getItemMeta();
-
-        if(meta == null)
-            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
-
         int currentLevel = getItemLevel(item);
         setItemLevel(item, currentLevel + level);
     }
 
     public void setItemLevel(ItemStack item, int level) {
-        ItemMeta meta = item.getItemMeta();
-
-        if(meta == null)
-            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
-
-        PersistentDataContainer pdc = meta.getPersistentDataContainer();
-        pdc.set(levelsKey, PersistentDataType.INTEGER, level);
-
-        item.setItemMeta(meta);
+        setPersistentProperty(item, level, PersistentDataType.INTEGER, levelsKey);
     }
 
     public int getItemExperience(ItemStack item) {
-        int itemExperience = 0;
-        ItemMeta meta = item.getItemMeta();
-
-        if(meta == null)
-            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
-
-        PersistentDataContainer pdc = meta.getPersistentDataContainer();
-
-        if(pdc.has(experienceKey, PersistentDataType.INTEGER))
-            itemExperience = pdc.get(experienceKey, PersistentDataType.INTEGER);
-
-        return itemExperience;
-    }
-
-    public void setItemExperience(ItemStack item, int experience) {
-        ItemMeta meta = item.getItemMeta();
-
-        if(meta == null)
-            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
-
-        PersistentDataContainer pdc = meta.getPersistentDataContainer();
-        pdc.set(experienceKey, PersistentDataType.INTEGER, experience);
-
-        item.setItemMeta(meta);
+        return getPersistentProperty(item, PersistentDataType.INTEGER, experienceKey);
     }
 
     public void removeItemExperience(ItemStack item, int experience) {
@@ -126,13 +79,12 @@ public class ItemHelper {
     }
 
     public void addItemExperience(ItemStack item, int experience){
-        ItemMeta meta = item.getItemMeta();
-
-        if(meta == null)
-            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
-
         int currentExperience = getItemExperience(item);
         setItemExperience(item, currentExperience + experience);
+    }
+
+    public void setItemExperience(ItemStack item, int experience) {
+        setPersistentProperty(item, experience, PersistentDataType.INTEGER, experienceKey);
     }
 
     public boolean isPickaxeFullOfExperience(ItemStack item) {
@@ -195,6 +147,27 @@ public class ItemHelper {
         }
 
         return 0;
+    }
+
+    private <T, Z> Z getPersistentProperty(ItemStack item, PersistentDataType<T, Z> type, NamespacedKey key) {
+        ItemMeta meta = item.getItemMeta();
+        if(meta == null)
+            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
+
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        if(!pdc.has(key, type))
+            throw new UnsupportedOperationException("Could not find property " + key.getKey() + " in " + item.getType());
+
+        return pdc.get(key, type);
+    }
+
+    private <T, Z> void setPersistentProperty(ItemStack item, Z value, PersistentDataType<T, Z> type, NamespacedKey key) {
+        ItemMeta meta = item.getItemMeta();
+        if(meta == null)
+            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
+
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        pdc.set(key, type, value);
     }
 
 }

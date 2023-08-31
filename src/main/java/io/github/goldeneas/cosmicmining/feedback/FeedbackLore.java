@@ -4,7 +4,6 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.goldeneas.cosmicmining.CosmicMining;
 import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
 import io.github.goldeneas.cosmicmining.utils.Formatter;
-import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class FeedbackLore {
         this.itemHelper = plugin.getItemHelper();
     }
 
-    public FeedbackLore loadString(String path) {
+    public FeedbackLore load(String path) {
         if(!cachedLores.containsKey(path))
             cachedLores.put(path, lores.getStringList(path));
 

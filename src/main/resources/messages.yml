@@ -9,36 +9,42 @@
 
 level-up:
   chat-message: "&2You have level-ed up!"
+  action-bar-message: ""
   title: "&2Level Up!"
   subtitle: "new level"
   sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
 
 pickaxe-level-up:
   chat-message: "&2Your pickaxe has level-ed up!"
+  action-bar-message: ""
   title: ""
   subtitle: ""
   sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
 
 inventory-full:
   chat-message: "&cYour inventory is full!"
+  action-bar-message: ""
   title: ""
   subtitle: ""
   sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
 
 incorrect-item:
   chat-message: "&cYou cannot use this item to mine this block!"
+  action-bar-message: ""
   title: ""
   subtitle: ""
   sound: "ENTITY_VILLAGER_HURT"
 
 armor-level-too-low:
   chat-message: "&cYour level is too low for this armor!"
+  action-bar-message: ""
   title: ""
   subtitle: ""
   sound: "ENTITY_VILLAGER_NO"
 
 pickaxe-level-too-low:
   chat-message: "&cYour level is too low for this pickaxe!"
+  action-bar-message: ""
   title: ""
   subtitle: ""
   sound: "ENTITY_VILLAGER_NO"

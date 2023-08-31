@@ -11,7 +11,6 @@ import io.github.goldeneas.cosmicmining.CosmicMining;
 import io.github.goldeneas.cosmicmining.helpers.PlayerHelper;
 import io.github.goldeneas.cosmicmining.utils.Formatter;
 import io.github.goldeneas.cosmicmining.utils.StringUtils;
-import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -99,7 +98,7 @@ public class PlayerBreakBlock implements Listener {
 
             new FeedbackMessage(plugin)
                     .load("inventory-full")
-                    .sendTo(player, ChatMessageType.ACTION_BAR);
+                    .sendTo(player);
         }
     }
 
@@ -146,7 +145,7 @@ public class PlayerBreakBlock implements Listener {
     private void denyPickaxeUsageFeedback(Player player) {
         new FeedbackMessage(plugin)
                 .load("pickaxe-level-too-low")
-                .sendTo(player, ChatMessageType.ACTION_BAR);
+                .sendTo(player);
     }
 
     private boolean shouldIgnoreBlock(Block block) {
@@ -165,7 +164,7 @@ public class PlayerBreakBlock implements Listener {
     private void preventBlockBreakFeedback(Player player) {
         new FeedbackMessage(plugin)
                 .load("incorrect-item")
-                .sendTo(player, ChatMessageType.ACTION_BAR);
+                .sendTo(player);
     }
 
     private void giveExperienceToPickaxe(ItemStack item, Block block) {
@@ -180,7 +179,7 @@ public class PlayerBreakBlock implements Listener {
             throw new UnsupportedOperationException("Could not get meta for " + item.getType());
 
         List<String> lore = new FeedbackLore(plugin)
-                .loadString("pickaxe-lore")
+                .load("pickaxe-lore")
                 .getForPickaxe(item);
 
         String baseName = StringUtils.capitalizeMaterialName(item.getType());
