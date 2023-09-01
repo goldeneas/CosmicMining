@@ -1,13 +1,16 @@
 package io.github.goldeneas.cosmicmining.animations;
 
 import io.github.goldeneas.cosmicmining.CosmicMining;
+import io.github.goldeneas.cosmicmining.utils.MathUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
@@ -16,8 +19,8 @@ public class ChargedPummel extends Animation {
 
     private int step;
 
-    public ChargedPummel(Location location, CosmicMining _plugin) {
-        super(location, _plugin);
+    public ChargedPummel(Player player, CosmicMining _plugin) {
+        super(player, _plugin);
 
         armorStands = new ArrayList<>();
         createArmorStands(1, Material.PRISMARINE_BRICKS);
@@ -33,9 +36,12 @@ public class ChargedPummel extends Animation {
 
         double x = Math.cos(radians);
         double y = Math.sin(radians);
+        double z = Math.sin(radians);
 
-        Location tmp = getLocation().clone();
-        tmp.add(x, y, 0);
+        Location tmp = getPlayer().getLocation().clone();
+        tmp.add(x, y, z);
+        tmp.setYaw(0);
+        tmp.setPitch(0);
 
         for(ArmorStand armorStand : armorStands) {
             armorStand.teleport(tmp);
@@ -46,12 +52,11 @@ public class ChargedPummel extends Animation {
 
     @Override
     protected void cleanup() {
-        System.out.println("called cleanup");
         removeArmorStands();
     }
 
     private void createArmorStands(int amount, Material headMaterial) {
-        Location location = getLocation();
+        Location location = getPlayer().getLocation();
         World world = location.getWorld();
 
         for(int i = 0; i < amount; i++) {

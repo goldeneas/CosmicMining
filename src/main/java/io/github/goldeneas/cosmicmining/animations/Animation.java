@@ -2,6 +2,7 @@ package io.github.goldeneas.cosmicmining.animations;
 
 import io.github.goldeneas.cosmicmining.CosmicMining;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.logging.Logger;
@@ -16,14 +17,27 @@ public abstract class Animation extends BukkitRunnable {
     private long period;
     private long maxLifetime;
     private long currentLifetime;
-    private final Location location;
     private boolean isPlaying;
 
-    public Animation(Location location, CosmicMining _plugin) {
-        this.location = location;
+    private Player player;
+    private Location location;
 
+    // TODO: make stronger location and player checking
+    // some animations might use location, others might use player tracking
+    // we want to avoid them bugging because one uses one or the other, or at
+    // least try to make them as safe as possible
+    public Animation(Location location, CosmicMining _plugin) {
         plugin = _plugin;
         log = plugin.getLogger();
+
+        this.location = location;
+    }
+
+    public Animation(Player player, CosmicMining _plugin) {
+        plugin = _plugin;
+        log = plugin.getLogger();
+
+        this.player = player;
     }
 
     public void play() {
@@ -50,6 +64,11 @@ public abstract class Animation extends BukkitRunnable {
     public void run() {
         if(!isPlaying) {
             log.severe("Tried running animation " + this.getClass().getName() + " without calling 'play()'!");
+            return;
+        }
+
+        if(location == null && player == null) {
+            log.severe("Tried running animation " + this.getClass().getName() + " without setting a location!");
             return;
         }
 
@@ -101,8 +120,13 @@ public abstract class Animation extends BukkitRunnable {
         return currentLifetime;
     }
 
+
     protected Location getLocation() {
         return location;
+    }
+
+    protected Player getPlayer() {
+        return player;
     }
 
     protected abstract void update();

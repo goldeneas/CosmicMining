@@ -52,7 +52,8 @@ public class PlayerBreakBlock implements Listener {
             return;
 
         Player player = e.getPlayer();
-        new ChargedPummel(player.getLocation(), plugin).play();
+        new ChargedPummel(player, plugin)
+                .play();
 
         String bypassPermission = config.getString(ConfigPaths.BYPASS_PERMISSION_PATH);
         if((player.getGameMode() == GameMode.CREATIVE) || player.hasPermission(bypassPermission))
