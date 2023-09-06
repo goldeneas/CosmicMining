@@ -1,7 +1,6 @@
 package io.github.goldeneas.cosmicmining.animations;
 
 import io.github.goldeneas.cosmicmining.CosmicMining;
-import io.github.goldeneas.cosmicmining.utils.MathUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -36,15 +35,19 @@ public class ChargedPummel extends Animation {
 
         double x = Math.cos(radians);
         double y = Math.sin(radians);
-        double z = Math.sin(radians);
 
         Location tmp = getPlayer().getLocation().clone();
-        tmp.add(x, y, z);
-        tmp.setYaw(0);
-        tmp.setPitch(0);
+
+        Vector v = new Vector();
+        v.rotateAroundY(10);
+        v.setX(tmp.getX() + x);
+        v.setX(tmp.getY() + y);
+        v.setX(tmp.getZ());
+
+        Location newLocation = new Location(getPlayer().getLocation().getWorld(), v.getX(), v.getY(), v.getZ());
 
         for(ArmorStand armorStand : armorStands) {
-            armorStand.teleport(tmp);
+            armorStand.teleport(newLocation);
         }
 
         step += 10;
