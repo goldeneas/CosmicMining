@@ -6,12 +6,9 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.goldeneas.cosmicmining.events.PlayerArmorEquip;
 import io.github.goldeneas.cosmicmining.events.PlayerBreakBlock;
 import io.github.goldeneas.cosmicmining.events.PlayerAddToDatabase;
-import io.github.goldeneas.cosmicmining.helpers.BlockHelper;
-import io.github.goldeneas.cosmicmining.helpers.ConfigHelper;
-import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
+import io.github.goldeneas.cosmicmining.helpers.*;
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
 import io.github.goldeneas.cosmicmining.utils.DependencyChecker;
-import io.github.goldeneas.cosmicmining.helpers.PlayerHelper;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -34,6 +31,7 @@ public final class CosmicMining extends JavaPlugin {
         createConfig("lores.yml");
         createConfig("config.yml");
         createConfig("messages.yml");
+        createConfig("enchants.yml");
 
         database = new Database(this);
         configHelper = new ConfigHelper(this);

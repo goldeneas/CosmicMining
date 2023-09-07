@@ -10,8 +10,6 @@ import io.github.goldeneas.cosmicmining.Database;
 import io.github.goldeneas.cosmicmining.feedback.FeedbackMessage;
 import io.github.goldeneas.cosmicmining.CosmicMining;
 import io.github.goldeneas.cosmicmining.helpers.PlayerHelper;
-import io.github.goldeneas.cosmicmining.utils.Formatter;
-import io.github.goldeneas.cosmicmining.utils.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -19,13 +17,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 public class PlayerBreakBlock implements Listener {
     private static CosmicMining plugin;
@@ -83,9 +79,23 @@ public class PlayerBreakBlock implements Listener {
         if(itemHelper.isPickaxeFullOfExperience(heldItem))
             pickaxeLevelUp(player, heldItem);
 
-        refreshPickaxeMeta(heldItem);
+        itemHelper.refreshPickaxeMeta(heldItem);
         giveBlockDrops(player, block);
         regenerateBlock(block);
+
+        // DEBUG
+        System.out.println("Current enchants: " + Arrays.toString(itemHelper.getItemEnchants(heldItem)));
+        System.out.println("Adding enchant with ID 0");
+        itemHelper.addItemEnchants(heldItem, 0);
+        System.out.println("Current enchants: " + Arrays.toString(itemHelper.getItemEnchants(heldItem)));
+        System.out.println("Adding enchant with ID 0 1 2 3");
+        itemHelper.addItemEnchants(heldItem, 0, 1, 2, 3);
+        System.out.println("Current enchants: " + Arrays.toString(itemHelper.getItemEnchants(heldItem)));
+        System.out.println("Removing enchants 0 1 4");
+        itemHelper.removeItemEnchants(heldItem, 0, 1, 4);
+        System.out.println("Current enchants: " + Arrays.toString(itemHelper.getItemEnchants(heldItem)));
+
+
 
         if(shouldPlayerLevelUp(player))
             playerLevelUp(player);
@@ -175,27 +185,6 @@ public class PlayerBreakBlock implements Listener {
         Material blockType = block.getType();
         int exp = blockHelper.getExperienceToGiveForBlock(blockType);
         itemHelper.addItemExperience(item, exp);
-    }
-
-    private void refreshPickaxeMeta(ItemStack item) {
-        ItemMeta meta = item.getItemMeta();
-        if(meta == null)
-            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
-
-        List<String> lore = new FeedbackLore(plugin)
-                .load("pickaxe-lore")
-                .getForPickaxe(item);
-
-        String baseName = StringUtils.capitalizeMaterialName(item.getType());
-        String formattedName = baseName + "&7[%pickaxe_level%]";
-
-        formattedName = Formatter.replacePickaxePlaceholders(formattedName, item, itemHelper);
-
-        meta.setLore(lore);
-        meta.setUnbreakable(true);
-        meta.setDisplayName(formattedName);
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        item.setItemMeta(meta);
     }
 
 }

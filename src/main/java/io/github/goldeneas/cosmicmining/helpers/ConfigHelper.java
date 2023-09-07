@@ -63,13 +63,11 @@ public class ConfigHelper {
     }
 
     public String getAttributeForPickaxe(Material material, String attributeName) {
-        String materialString = material.toString();
-        return pickaxesConfig.getString(ConfigPaths.PICKAXES_PATH + "." + materialString + "." + attributeName);
+        return getAttribute(material.toString(), attributeName, ConfigPaths.PICKAXES_PATH, pickaxesConfig);
     }
 
     public String getAttributeForArmor(Material material, String attributeName) {
-        String materialString = material.toString();
-        return pickaxesConfig.getString(ConfigPaths.ARMORS_PATH + "." + materialString + "." + attributeName);
+        return getAttribute(material.toString(), attributeName, ConfigPaths.ARMORS_PATH, armorsConfig);
     }
 
     private ArrayList<String> getMaterials(String path, YamlDocument config) {
@@ -87,19 +85,19 @@ public class ConfigHelper {
     private HashMap<String, String> getAttributes(String attributeName, String path, YamlDocument config) {
         HashMap<String, String> attributes = new HashMap<>();
 
-        for(String material : getMaterials(path, config)) {
-            String attribute = getAttribute(material, attributeName, path, config);
+        for(String materialName : getMaterials(path, config)) {
+            String attribute = getAttribute(materialName, attributeName, path, config);
 
             if(Objects.equals(attribute, null))
-                throw new RuntimeException("Could not load attribute " + attributeName + " for " + material);
+                throw new RuntimeException("Could not load attribute " + attributeName + " for " + materialName);
 
-            attributes.put(material, attribute);
+            attributes.put(materialName, attribute);
         }
 
         return attributes;
     }
 
-    private String getAttribute(String material, String attributeName, String path, YamlDocument config) {
-        return config.getString(path + "." + material + "." + attributeName);
+    private String getAttribute(String parentName, String attributeName, String path, YamlDocument config) {
+        return config.getString(path + "." + parentName + "." + attributeName);
     }
 }

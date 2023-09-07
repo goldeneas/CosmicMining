@@ -1,34 +1,79 @@
 package io.github.goldeneas.cosmicmining.helpers;
 
 import io.github.goldeneas.cosmicmining.CosmicMining;
+import io.github.goldeneas.cosmicmining.feedback.FeedbackLore;
+import io.github.goldeneas.cosmicmining.utils.Formatter;
+import io.github.goldeneas.cosmicmining.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class ItemHelper {
     private final NamespacedKey levelsKey;
+    private final NamespacedKey enchantsKey;
     private final NamespacedKey experienceKey;
 
+    private final CosmicMining plugin;
     private final ConfigHelper configHelper;
     private final HashMap<String, String> requiredLevelForArmor;
     private final HashMap<String, String> requiredLevelForPickaxe;
     private final HashMap<String, String> requiredPickaxesForBlocks;
 
     public ItemHelper(CosmicMining plugin, ConfigHelper configHelper) {
+        this.plugin = plugin;
         this.configHelper = configHelper;
 
         this.levelsKey = new NamespacedKey(plugin, "levels");
+        this.enchantsKey = new NamespacedKey(plugin, "enchants");
         this.experienceKey = new NamespacedKey(plugin, "experience");
 
         requiredLevelForArmor = configHelper.getAttributeForArmors("required-level");
         requiredLevelForPickaxe = configHelper.getAttributeForPickaxes("required-level");
         requiredPickaxesForBlocks = configHelper.getAttributeForBlocks("required-pickaxe");
+    }
+
+    public int[] getItemEnchants(ItemStack item) {
+        return getPersistentProperty(item, PersistentDataType.INTEGER_ARRAY, enchantsKey);
+    }
+
+    public void addItemEnchants(ItemStack item, int... enchantsToAdd) {
+        int[] oldEnchants = getItemEnchants(item);
+        int[] finalEnchants = new int[oldEnchants.length + enchantsToAdd.length];
+
+        System.arraycopy(oldEnchants, 0, finalEnchants, 0, oldEnchants.length);
+        System.arraycopy(enchantsToAdd, 0, finalEnchants, oldEnchants.length, enchantsToAdd.length);
+
+        setItemEnchants(item, finalEnchants);
+    }
+
+    public void removeItemEnchants(ItemStack item, int... enchantsToRemove) {
+        int[] oldEnchants = getItemEnchants(item);
+        int[] finalEnchants = new int[oldEnchants.length - enchantsToRemove.length];
+
+        int freeIndex = 0;
+        for(int oldEnchant : oldEnchants) {
+            for(int enchantToRemove : enchantsToRemove) {
+                if (oldEnchant == enchantToRemove)
+                    continue;
+
+                finalEnchants[freeIndex] = oldEnchant;
+                ++freeIndex;
+            }
+        }
+
+        setItemEnchants(item, finalEnchants);
+    }
+
+    public void setItemEnchants(ItemStack item, int... enchantIds) {
+        setPersistentProperty(item, enchantIds, PersistentDataType.INTEGER_ARRAY, enchantsKey);
     }
 
     public Material getRequiredPickaxeForBlock(Block block) {
@@ -119,6 +164,27 @@ public class ItemHelper {
         return Integer.parseInt(requiredLevelString);
     }
 
+    public void refreshPickaxeMeta(ItemStack item) {
+        ItemMeta meta = item.getItemMeta();
+        if(meta == null)
+            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
+
+        List<String> lore = new FeedbackLore(plugin)
+                .load("pickaxe-lore")
+                .getForPickaxe(item);
+
+        String baseName = StringUtils.fixMaterialName(item.getType());
+        String formattedName = baseName + "&7[%pickaxe_level%]";
+
+        formattedName = Formatter.replacePickaxePlaceholders(formattedName, item, this);
+
+        meta.setLore(lore);
+        meta.setUnbreakable(true);
+        meta.setDisplayName(formattedName);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        item.setItemMeta(meta);
+    }
+
     private int getItemMaxExperience(ItemStack item, int baseMaxExperience, int levelMultiplier) {
         int itemLevel = getItemLevel(item);
 
@@ -149,12 +215,21 @@ public class ItemHelper {
         return 0;
     }
 
-    private <T, Z> Z getPersistentProperty(ItemStack item, PersistentDataType<T, Z> type, NamespacedKey key) {
+    private PersistentDataContainer getPDC(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         if(meta == null)
             throw new UnsupportedOperationException("Could not get meta for " + item.getType());
 
-        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        return meta.getPersistentDataContainer();
+    }
+
+    private <T, Z> boolean hasPersistentProperty(ItemStack item, PersistentDataType<T, Z> type, NamespacedKey key) {
+        PersistentDataContainer pdc = getPDC(item);
+        return pdc.has(key, type);
+    }
+
+    private <T, Z> Z getPersistentProperty(ItemStack item, PersistentDataType<T, Z> type, NamespacedKey key) {
+        PersistentDataContainer pdc = getPDC(item);
         if(!pdc.has(key, type))
             throw new UnsupportedOperationException("Could not find property " + key.getKey() + " in " + item.getType());
 
@@ -162,11 +237,7 @@ public class ItemHelper {
     }
 
     private <T, Z> void setPersistentProperty(ItemStack item, Z value, PersistentDataType<T, Z> type, NamespacedKey key) {
-        ItemMeta meta = item.getItemMeta();
-        if(meta == null)
-            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
-
-        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        PersistentDataContainer pdc = getPDC(item);
         pdc.set(key, type, value);
     }
 

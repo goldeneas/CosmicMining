@@ -4,7 +4,7 @@ import org.bukkit.Material;
 
 public class StringUtils {
 
-    public static String capitalizeMaterialName(Material material) {
+    public static String fixMaterialName(Material material) {
         StringBuilder sb = new StringBuilder("&r");
 
         String[] base = material.toString().toLowerCase().split("_");
