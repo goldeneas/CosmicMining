@@ -3,6 +3,7 @@ package io.github.goldeneas.cosmicmining;
 import com.jeff_media.updatechecker.UpdateCheckSource;
 import com.jeff_media.updatechecker.UpdateChecker;
 import dev.dejvokep.boostedyaml.YamlDocument;
+import io.github.goldeneas.cosmicmining.commands.CreatePickaxe;
 import io.github.goldeneas.cosmicmining.events.PlayerArmorEquip;
 import io.github.goldeneas.cosmicmining.events.PlayerBreakBlock;
 import io.github.goldeneas.cosmicmining.events.PlayerAddToDatabase;
@@ -46,6 +47,8 @@ public final class CosmicMining extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerBreakBlock(this), this);
         getServer().getPluginManager().registerEvents(new PlayerArmorEquip(this), this);
         getServer().getPluginManager().registerEvents(new PlayerAddToDatabase(this), this);
+
+        getCommand("createpickaxe").setExecutor(new CreatePickaxe(this));
 
         checkForUpdates();
         enablePluginMetrics();

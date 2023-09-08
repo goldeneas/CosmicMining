@@ -13,7 +13,7 @@
 /Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/helpers/BlockHelper.java
 /Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/CosmicMining.java
 /Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/feedback/FeedbackMessage.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/helpers/EnchantHelper.java
 /Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/PapiExpansion.java
 /Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/utils/DependencyChecker.java
 /Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/events/PlayerAddToDatabase.java
+/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/enchants/CustomEnchant.java

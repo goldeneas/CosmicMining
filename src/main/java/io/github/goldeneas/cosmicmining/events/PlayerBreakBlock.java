@@ -2,7 +2,6 @@ package io.github.goldeneas.cosmicmining.events;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.goldeneas.cosmicmining.animations.ChargedPummel;
-import io.github.goldeneas.cosmicmining.feedback.FeedbackLore;
 import io.github.goldeneas.cosmicmining.helpers.BlockHelper;
 import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
 import io.github.goldeneas.cosmicmining.utils.ConfigPaths;
@@ -168,7 +167,7 @@ public class PlayerBreakBlock implements Listener {
     }
 
     private boolean shouldIgnoreItem(ItemStack item) {
-        return !itemHelper.isItemPickaxe(item);
+        return !itemHelper.isItemPickaxe(item) || !itemHelper.isCosmicItem(item);
     }
 
     private boolean shouldPlayerLevelUp(Player player) {

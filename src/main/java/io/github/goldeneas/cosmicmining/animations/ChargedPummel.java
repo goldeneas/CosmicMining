@@ -39,10 +39,10 @@ public class ChargedPummel extends Animation {
         Location tmp = getPlayer().getLocation().clone();
 
         Vector v = new Vector();
-        v.rotateAroundY(Math.toRadians(10));
+        v.rotateAroundY(360 * step);
         v.setX(tmp.getX() + x);
-        v.setX(tmp.getY() + y);
-        v.setX(tmp.getZ());
+        v.setY(tmp.getY() + y);
+        v.setZ(tmp.getZ());
 
         Location newLocation = new Location(getPlayer().getLocation().getWorld(), v.getX(), v.getY(), v.getZ());
 

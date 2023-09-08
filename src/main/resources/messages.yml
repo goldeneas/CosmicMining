@@ -48,3 +48,17 @@ pickaxe-level-too-low:
   title: ""
   subtitle: ""
   sound: "ENTITY_VILLAGER_NO"
+
+insufficient-permissions:
+  chat-message: "&cYou don't have the required permission for this command!"
+  action-bar-message: ""
+  title: ""
+  subtitle: ""
+  sound: ""
+
+incorrect-arguments:
+  chat-message: "&cIncorrect number of arguments provided."
+  action-bar-message: ""
+  title: ""
+  subtitle: ""
+  sound: ""

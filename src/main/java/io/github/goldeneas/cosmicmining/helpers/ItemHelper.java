@@ -185,6 +185,10 @@ public class ItemHelper {
         item.setItemMeta(meta);
     }
 
+    public boolean isCosmicItem(ItemStack item) {
+        return getPDC(item).has(levelsKey, PersistentDataType.INTEGER);
+    }
+
     private int getItemMaxExperience(ItemStack item, int baseMaxExperience, int levelMultiplier) {
         int itemLevel = getItemLevel(item);
 
@@ -218,27 +222,21 @@ public class ItemHelper {
     private PersistentDataContainer getPDC(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         if(meta == null)
-            throw new UnsupportedOperationException("Could not get meta for " + item.getType());
+            throw new RuntimeException("Could not get meta for " + item.getType());
 
         return meta.getPersistentDataContainer();
-    }
-
-    private <T, Z> boolean hasPersistentProperty(ItemStack item, PersistentDataType<T, Z> type, NamespacedKey key) {
-        PersistentDataContainer pdc = getPDC(item);
-        return pdc.has(key, type);
     }
 
     private <T, Z> Z getPersistentProperty(ItemStack item, PersistentDataType<T, Z> type, NamespacedKey key) {
         PersistentDataContainer pdc = getPDC(item);
         if(!pdc.has(key, type))
-            throw new UnsupportedOperationException("Could not find property " + key.getKey() + " in " + item.getType());
+            throw new RuntimeException("Could not find property " + key.getKey() + " in " + item.getType());
 
         return pdc.get(key, type);
     }
 
     private <T, Z> void setPersistentProperty(ItemStack item, Z value, PersistentDataType<T, Z> type, NamespacedKey key) {
-        PersistentDataContainer pdc = getPDC(item);
-        pdc.set(key, type, value);
+        getPDC(item).set(key, type, value);
     }
 
 }
