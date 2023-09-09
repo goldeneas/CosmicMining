@@ -1,5 +1,6 @@
+admin-permission: "cosmicmining.admin"
 update-permission: "cosmicmining.update"
-bypass_permission: "cosmicmining.bypass"
+bypass-permission: "cosmicmining.bypass"
 
 blocks:
   STONE:

@@ -36,6 +36,8 @@ public class CreatePickaxe implements CommandExecutor {
             return true;
         }
 
+
+        return true;
     }
 
     private void sendFeedback(Player player, String messageName) {

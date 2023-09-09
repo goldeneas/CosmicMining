@@ -48,7 +48,7 @@ public final class CosmicMining extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerArmorEquip(this), this);
         getServer().getPluginManager().registerEvents(new PlayerAddToDatabase(this), this);
 
-        getCommand("createpickaxe").setExecutor(new CreatePickaxe(this));
+        //getCommand("createpickaxe").setExecutor(new CreatePickaxe(this));
 
         checkForUpdates();
         enablePluginMetrics();

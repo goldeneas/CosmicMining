@@ -1,19 +1,21 @@
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/helpers/ItemHelper.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/helpers/PlayerHelper.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/animations/Animation.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/events/PlayerArmorEquip.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/animations/ChargedPummel.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/helpers/ConfigHelper.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/Database.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/events/PlayerBreakBlock.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/utils/Formatter.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/utils/ConfigPaths.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/utils/StringUtils.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/feedback/FeedbackLore.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/helpers/BlockHelper.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/CosmicMining.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/feedback/FeedbackMessage.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/PapiExpansion.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/utils/DependencyChecker.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/events/PlayerAddToDatabase.java
-/Users/nicola/Workspace/Java/CosmicMining/src/main/java/io/github/goldeneas/cosmicmining/enchants/CustomEnchant.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\events\PlayerAddToDatabase.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\helpers\PlayerHelper.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\commands\CreatePickaxe.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\events\PlayerBreakBlock.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\helpers\ItemHelper.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\events\PlayerArmorEquip.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\enchants\CustomEnchant.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\feedback\FeedbackLore.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\animations\Animation.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\Database.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\feedback\FeedbackMessage.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\animations\ChargedPummel.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\utils\StringUtils.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\PapiExpansion.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\helpers\BlockHelper.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\CosmicMining.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\helpers\ConfigHelper.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\utils\DependencyChecker.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\animations\RotationFollower.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\utils\Formatter.java
+D:\Workspace\Java\Minecraft Plugins\CosmicMining\src\main\java\io\github\goldeneas\cosmicmining\utils\ConfigPaths.java
