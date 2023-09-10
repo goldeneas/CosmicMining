@@ -2,6 +2,7 @@ package io.github.goldeneas.cosmicmining.events;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import io.github.goldeneas.cosmicmining.animations.ChargedPummel;
+import io.github.goldeneas.cosmicmining.animations.ItemShield;
 import io.github.goldeneas.cosmicmining.animations.RotationFollower;
 import io.github.goldeneas.cosmicmining.helpers.BlockHelper;
 import io.github.goldeneas.cosmicmining.helpers.ItemHelper;
@@ -48,7 +49,7 @@ public class PlayerBreakBlock implements Listener {
             return;
 
         Player player = e.getPlayer();
-        new RotationFollower(player, plugin)
+        new ItemShield(Material.DIAMOND_BLOCK, player, plugin)
                 .play();
 
         String bypassPermission = config.getString(ConfigPaths.BYPASS_PERMISSION_PATH);

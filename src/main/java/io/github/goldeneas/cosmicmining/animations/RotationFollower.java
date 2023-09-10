@@ -22,19 +22,47 @@ public class RotationFollower extends Animation {
         super(player, _plugin);
 
         armorStands = new ArrayList<>();
-        createArmorStands(2, Material.PRISMARINE_BRICKS);
+        addArmorStands(4, Material.PRISMARINE_BRICKS);
 
-        setRadius(1);
+        setRadius(2);
         setPeriod(1L);
         setMaxLifetime(10);
     }
 
     @Override
     protected void update() {
-        Player player = getPlayer();
-        Vector lookDirection = player.getEyeLocation().getDirection();
+        double yaw = getPlayer().getLocation().getYaw();
 
-        Location l = getPlayer().getLocation().clone();
+        // TODO: possible optimization -> call cos and sin inverted
+        double angle = Math.toRadians(yaw - 180);
+        double blocksSpacing = (2.0 * getRadius())/armorStands.size();
+
+        double currentSpacingVertical = 0.0;
+        double currentSpacingHorizontal = 0.0;
+
+        for(int i = 0; i < armorStands.size(); i ++) {
+            Location l = getPlayer().getLocation().clone();
+
+            double blockX = currentSpacingHorizontal * Math.cos(angle);
+            double blockZ = currentSpacingHorizontal * Math.sin(angle);
+
+            if(i%2 == 0) {
+                l.add(blockX, 0, blockZ);
+            } else {
+                l.add(-blockX, 0, -blockZ);
+                currentSpacingHorizontal += blocksSpacing;
+            }
+
+            armorStands.get(i).teleport(l);
+        }
+
+
+        step += 10;
+    }
+
+    /*
+
+            Location l = getPlayer().getLocation().clone();
         l.add(-lookDirection.getZ(), 0, lookDirection.getX());
 
         double spacing = Math.toRadians(360.0/armorStands.size());
@@ -57,15 +85,14 @@ public class RotationFollower extends Animation {
             armorStands.get(i).teleport(tmp);
         }
 
-        step += 10;
-    }
+     */
 
     @Override
     protected void cleanup() {
         removeArmorStands();
     }
 
-    private void createArmorStands(int amount, Material headMaterial) {
+    private void addArmorStands(int amount, Material headMaterial) {
         Location location = getPlayer().getLocation();
         World world = location.getWorld();
 
@@ -88,6 +115,5 @@ public class RotationFollower extends Animation {
         for(ArmorStand armorStand : armorStands)
             armorStand.remove();
     }
-
 
 }
