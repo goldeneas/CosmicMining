@@ -32,22 +32,29 @@ public class RotationFollower extends Animation {
     @Override
     protected void update() {
         Player player = getPlayer();
-        Vector unitVectors = player.getEyeLocation().getDirection();
+        Vector lookDirection = player.getEyeLocation().getDirection();
 
         Location l = getPlayer().getLocation().clone();
-        l.add(-unitVectors.getZ(), 0, unitVectors.getX());
+        l.add(-lookDirection.getZ(), 0, lookDirection.getX());
 
         double spacing = Math.toRadians(360.0/armorStands.size());
         for(int i = 0; i < armorStands.size(); i++) {
+            Location tmp = l.clone();
 
-//            if(i != 0) {
-//                double currentSpacing = spacing * i;
-//
-//                l.setX(l.getX() * Math.cos(currentSpacing));
-//                l.setY(l.getY() * Math.sin(currentSpacing));
-//            }
+            if(i != 0) {
+                double currentSpacing = spacing * i;
 
-            armorStands.get(i).teleport(l);
+                double xPadding = Math.cos(currentSpacing);
+                if(tmp.getX() < 0)
+                    xPadding = -xPadding + getRadius();
+                else
+                    xPadding = xPadding - getRadius();
+
+                tmp.add(xPadding, 0, 0);
+                //l.setY(l.getY() + Math.sin(currentSpacing));
+            }
+
+            armorStands.get(i).teleport(tmp);
         }
 
         step += 10;
